@@ -47,8 +47,8 @@ void setup() {
   Serial.println("Initializing ESPNow ...");
   initEspNow();
   Serial.println("ESPNow Server Ready");
-    uint8_t bs[] = "Hello ESP!";
-    sendEspNow(MASTER_MAC, bs);
+  uint8_t bs[] = "Hello ESP!";
+  sendEspNow(MASTER_MAC, bs);
 }
 
 int lastTime;
@@ -87,15 +87,7 @@ void initEspNow() {
 
     // Investigate: There's little doc on what can be done within this method. If its like an ISR
     // then it should not take too long or do much I/O, but writing to Serial does appear to work ok
-
-    // Serial.printf("Message from %02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
-    // Serial.print(", Length: ");
-    // Serial.print(len);
-    // Serial.print("Message->");
-    // Serial.write(data, len);
-    // Serial.println("<-");
-    // sendEspNow(mac, data); //Echo msg back
-    msgHandle(mac, data, len);
+    echo(mac, data, len);
 
   });
   for (int nthClient = 0; nthClient < sizeof(MACS) / sizeof(MACS[0]); nthClient++) {
@@ -132,11 +124,9 @@ int searchMac(uint8_t *inMac, uint8_t **macList) {
    @param     msgSourceMac  Message source's MAC Addr in bytes array
    @param     msg  Content of the message in bytes array
    @param     msgLen  Length of the message
-
-   @return    Status (true/false)
 */
 
-bool msgHandle(uint8_t *msgSourceMac, uint8_t *msg, uint8_t msgLen) {
+void echo(uint8_t *msgSourceMac, uint8_t *msg, uint8_t msgLen) {
   int msgSource = searchMac(msgSourceMac, MACS);
   // Serial.printf("Message from %02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
   Serial.print(msgSource);
