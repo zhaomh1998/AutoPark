@@ -67,6 +67,8 @@
 <layer number="57" name="tCAD" color="7" fill="1" visible="no" active="no"/>
 <layer number="59" name="tCarbon" color="7" fill="1" visible="no" active="no"/>
 <layer number="60" name="bCarbon" color="7" fill="1" visible="no" active="no"/>
+<layer number="88" name="SimResults" color="9" fill="1" visible="yes" active="yes"/>
+<layer number="89" name="SimProbes" color="9" fill="1" visible="yes" active="yes"/>
 <layer number="90" name="Modules" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
@@ -949,6 +951,23 @@ DIN A4, landscape with location and doc. field</description>
 <smd name="7" x="0.875" y="0.4" dx="0.97" dy="0.53" layer="1" roundness="25" rot="R180"/>
 <smd name="8" x="0.875" y="1.2" dx="0.97" dy="0.53" layer="1" roundness="25" rot="R180"/>
 </package>
+<package name="SWITCH_SPDT_PTH_11.6X4.0MM" urn="urn:adsk.eagle:footprint:40121/1" locally_modified="yes">
+<description>&lt;h3&gt;拨动开关SK12D07VG2/3/4/5/6 侧面5脚拨动带支架 3脚2档柄高6MM&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://item.taobao.com/item.htm?spm=a1z09.2.0.0.53a62e8d0RVocC&amp;id=563254128682&amp;_u=s1po4ce26496"&gt;Taobao&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://img.alicdn.com/imgextra/i1/2744920356/TB2568GkMDD8KJjy0FdXXcjvXXa_!!2744920356.jpg"&gt;Dimensional Drawing&lt;/a&gt;&lt;/p&gt;</description>
+<wire x1="2.175" y1="5.815" x2="-2.175" y2="5.815" width="0.2032" layer="21"/>
+<wire x1="-2.175" y1="5.815" x2="-2.175" y2="-5.815" width="0.2032" layer="21"/>
+<wire x1="-2.175" y1="-5.815" x2="2.175" y2="-5.815" width="0.2032" layer="21"/>
+<wire x1="2.175" y1="-5.815" x2="2.175" y2="5.815" width="0.2032" layer="21"/>
+<pad name="1" x="0" y="2" drill="0.8" diameter="1.5"/>
+<pad name="2" x="0" y="0" drill="0.8" diameter="1.5"/>
+<pad name="3" x="0" y="-2" drill="0.8" diameter="1.5"/>
+<text x="-2.413" y="0" size="0.6096" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center">&gt;Name</text>
+<text x="2.413" y="0" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="top-center">&gt;Value</text>
+<pad name="P$1" x="0" y="-4.1" drill="1.5" diameter="1.8" shape="square"/>
+<pad name="P$2" x="0" y="4.1" drill="1.5" diameter="1.8" shape="square"/>
+</package>
 </packages>
 <packages3d>
 <package3d name="TACTILE_SWITCH_SMD_6.0X3.5MM" urn="urn:adsk.eagle:package:40165/1" locally_modified="yes" type="box">
@@ -1050,6 +1069,21 @@ Datasheet</description>
 <pin name="7" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" rot="R180"/>
 <pin name="8" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" rot="R180"/>
 </symbol>
+<symbol name="TOGGLE">
+<description>&lt;h3&gt;Single Pole, Double Throw (SPDT) Switch&lt;/h3&gt;
+&lt;p&gt;Single-pole, double-throw (SPDT) switch.&lt;/p&gt;</description>
+<wire x1="0" y1="0" x2="2.54" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="2.54" y1="-2.54" x2="3.175" y2="-2.54" width="0.127" layer="94"/>
+<wire x1="2.54" y1="2.54" x2="3.175" y2="2.54" width="0.1524" layer="94"/>
+<circle x="2.54" y="2.54" radius="0.3592" width="0.2032" layer="94"/>
+<circle x="2.54" y="-2.54" radius="0.3592" width="0.2032" layer="94"/>
+<circle x="0" y="0" radius="0.3592" width="0.2032" layer="94"/>
+<text x="1.27" y="3.048" size="1.778" layer="95" font="vector" align="bottom-center">&gt;NAME</text>
+<text x="1.016" y="-3.302" size="1.778" layer="96" font="vector" align="top-center">&gt;VALUE</text>
+<pin name="P" x="-2.54" y="0" visible="off" length="short" direction="pas"/>
+<pin name="S" x="5.08" y="-2.54" visible="off" length="short" direction="pas" rot="R180"/>
+<pin name="O" x="5.08" y="2.54" visible="off" length="short" direction="pas" rot="R180"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="AMS1117-3.3" prefix="U">
@@ -1138,6 +1172,27 @@ Datasheet</description>
 <attribute name="PACKAGE" value="1206 Bourns"/>
 <attribute name="PRICE" value="None"/>
 </technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="SWITCH_SPDT_SLIDE">
+<description>&lt;h3&gt;拨动开关SK12D07VG2/3/4/5/6 侧面5脚拨动带支架 3脚2档柄高6MM&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://item.taobao.com/item.htm?spm=a1z09.2.0.0.53a62e8d0RVocC&amp;id=563254128682&amp;_u=s1po4ce26496"&gt;Taobao&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://img.alicdn.com/imgextra/i1/2744920356/TB2568GkMDD8KJjy0FdXXcjvXXa_!!2744920356.jpg"&gt;Dimensional Drawing&lt;/a&gt;&lt;/p&gt;</description>
+<gates>
+<gate name="G$1" symbol="TOGGLE" x="-2.54" y="0"/>
+</gates>
+<devices>
+<device name="" package="SWITCH_SPDT_PTH_11.6X4.0MM">
+<connects>
+<connect gate="G$1" pin="O" pad="1"/>
+<connect gate="G$1" pin="P" pad="2"/>
+<connect gate="G$1" pin="S" pad="3"/>
+</connects>
+<technologies>
+<technology name=""/>
 </technologies>
 </device>
 </devices>
@@ -1948,8 +2003,8 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="U$1" library="microbuilder" deviceset="VBAT" device=""/>
 <part name="RN1" library="AutoPark" deviceset="CAY16-750J4LF" device="" value="10K"/>
-<part name="R3" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="RESISTOR" device="1206" package3d_urn="urn:adsk.eagle:package:39654/1" value="4.7K"/>
-<part name="R2" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="RESISTOR" device="1206" package3d_urn="urn:adsk.eagle:package:39654/1" value="1K"/>
+<part name="R2" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="RESISTOR" device="1206" package3d_urn="urn:adsk.eagle:package:39654/1" value="4.7K"/>
+<part name="R1" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="RESISTOR" device="1206" package3d_urn="urn:adsk.eagle:package:39654/1" value="1K"/>
 <part name="JP1" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X10" device="" package3d_urn="urn:adsk.eagle:package:22406/2"/>
 <part name="JP2" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X10" device="" package3d_urn="urn:adsk.eagle:package:22406/2"/>
 <part name="JP3" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X6" device="" package3d_urn="urn:adsk.eagle:package:22472/2"/>
@@ -1958,6 +2013,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <part name="GND4" library="supply1" deviceset="GND" device=""/>
 <part name="PRGM" library="AutoPark" deviceset="PUSHBUTTON" device="" package3d_urn="urn:adsk.eagle:package:40165/1"/>
 <part name="U$6" library="microbuilder" deviceset="3.3V" device=""/>
+<part name="POWER" library="AutoPark" deviceset="SWITCH_SPDT_SLIDE" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -1967,7 +2023,6 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <wire x1="111.76" y1="121.92" x2="111.76" y2="175.26" width="0.1524" layer="94" style="shortdash"/>
 <wire x1="142.24" y1="96.52" x2="142.24" y2="121.92" width="0.1524" layer="94" style="shortdash"/>
 <wire x1="142.24" y1="121.92" x2="111.76" y2="121.92" width="0.1524" layer="94" style="shortdash"/>
-<text x="119.38" y="170.18" size="1.778" layer="94">RESET</text>
 <wire x1="142.24" y1="121.92" x2="142.24" y2="175.26" width="0.1524" layer="94" style="shortdash"/>
 <wire x1="256.54" y1="96.52" x2="142.24" y2="96.52" width="0.1524" layer="94" style="shortdash"/>
 <text x="40.64" y="116.84" size="1.778" layer="94">ESP8266 MODULE + AUTORESET</text>
@@ -2031,25 +2086,25 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <attribute name="NAME" x="73.66" y="29.464" size="1.778" layer="95" font="vector" align="bottom-center"/>
 <attribute name="VALUE" x="73.66" y="27.432" size="1.778" layer="96" font="vector" align="top-center"/>
 </instance>
-<instance part="BATTERY" gate="G$1" x="15.24" y="152.4" rot="R270">
-<attribute name="NAME" x="19.558" y="152.4" size="1.778" layer="95" font="vector" rot="R270" align="bottom-center"/>
-<attribute name="VALUE" x="10.922" y="152.4" size="1.778" layer="96" font="vector" rot="R270" align="top-center"/>
+<instance part="BATTERY" gate="G$1" x="124.46" y="142.24" rot="R270">
+<attribute name="NAME" x="128.778" y="142.24" size="1.778" layer="95" font="vector" rot="R270" align="bottom-center"/>
+<attribute name="VALUE" x="120.142" y="142.24" size="1.778" layer="96" font="vector" rot="R270" align="top-center"/>
 </instance>
-<instance part="GND1" gate="1" x="15.24" y="144.78">
-<attribute name="VALUE" x="12.7" y="142.24" size="1.778" layer="96"/>
+<instance part="GND1" gate="1" x="124.46" y="134.62">
+<attribute name="VALUE" x="121.92" y="132.08" size="1.778" layer="96"/>
 </instance>
-<instance part="U$1" gate="G$1" x="15.24" y="160.02">
-<attribute name="VALUE" x="13.716" y="161.036" size="1.27" layer="96"/>
+<instance part="U$1" gate="G$1" x="124.46" y="165.1">
+<attribute name="VALUE" x="122.936" y="166.116" size="1.27" layer="96"/>
 </instance>
 <instance part="RN1" gate="G$1" x="88.9" y="45.72" rot="R180">
 <attribute name="NAME" x="98.302440625" y="32.2565" size="2.54148125" layer="95" rot="R180"/>
 <attribute name="VALUE" x="95.51396875" y="61.4746" size="2.54331875" layer="96" rot="R180"/>
 </instance>
-<instance part="R3" gate="G$1" x="119.38" y="99.06" rot="R90">
+<instance part="R2" gate="G$1" x="119.38" y="99.06" rot="R90">
 <attribute name="NAME" x="117.856" y="99.06" size="1.778" layer="95" font="vector" rot="R90" align="bottom-center"/>
 <attribute name="VALUE" x="120.904" y="99.06" size="1.778" layer="96" font="vector" rot="R90" align="top-center"/>
 </instance>
-<instance part="R2" gate="G$1" x="83.82" y="86.36" rot="R180">
+<instance part="R1" gate="G$1" x="83.82" y="86.36" rot="R180">
 <attribute name="NAME" x="83.82" y="84.836" size="1.778" layer="95" font="vector" rot="R180" align="bottom-center"/>
 <attribute name="VALUE" x="83.82" y="87.884" size="1.778" layer="96" font="vector" rot="R180" align="top-center"/>
 </instance>
@@ -2081,6 +2136,10 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 </instance>
 <instance part="U$6" gate="G$1" x="99.06" y="40.64">
 <attribute name="VALUE" x="97.536" y="41.656" size="1.27" layer="96"/>
+</instance>
+<instance part="POWER" gate="G$1" x="119.38" y="154.94">
+<attribute name="NAME" x="120.65" y="157.988" size="1.778" layer="95" font="vector" align="bottom-center"/>
+<attribute name="VALUE" x="140.716" y="156.718" size="1.778" layer="96" font="vector" align="top-center"/>
 </instance>
 </instances>
 <busses>
@@ -2115,7 +2174,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <segment>
 <pinref part="GND2" gate="1" pin="GND"/>
 <wire x1="119.38" y1="91.44" x2="119.38" y2="93.98" width="0.1524" layer="91"/>
-<pinref part="R3" gate="G$1" pin="1"/>
+<pinref part="R2" gate="G$1" pin="1"/>
 </segment>
 <segment>
 <pinref part="GND6" gate="1" pin="GND"/>
@@ -2149,10 +2208,6 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 </net>
 <net name="VBAT" class="0">
 <segment>
-<pinref part="BATTERY" gate="G$1" pin="+"/>
-<pinref part="U$1" gate="G$1" pin="VBAT"/>
-</segment>
-<segment>
 <pinref part="JP1" gate="A" pin="9"/>
 <wire x1="170.18" y1="60.96" x2="149.86" y2="60.96" width="0.1524" layer="91"/>
 <label x="149.86" y="60.96" size="1.778" layer="95"/>
@@ -2161,6 +2216,11 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <pinref part="JP2" gate="A" pin="9"/>
 <wire x1="220.98" y1="60.96" x2="200.66" y2="60.96" width="0.1524" layer="91"/>
 <label x="200.66" y="60.96" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="POWER" gate="G$1" pin="O"/>
+<pinref part="U$1" gate="G$1" pin="VBAT"/>
+<wire x1="124.46" y1="162.56" x2="124.46" y2="157.48" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="3.3V" class="0">
@@ -2281,7 +2341,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <segment>
 <wire x1="119.38" y1="104.14" x2="119.38" y2="116.84" width="0.1524" layer="91"/>
 <label x="119.38" y="106.68" size="1.778" layer="95" rot="R90"/>
-<pinref part="R3" gate="G$1" pin="2"/>
+<pinref part="R2" gate="G$1" pin="2"/>
 </segment>
 <segment>
 <pinref part="JP2" gate="A" pin="7"/>
@@ -2312,7 +2372,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <pinref part="X2" gate="G$1" pin="RXD"/>
 <wire x1="78.74" y1="86.36" x2="60.96" y2="86.36" width="0.1524" layer="91"/>
 <label x="66.04" y="86.36" size="1.778" layer="95"/>
-<pinref part="R2" gate="G$1" pin="2"/>
+<pinref part="R1" gate="G$1" pin="2"/>
 </segment>
 <segment>
 <pinref part="JP2" gate="A" pin="2"/>
@@ -2418,7 +2478,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <segment>
 <wire x1="99.06" y1="86.36" x2="99.06" y2="101.6" width="0.1524" layer="91"/>
 <label x="99.06" y="91.44" size="1.778" layer="95" rot="R90"/>
-<pinref part="R2" gate="G$1" pin="1"/>
+<pinref part="R1" gate="G$1" pin="1"/>
 <wire x1="88.9" y1="86.36" x2="99.06" y2="86.36" width="0.1524" layer="91"/>
 </segment>
 <segment>
@@ -2509,6 +2569,13 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <pinref part="JP3" gate="A" pin="6"/>
 <wire x1="200.66" y1="25.4" x2="187.96" y2="25.4" width="0.1524" layer="91"/>
 <label x="187.96" y="25.4" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="N$2" class="0">
+<segment>
+<pinref part="BATTERY" gate="G$1" pin="+"/>
+<pinref part="POWER" gate="G$1" pin="S"/>
+<wire x1="124.46" y1="152.4" x2="124.46" y2="147.32" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
