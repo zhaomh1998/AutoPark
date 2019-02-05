@@ -6,16 +6,13 @@
       Andreas Spiess's work: https://github.com/SensorsIot/ESP-Now-Tests
 */
 #include <ESP8266WiFi.h>
+#include <Wire.h>
+#define SLAVE_ADDRESS 0x04
+
 extern "C" {
 #include <espnow.h>
 #include "user_interface.h"
 }
-
-#define MOTOR_A_CONTROL_1 4
-#define MOTOR_A_CONTROL_2 5
-#define MOTOR_B_CONTROL_1 14
-#define MOTOR_B_CONTROL_2 12
-#define MAX_MOTOR_REFRESH_MS 200
 
 // Define remote Mac Addr
 /* Set a private Mac Address
@@ -37,7 +34,7 @@ uint8_t ELEVATOR_MAC[] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x35};
 uint8_t FLOOR_1_MAC[] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x36};
 uint8_t FLOOR_2_MAC[] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x37};
 uint8_t* MACS[] = {MASTER_MAC, CAR_MAC, ELEVATOR_MAC, FLOOR_1_MAC, FLOOR_2_MAC, NULL};
-unsigned long motorChangedTime = 0;
+
 /**
    @brief     Set up self MAC Address
 */
@@ -48,17 +45,18 @@ void initVariant() {
 
 void setup() {
   Serial.begin(115200); Serial.println();
-
   Serial.print("This node AP mac: "); Serial.println(WiFi.softAPmacAddress());
   Serial.println("Initializing ESPNow ...");
   initEspNow();
   Serial.println("ESPNow Server Ready");
-    pinMode(MOTOR_A_CONTROL_1, OUTPUT);
-    pinMode(MOTOR_A_CONTROL_2, OUTPUT);
-    pinMode(MOTOR_B_CONTROL_1, OUTPUT);
-    pinMode(MOTOR_B_CONTROL_2, OUTPUT);
-  //  uint8_t bs[] = "Hello ESP!";
-  //  sendEspNow(MASTER_MAC, bs);
+
+  // initialize i2c communication
+  Serial.println("Initializing I2C Communication");
+  Wire.begin(SLAVE_ADDRESS);
+  //  Wire.begin(4, 5);
+  Wire.onReceive(i2cReceiveHandler);
+  Serial.println("I2C Ready!");
+
 }
 
 int lastTime;
@@ -71,20 +69,20 @@ void loop() {
 }
 
 /**
-   @brief     Send bytes through ESP Now to target mac address
+  @brief     Send bytes through ESP Now to target mac address
 
-   @param     mac  MAC Address to send message to
-   @param     msg  Bytes array containing the data to send
+  @param     mac  MAC Address to send message to
+  @param     msg  Bytes array containing the data to send
 */
 
 void sendEspNow(uint8_t *mac, uint8_t *msg) {
-  Serial.printf("Sending to %02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+  Serial.printf("Sending to % 02x: % 02x: % 02x: % 02x: % 02x: % 02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
   Serial.write(msg, sizeof(msg));
   esp_now_send(mac, msg, sizeof(msg)); // set mac parameter to NULL to send to all devices
 }
 
 /**
-   @brief     Initialize ESP Now as both the master and slave
+  @brief     Initialize ESP Now as both the master and slave
 */
 void initEspNow() {
   if (esp_now_init() != 0) {
@@ -98,12 +96,12 @@ void initEspNow() {
     // Investigate: There's little doc on what can be done within this method. If its like an ISR
     // then it should not take too long or do much I/O, but writing to Serial does appear to work ok
 
-    // Serial.printf("Message from %02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+    // Serial.printf("Message from % 02x: % 02x: % 02x: % 02x: % 02x: % 02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
     // Serial.print(", Length: ");
     // Serial.print(len);
     // Serial.print("Message->");
     // Serial.write(data, len);
-    // Serial.println("<-");
+    // Serial.println(" < -");
     // sendEspNow(mac, data); //Echo msg back
     //    echo(mac, data, len);
     messageHandle(mac, data, len);
@@ -114,14 +112,14 @@ void initEspNow() {
 }
 
 /**
-   @brief     Search a MAC address in a list of them, and return its index if found
+  @brief     Search a MAC address in a list of them, and return its index if found
 
-   @param     inMac  MAC Address to be searched
-   @param     macList List of MAC Addresses to be searched from
+  @param     inMac  MAC Address to be searched
+  @param     macList List of MAC Addresses to be searched from
 
-   @return
-            - -1 : MAC not found
-            - nonnegative integer : index of the inMac in macList
+  @return
+  - -1 : MAC not found
+  - nonnegative integer : index of the inMac in macList
 */
 
 int searchMac(uint8_t *inMac, uint8_t **macList) {
@@ -137,106 +135,62 @@ int searchMac(uint8_t *inMac, uint8_t **macList) {
 }
 
 /**
-   @brief     Handles message receive event for ESP_Now
+  @brief     Handles message receive event for ESP_Now
 
-   @param     msgSourceMac  Message source's MAC Addr in bytes array
-   @param     msg  Content of the message in bytes array
-   @param     msgLen  Length of the message
+  @param     msgSourceMac  Message source's MAC Addr in bytes array
+  @param     msg  Content of the message in bytes array
+  @param     msgLen  Length of the message
 */
 
 void echo(uint8_t *msgSourceMac, uint8_t *msg, uint8_t msgLen) {
   int msgSource = searchMac(msgSourceMac, MACS);
-  // Serial.printf("Message from %02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+  // Serial.printf("Message from % 02x: % 02x: % 02x: % 02x: % 02x: % 02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
   Serial.print(msgSource);
   Serial.print("is message source, Length: ");
   Serial.print(msgLen);
   Serial.print("Message->");
   Serial.write(msg, msgLen);
-  Serial.println("<-");
+  Serial.println(" < -");
   sendEspNow(msgSourceMac, msg); //Echo msg back
 }
 
 /**
-   @brief     Handles message receive event for ESP_Now
+  @brief     Handles message receive event for ESP_Now
 
-   @param     msgSourceMac  Message source's MAC Addr in bytes array
-   @param     msg  Content of the message in bytes array
-   @param     msgLen  Length of the message
+  @param     msgSourceMac  Message source's MAC Addr in bytes array
+  @param     msg  Content of the message in bytes array
+  @param     msgLen  Length of the message
 */
 
 void messageHandle(uint8_t *msgSourceMac, uint8_t *msg, uint8_t msgLen) {
   int msgSource = searchMac(msgSourceMac, MACS);
   if (msgSource == 1) {  //Remote
-    //    Serial.print("Length: ");
-    //    Serial.print(msgLen);
-    //    Serial.print("Message->");
-    //    Serial.write(msg, msgLen);
-    //    Serial.printf("Message is %02x,%02x,%02x:%02x", msg[0], msg[1], msg[2], msg[3]);
-    //    Serial.println("<-");
-    if (msg[0] == 0x00)
-      forward();
-    else if (msg[0] == 0x01)
-      backward();
-    else if (msg[0] == 0x02)
-      left();
-    else if (msg[0] == 0x03)
-      right();
-    else if (msg[0] == 0x04)
-      shortBreak();
+    Serial.print("Length: ");
+    Serial.print(msgLen);
+    Serial.print("Message->");
+    Serial.write(msg, msgLen);
+    Serial.printf("Message is % 02x, % 02x, % 02x: % 02x", msg[0], msg[1], msg[2], msg[3]);
+    Serial.println(" < -");
+    //    if (msg[0] == 0x00)
+    //      forward();
+    //    else if (msg[0] == 0x01)
+    //      backward();
+    //    else if (msg[0] == 0x02)
+    //      left();
+    //    else if (msg[0] == 0x03)
+    //      right();
+    //    else if (msg[0] == 0x04)
+    //      shortBreak();
 
   }
 }
 
-bool allowMotorChange() {
-  unsigned long timeNow = millis();
-  if (timeNow - motorChangedTime > MAX_MOTOR_REFRESH_MS) {
-    motorChangedTime = timeNow;
-    return true;
-  }
-  return false;
-}
-void forward() {
-  if (allowMotorChange()) {
-    Serial.println("Forward");
-    digitalWrite(MOTOR_A_CONTROL_1, LOW);
-    digitalWrite(MOTOR_A_CONTROL_2, HIGH);
-    digitalWrite(MOTOR_B_CONTROL_1, LOW);
-    digitalWrite(MOTOR_B_CONTROL_2, HIGH);
-  }
-}
-void backward() {
-  if (allowMotorChange()) {
-    Serial.println("Backward");
-    digitalWrite(MOTOR_A_CONTROL_1, HIGH);
-    digitalWrite(MOTOR_A_CONTROL_2, LOW);
-    digitalWrite(MOTOR_B_CONTROL_1, HIGH);
-    digitalWrite(MOTOR_B_CONTROL_2, LOW);
-  }
-}
-void left() {
-  if (allowMotorChange()) {
-    Serial.println("Left");
-    digitalWrite(MOTOR_A_CONTROL_1, LOW);
-    digitalWrite(MOTOR_A_CONTROL_2, HIGH);
-    digitalWrite(MOTOR_B_CONTROL_1, HIGH);
-    digitalWrite(MOTOR_B_CONTROL_2, LOW);
-  }
-}
-void right() {
-  if (allowMotorChange()) {
-    Serial.println("Right");
-    digitalWrite(MOTOR_A_CONTROL_1, HIGH);
-    digitalWrite(MOTOR_A_CONTROL_2, LOW);
-    digitalWrite(MOTOR_B_CONTROL_1, LOW);
-    digitalWrite(MOTOR_B_CONTROL_2, HIGH);
-  }
-}
-void shortBreak() {
-  if (allowMotorChange()) {
-    Serial.println("Break");
-    digitalWrite(MOTOR_A_CONTROL_1, HIGH);
-    digitalWrite(MOTOR_A_CONTROL_2, HIGH);
-    digitalWrite(MOTOR_B_CONTROL_1, HIGH);
-    digitalWrite(MOTOR_B_CONTROL_2, HIGH);
+/**
+   @brief I2C on receive callback
+*/
+void i2cReceiveHandler(int byteCount) {
+  Serial.print("I2C Received"); Serial.print(byteCount); Serial.println(" bytes");
+  for (int nthByte = 0; nthByte < byteCount; nthByte++) {
+    Serial.write(Wire.read());
   }
 }

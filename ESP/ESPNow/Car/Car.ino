@@ -5,16 +5,17 @@
       Anthony Elder's work: https://github.com/HarringayMakerSpace/ESP-Now
       Andreas Spiess's work: https://github.com/SensorsIot/ESP-Now-Tests
 */
-#define FORWARD_KEY 12
-#define BACKWARD_KEY 4
-#define LEFT_KEY 5
-#define RIGHT_KEY 14
-unsigned long lastOperationTime = 0;
 #include <ESP8266WiFi.h>
 extern "C" {
 #include <espnow.h>
 #include "user_interface.h"
 }
+
+#define MOTOR_A_CONTROL_1 4
+#define MOTOR_A_CONTROL_2 5
+#define MOTOR_B_CONTROL_1 14
+#define MOTOR_B_CONTROL_2 12
+#define MAX_MOTOR_REFRESH_MS 200
 
 // Define remote Mac Addr
 /* Set a private Mac Address
@@ -22,7 +23,7 @@ extern "C" {
    Note: the point of setting a specific MAC is so you can replace this Gateway ESP8266 device with a new one
    and the new gateway will still pick up the remote sensors which are still sending to the old MAC
 */
-#define SELF_ROLE 1  // Who am I in the system?
+#define SELF_ROLE 0  // Who am I in the system?
 #define WIFI_CHANNEL 4
 
 #define MASTER 0
@@ -36,7 +37,7 @@ uint8_t ELEVATOR_MAC[] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x35};
 uint8_t FLOOR_1_MAC[] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x36};
 uint8_t FLOOR_2_MAC[] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x37};
 uint8_t* MACS[] = {MASTER_MAC, CAR_MAC, ELEVATOR_MAC, FLOOR_1_MAC, FLOOR_2_MAC, NULL};
-
+unsigned long motorChangedTime = 0;
 /**
    @brief     Set up self MAC Address
 */
@@ -52,44 +53,21 @@ void setup() {
   Serial.println("Initializing ESPNow ...");
   initEspNow();
   Serial.println("ESPNow Server Ready");
+    pinMode(MOTOR_A_CONTROL_1, OUTPUT);
+    pinMode(MOTOR_A_CONTROL_2, OUTPUT);
+    pinMode(MOTOR_B_CONTROL_1, OUTPUT);
+    pinMode(MOTOR_B_CONTROL_2, OUTPUT);
   //  uint8_t bs[] = "Hello ESP!";
   //  sendEspNow(MASTER_MAC, bs);
-
-  pinMode(FORWARD_KEY, INPUT);
-  pinMode(BACKWARD_KEY, INPUT);
-  pinMode(LEFT_KEY, INPUT);
-  pinMode(RIGHT_KEY, INPUT);
 }
 
 int lastTime;
 
 void loop() {
-  static uint8_t f[] = {0x00};
-  static uint8_t b[] = {0x01};
-  static uint8_t l[] = {0x02};
-  static uint8_t r[] = {0x03};
-  static uint8_t s[] = {0x04};
-  if (digitalRead(FORWARD_KEY)) {
-    sendEspNow(MASTER_MAC, f);
-    lastOperationTime = millis();
+  if (millis() - lastTime > 100) {
+    lastTime = millis();
+    Serial.print(".");
   }
-  else if (digitalRead(BACKWARD_KEY)) {
-    sendEspNow(MASTER_MAC, b);
-    lastOperationTime = millis();
-  }
-  else if (digitalRead(LEFT_KEY)) {
-    sendEspNow(MASTER_MAC, l);
-    lastOperationTime = millis();
-  }
-  else if (digitalRead(RIGHT_KEY)) {
-    sendEspNow(MASTER_MAC, r);
-    lastOperationTime = millis();
-  }
-  else if (millis() - lastOperationTime > 200) {
-    lastOperationTime = millis();
-    sendEspNow(MASTER_MAC, s);
-    }
-    
 }
 
 /**
@@ -119,8 +97,16 @@ void initEspNow() {
 
     // Investigate: There's little doc on what can be done within this method. If its like an ISR
     // then it should not take too long or do much I/O, but writing to Serial does appear to work ok
-    echo(mac, data, len);
 
+    // Serial.printf("Message from %02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+    // Serial.print(", Length: ");
+    // Serial.print(len);
+    // Serial.print("Message->");
+    // Serial.write(data, len);
+    // Serial.println("<-");
+    // sendEspNow(mac, data); //Echo msg back
+    //    echo(mac, data, len);
+    messageHandle(mac, data, len);
   });
   for (int nthClient = 0; nthClient < sizeof(MACS) / sizeof(MACS[0]); nthClient++) {
     esp_now_add_peer(MACS[nthClient], ESP_NOW_ROLE_SLAVE, WIFI_CHANNEL, NULL, 0);  // Initialize as sender
@@ -167,5 +153,90 @@ void echo(uint8_t *msgSourceMac, uint8_t *msg, uint8_t msgLen) {
   Serial.print("Message->");
   Serial.write(msg, msgLen);
   Serial.println("<-");
-//  sendEspNow(msgSourceMac, msg); //Echo msg back
+  sendEspNow(msgSourceMac, msg); //Echo msg back
+}
+
+/**
+   @brief     Handles message receive event for ESP_Now
+
+   @param     msgSourceMac  Message source's MAC Addr in bytes array
+   @param     msg  Content of the message in bytes array
+   @param     msgLen  Length of the message
+*/
+
+void messageHandle(uint8_t *msgSourceMac, uint8_t *msg, uint8_t msgLen) {
+  int msgSource = searchMac(msgSourceMac, MACS);
+  if (msgSource == 1) {  //Remote
+    //    Serial.print("Length: ");
+    //    Serial.print(msgLen);
+    //    Serial.print("Message->");
+    //    Serial.write(msg, msgLen);
+    //    Serial.printf("Message is %02x,%02x,%02x:%02x", msg[0], msg[1], msg[2], msg[3]);
+    //    Serial.println("<-");
+    if (msg[0] == 0x00)
+      forward();
+    else if (msg[0] == 0x01)
+      backward();
+    else if (msg[0] == 0x02)
+      left();
+    else if (msg[0] == 0x03)
+      right();
+    else if (msg[0] == 0x04)
+      shortBreak();
+
+  }
+}
+
+bool allowMotorChange() {
+  unsigned long timeNow = millis();
+  if (timeNow - motorChangedTime > MAX_MOTOR_REFRESH_MS) {
+    motorChangedTime = timeNow;
+    return true;
+  }
+  return false;
+}
+void forward() {
+  if (allowMotorChange()) {
+    Serial.println("Forward");
+    digitalWrite(MOTOR_A_CONTROL_1, LOW);
+    digitalWrite(MOTOR_A_CONTROL_2, HIGH);
+    digitalWrite(MOTOR_B_CONTROL_1, LOW);
+    digitalWrite(MOTOR_B_CONTROL_2, HIGH);
+  }
+}
+void backward() {
+  if (allowMotorChange()) {
+    Serial.println("Backward");
+    digitalWrite(MOTOR_A_CONTROL_1, HIGH);
+    digitalWrite(MOTOR_A_CONTROL_2, LOW);
+    digitalWrite(MOTOR_B_CONTROL_1, HIGH);
+    digitalWrite(MOTOR_B_CONTROL_2, LOW);
+  }
+}
+void left() {
+  if (allowMotorChange()) {
+    Serial.println("Left");
+    digitalWrite(MOTOR_A_CONTROL_1, LOW);
+    digitalWrite(MOTOR_A_CONTROL_2, HIGH);
+    digitalWrite(MOTOR_B_CONTROL_1, HIGH);
+    digitalWrite(MOTOR_B_CONTROL_2, LOW);
+  }
+}
+void right() {
+  if (allowMotorChange()) {
+    Serial.println("Right");
+    digitalWrite(MOTOR_A_CONTROL_1, HIGH);
+    digitalWrite(MOTOR_A_CONTROL_2, LOW);
+    digitalWrite(MOTOR_B_CONTROL_1, LOW);
+    digitalWrite(MOTOR_B_CONTROL_2, HIGH);
+  }
+}
+void shortBreak() {
+  if (allowMotorChange()) {
+    Serial.println("Break");
+    digitalWrite(MOTOR_A_CONTROL_1, HIGH);
+    digitalWrite(MOTOR_A_CONTROL_2, HIGH);
+    digitalWrite(MOTOR_B_CONTROL_1, HIGH);
+    digitalWrite(MOTOR_B_CONTROL_2, HIGH);
+  }
 }
