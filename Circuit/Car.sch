@@ -2230,11 +2230,6 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <wire x1="25.4" y1="81.28" x2="12.7" y2="81.28" width="0.1524" layer="91"/>
 <label x="15.24" y="81.28" size="1.778" layer="95"/>
 </segment>
-<segment>
-<pinref part="TB1" gate="G$1" pin="PWMB"/>
-<wire x1="215.9" y1="124.46" x2="226.06" y2="124.46" width="0.1524" layer="91"/>
-<label x="220.98" y="124.46" size="1.778" layer="95"/>
-</segment>
 </net>
 <net name="GPIO15" class="0">
 <segment>
@@ -2339,6 +2334,11 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <pinref part="TB1" gate="G$1" pin="PWMA"/>
 <wire x1="215.9" y1="154.94" x2="226.06" y2="154.94" width="0.1524" layer="91"/>
 <label x="220.98" y="154.94" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="TB1" gate="G$1" pin="PWMB"/>
+<wire x1="215.9" y1="124.46" x2="226.06" y2="124.46" width="0.1524" layer="91"/>
+<label x="220.98" y="124.46" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="GPIO12/MISO" class="0">
