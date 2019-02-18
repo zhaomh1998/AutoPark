@@ -1534,6 +1534,10 @@ WS2812
 </gates>
 <devices>
 <device name="" package="SPARKFUN-RESISTORS_1206">
+<connects>
+<connect gate="1" pin="1" pad="1"/>
+<connect gate="1" pin="2" pad="2"/>
+</connects>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -1667,6 +1671,22 @@ WS2812
 <connect gate="G$1" pin="R7" pad="R7"/>
 <connect gate="G$1" pin="R8" pad="R8"/>
 <connect gate="G$1" pin="R9" pad="R9"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="BATTERY_THD_+-">
+<gates>
+<gate name="G$1" symbol="BATTERY" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="1X02_PLUS_MINUS">
+<connects>
+<connect gate="G$1" pin="+" pad="+"/>
+<connect gate="G$1" pin="-" pad="-"/>
 </connects>
 <technologies>
 <technology name=""/>
