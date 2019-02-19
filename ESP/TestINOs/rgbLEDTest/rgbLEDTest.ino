@@ -1,5 +1,4 @@
-#include "lib/WS2812FX.h"
-#include <Arduino.h>/""?"?"
+#include "WS2812FX.h"
 
 #define LED_COUNT 1
 #define LED_PIN 15
