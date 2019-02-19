@@ -528,10 +528,6 @@ DIN A4, landscape with location and doc. field</description>
 &lt;p&gt;&lt;a href="http://cdn.sparkfun.com/datasheets/Prototyping/M60-2p9.pdf"&gt;Datasheet&lt;/a&gt;&lt;/p&gt;
 &lt;h4&gt;Devices Using&lt;/h4&gt;
 &lt;ul&gt;&lt;li&gt;BATTERY&lt;/li&gt;&lt;/ul&gt;</description>
-<wire x1="-29.21" y1="-5.08" x2="-33.274" y2="-5.08" width="0.254" layer="41"/>
-<wire x1="-33.274" y1="-5.08" x2="-33.274" y2="5.08" width="0.254" layer="41"/>
-<wire x1="-33.274" y1="5.08" x2="-29.21" y2="5.08" width="0.254" layer="41"/>
-<wire x1="-29.21" y1="5.08" x2="-29.21" y2="-5.08" width="0.254" layer="41"/>
 <wire x1="-29.21" y1="-5.08" x2="-33.274" y2="-5.08" width="0.2032" layer="21"/>
 <wire x1="-33.274" y1="-5.08" x2="-33.274" y2="5.08" width="0.2032" layer="21"/>
 <wire x1="-33.274" y1="5.08" x2="-29.21" y2="5.08" width="0.2032" layer="21"/>
@@ -566,8 +562,6 @@ DIN A4, landscape with location and doc. field</description>
 <wire x1="-29.21" y1="16.2052" x2="29.21" y2="16.2052" width="0.127" layer="21"/>
 <wire x1="29.21" y1="16.2052" x2="29.2481" y2="16.2052" width="0.127" layer="21"/>
 <wire x1="-29.2481" y1="-16.2052" x2="-29.21" y2="-16.2052" width="0.127" layer="21"/>
-<pad name="P$1" x="0" y="8.5852" drill="2.9972" diameter="2.54"/>
-<pad name="P$2" x="0" y="-8.5852" drill="2.9972" diameter="2.54"/>
 <wire x1="-29.21" y1="-16.2052" x2="29.21" y2="-16.2052" width="0.127" layer="21"/>
 <wire x1="29.21" y1="-16.2052" x2="29.2481" y2="-16.2052" width="0.127" layer="21"/>
 <wire x1="-18.034" y1="-12.446" x2="20.828" y2="-12.446" width="0.4064" layer="21"/>
@@ -587,6 +581,8 @@ DIN A4, landscape with location and doc. field</description>
 <wire x1="29.21" y1="16.2052" x2="29.21" y2="-16.2052" width="0.127" layer="21"/>
 <text x="-31.75" y="6.35" size="1.27" layer="21" font="vector" rot="R90" align="center">+</text>
 <text x="-31.75" y="-6.35" size="1.27" layer="21" font="vector" rot="R90" align="center">-</text>
+<hole x="0" y="8.89" drill="3.048"/>
+<hole x="0" y="-8.89" drill="3.048"/>
 </package>
 <package name="RESCAF80P320X160X60-8N">
 <wire x1="-0.9" y1="1.7" x2="0.9" y2="1.7" width="0.127" layer="51"/>
@@ -747,6 +743,50 @@ DIN A4, landscape with location and doc. field</description>
 <text x="-2.2225" y="1.5113" size="0.8128" layer="25" font="vector">&gt;NAME</text>
 <text x="-2.0955" y="-2.0828" size="0.635" layer="27" font="vector">&gt;VALUE</text>
 </package>
+<package name="LED-TRICOLOR-5050-IC" urn="urn:adsk.eagle:footprint:39325/1" locally_modified="yes">
+<description>&lt;h3&gt;5060 SMD RGB LED&lt;/h3&gt;
+&lt;p&gt;&lt;b&gt;Specifications:&lt;/b&gt;
+&lt;ul&gt;&lt;li&gt;Pin count: 6&lt;/li&gt;
+&lt;li&gt;Pin pitch: 0.6mm&lt;/li&gt;
+&lt;li&gt;Area: 5.0mm x 5.0mm&lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Datasheet referenced for footprint:&lt;/b&gt;&lt;a href="http://cdn.sparkfun.com/datasheets/Components/LED/WS2812.pdf"&gt; WS2812&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Example device(s):&lt;/b&gt;
+&lt;ul&gt;&lt;li&gt;WS2812&lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;</description>
+<circle x="-0.7" y="2" radius="0.2236" width="0" layer="21"/>
+<circle x="0" y="0" radius="2" width="0.127" layer="51"/>
+<circle x="-2.224" y="2.6096" radius="0.2236" width="0" layer="21"/>
+<wire x1="-2.5" y1="-2.5" x2="-2.5" y2="2" width="0.127" layer="51"/>
+<wire x1="-1.8" y1="2.5" x2="2.5" y2="2.5" width="0.127" layer="51"/>
+<wire x1="2.5" y1="2.5" x2="2.5" y2="-2.5" width="0.127" layer="51"/>
+<wire x1="2.5" y1="-2.5" x2="-2.5" y2="-2.5" width="0.127" layer="51"/>
+<wire x1="-1" y1="2.5" x2="1" y2="2.5" width="0.2032" layer="21"/>
+<wire x1="-1" y1="-2.5" x2="1" y2="-2.5" width="0.2032" layer="21"/>
+<wire x1="-2.5" y1="0.7" x2="-2.5" y2="0.9" width="0.2032" layer="21"/>
+<wire x1="-2.5" y1="-0.9" x2="-2.5" y2="-0.7" width="0.2032" layer="21"/>
+<wire x1="2.5" y1="-0.9" x2="2.5" y2="-0.7" width="0.2032" layer="21"/>
+<wire x1="2.5" y1="0.7" x2="2.5" y2="0.9" width="0.2032" layer="21"/>
+<wire x1="-1.016" y1="-0.381" x2="-1.016" y2="0.381" width="0.2032" layer="21"/>
+<wire x1="-1.016" y1="0.381" x2="-0.127" y2="0.381" width="0.2032" layer="21"/>
+<wire x1="-0.127" y1="0.381" x2="-0.127" y2="-0.381" width="0.2032" layer="21"/>
+<wire x1="-0.127" y1="-0.381" x2="-1.016" y2="-0.381" width="0.2032" layer="21"/>
+<wire x1="0.254" y1="-0.127" x2="0.254" y2="0.127" width="0.2032" layer="21"/>
+<wire x1="0.254" y1="0.127" x2="0.508" y2="0.127" width="0.2032" layer="21"/>
+<wire x1="0.508" y1="0.127" x2="0.508" y2="-0.127" width="0.2032" layer="21"/>
+<wire x1="0.508" y1="-0.127" x2="0.254" y2="-0.127" width="0.2032" layer="21"/>
+<wire x1="-2.5" y1="2" x2="-1.8" y2="2.5" width="0.127" layer="51"/>
+<rectangle x1="1.7" y1="1.15" x2="2.7" y2="2.05" layer="51"/>
+<rectangle x1="1.7" y1="-2.05" x2="2.7" y2="-1.15" layer="51"/>
+<rectangle x1="-2.7" y1="1.15" x2="-1.7" y2="2.05" layer="51" rot="R180"/>
+<rectangle x1="-2.7" y1="-2.05" x2="-1.7" y2="-1.15" layer="51" rot="R180"/>
+<smd name="VSS" x="-2.4" y="1.7" dx="2" dy="1.1" layer="1" roundness="100"/>
+<smd name="DIN" x="-2.4" y="-1.7" dx="2" dy="1.1" layer="1" roundness="100"/>
+<smd name="VDD" x="2.4" y="-1.7" dx="2" dy="1.1" layer="1" roundness="100"/>
+<smd name="DOUT" x="2.4" y="1.7" dx="2" dy="1.1" layer="1" roundness="100"/>
+<text x="0" y="2.667" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;Name</text>
+<text x="0" y="-2.667" size="1.016" layer="27" font="vector" ratio="12" align="top-center">&gt;Value</text>
+</package>
 </packages>
 <packages3d>
 <package3d name="TACTILE_SWITCH_SMD_6.0X3.5MM" urn="urn:adsk.eagle:package:40165/1" locally_modified="yes" type="box">
@@ -755,6 +795,21 @@ Normally-open (NO) SPST momentary switches (buttons, pushbuttons).
 Datasheet</description>
 <packageinstances>
 <packageinstance name="TACTILE_SWITCH_SMD_6.0X3.5MM"/>
+</packageinstances>
+</package3d>
+<package3d name="LED-TRICOLOR-5050-IC" urn="urn:adsk.eagle:package:39366/1" locally_modified="yes" type="box">
+<description>5060 SMD RGB LED
+Specifications:
+Pin count: 6
+Pin pitch: 0.6mm
+Area: 5.0mm x 5.0mm
+
+Datasheet referenced for footprint: WS2812
+Example device(s):
+WS2812
+</description>
+<packageinstances>
+<packageinstance name="LED-TRICOLOR-5050-IC"/>
 </packageinstances>
 </package3d>
 </packages3d>
@@ -915,6 +970,55 @@ Datasheet</description>
 <pin name="2" x="0" y="-2.54" visible="off" length="short" direction="pas" swaplevel="1" rot="R90"/>
 <text x="-2.29" y="1.25" size="1.27" layer="95" font="vector" rot="R90" align="center">&gt;NAME</text>
 <text x="2.3" y="1.25" size="1.27" layer="96" font="vector" rot="R90" align="center">&gt;VALUE</text>
+</symbol>
+<symbol name="LED-TRICOLOR-WS28X1">
+<description>&lt;h3&gt;WS28X1 RGB LED - I2C Control&lt;/h3&gt;
+&lt;p&gt;4 pin RGB LED with I2C Controller built-in&lt;/p&gt;</description>
+<wire x1="10.16" y1="7.62" x2="10.16" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="10.16" y1="-5.08" x2="2.54" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="2.54" y1="-5.08" x2="-2.54" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="-5.08" x2="-5.08" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="-5.08" x2="-12.7" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="-5.08" x2="-12.7" y2="7.62" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="7.62" x2="-5.08" y2="7.62" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="7.62" x2="-2.54" y2="7.62" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="7.62" x2="2.54" y2="7.62" width="0.254" layer="94"/>
+<wire x1="2.54" y1="7.62" x2="10.16" y2="7.62" width="0.254" layer="94"/>
+<wire x1="-0.508" y1="1.27" x2="-0.508" y2="0" width="0.254" layer="94"/>
+<wire x1="-0.508" y1="0" x2="-0.508" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="-0.508" y1="-1.27" x2="0.762" y2="0" width="0.254" layer="94"/>
+<wire x1="0.762" y1="0" x2="-0.508" y2="1.27" width="0.254" layer="94"/>
+<wire x1="0.762" y1="1.27" x2="0.762" y2="0" width="0.254" layer="94"/>
+<wire x1="0.762" y1="0" x2="0.762" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="0.762" y1="0" x2="2.032" y2="0" width="0.254" layer="94"/>
+<wire x1="-0.508" y1="0" x2="-1.778" y2="0" width="0.254" layer="94"/>
+<wire x1="-0.508" y1="-1.778" x2="-0.508" y2="-3.048" width="0.254" layer="94"/>
+<wire x1="-0.508" y1="-3.048" x2="-0.508" y2="-4.318" width="0.254" layer="94"/>
+<wire x1="-0.508" y1="-4.318" x2="0.762" y2="-3.048" width="0.254" layer="94"/>
+<wire x1="0.762" y1="-3.048" x2="-0.508" y2="-1.778" width="0.254" layer="94"/>
+<wire x1="0.762" y1="-1.778" x2="0.762" y2="-3.048" width="0.254" layer="94"/>
+<wire x1="0.762" y1="-3.048" x2="0.762" y2="-4.318" width="0.254" layer="94"/>
+<wire x1="0.762" y1="-3.048" x2="2.032" y2="-3.048" width="0.254" layer="94"/>
+<wire x1="-0.508" y1="-3.048" x2="-1.778" y2="-3.048" width="0.254" layer="94"/>
+<wire x1="-0.508" y1="4.318" x2="-0.508" y2="3.048" width="0.254" layer="94"/>
+<wire x1="-0.508" y1="3.048" x2="-0.508" y2="1.778" width="0.254" layer="94"/>
+<wire x1="-0.508" y1="1.778" x2="0.762" y2="3.048" width="0.254" layer="94"/>
+<wire x1="0.762" y1="3.048" x2="-0.508" y2="4.318" width="0.254" layer="94"/>
+<wire x1="0.762" y1="4.318" x2="0.762" y2="3.048" width="0.254" layer="94"/>
+<wire x1="0.762" y1="3.048" x2="0.762" y2="1.778" width="0.254" layer="94"/>
+<wire x1="0.762" y1="3.048" x2="2.032" y2="3.048" width="0.254" layer="94"/>
+<wire x1="-0.508" y1="3.048" x2="-1.778" y2="3.048" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="7.62" x2="-2.54" y2="-5.08" width="0.254" layer="94" style="shortdash"/>
+<wire x1="2.54" y1="7.62" x2="2.54" y2="-5.08" width="0.254" layer="94" style="shortdash"/>
+<wire x1="-5.08" y1="7.62" x2="-5.08" y2="-5.08" width="0.254" layer="94" style="shortdash"/>
+<pin name="VDD" x="-15.24" y="5.08" visible="pin" length="short"/>
+<pin name="VSS" x="-15.24" y="-2.54" visible="pin" length="short"/>
+<pin name="DI" x="12.7" y="5.08" visible="pin" length="short" rot="R180"/>
+<pin name="DO" x="12.7" y="-2.54" visible="pin" length="short" rot="R180"/>
+<text x="-12.7" y="8.382" size="1.778" layer="95">&gt;NAME</text>
+<text x="-12.7" y="-7.62" size="1.778" layer="95">&gt;VALUE</text>
+<text x="-1.524" y="5.5118" size="1.27" layer="94">RGB</text>
+<text x="-3.175" y="-2.159" size="1.27" layer="94" rot="R90">WS28x1</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -1128,6 +1232,27 @@ Datasheet</description>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="WS2812">
+<gates>
+<gate name="G$1" symbol="LED-TRICOLOR-WS28X1" x="12.7" y="5.08"/>
+</gates>
+<devices>
+<device name="" package="LED-TRICOLOR-5050-IC">
+<connects>
+<connect gate="G$1" pin="DI" pad="DIN"/>
+<connect gate="G$1" pin="DO" pad="DOUT"/>
+<connect gate="G$1" pin="VDD" pad="VDD"/>
+<connect gate="G$1" pin="VSS" pad="VSS"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39366/1"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -1706,6 +1831,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <part name="U$9" library="microbuilder" deviceset="3.3V" device=""/>
 <part name="M1" library="AutoPark" deviceset="MOTOR" device=""/>
 <part name="M2" library="AutoPark" deviceset="MOTOR" device=""/>
+<part name="LED" library="AutoPark" deviceset="WS2812" device="" package3d_urn="urn:adsk.eagle:package:39366/1"/>
 </parts>
 <sheets>
 <sheet>
@@ -1845,6 +1971,10 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <attribute name="NAME" x="152.4" y="134.62" size="1.778" layer="95" font="vector"/>
 <attribute name="VALUE" x="152.4" y="132.08" size="1.778" layer="96" font="vector"/>
 </instance>
+<instance part="LED" gate="G$1" x="132.08" y="66.04">
+<attribute name="NAME" x="119.38" y="74.422" size="1.778" layer="95"/>
+<attribute name="VALUE" x="119.38" y="58.42" size="1.778" layer="95"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -1913,6 +2043,11 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <pinref part="TB1" gate="G$1" pin="GND3"/>
 <wire x1="215.9" y1="119.38" x2="226.06" y2="119.38" width="0.1524" layer="91"/>
 <pinref part="GND8" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="LED" gate="G$1" pin="VSS"/>
+<wire x1="116.84" y1="63.5" x2="109.22" y2="63.5" width="0.1524" layer="91"/>
+<label x="109.22" y="63.5" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="VBAT" class="0">
@@ -1985,6 +2120,11 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <wire x1="185.42" y1="149.86" x2="175.26" y2="149.86" width="0.1524" layer="91"/>
 <pinref part="U$9" gate="G$1" pin="3.3V"/>
 </segment>
+<segment>
+<pinref part="LED" gate="G$1" pin="VDD"/>
+<wire x1="116.84" y1="71.12" x2="109.22" y2="71.12" width="0.1524" layer="91"/>
+<label x="109.22" y="71.12" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="RESET" class="0">
 <segment>
@@ -2035,6 +2175,12 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <wire x1="119.38" y1="104.14" x2="119.38" y2="116.84" width="0.1524" layer="91"/>
 <label x="119.38" y="106.68" size="1.778" layer="95" rot="R90"/>
 <pinref part="R2" gate="G$1" pin="2"/>
+<wire x1="134.62" y1="104.14" x2="119.38" y2="104.14" width="0.1524" layer="91"/>
+<junction x="119.38" y="104.14"/>
+<wire x1="144.78" y1="83.82" x2="134.62" y2="83.82" width="0.1524" layer="91"/>
+<pinref part="LED" gate="G$1" pin="DI"/>
+<wire x1="144.78" y1="71.12" x2="144.78" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="134.62" y1="83.82" x2="134.62" y2="104.14" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="GPIO0" class="0">

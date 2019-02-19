@@ -258,10 +258,6 @@
 &lt;p&gt;&lt;a href="http://cdn.sparkfun.com/datasheets/Prototyping/M60-2p9.pdf"&gt;Datasheet&lt;/a&gt;&lt;/p&gt;
 &lt;h4&gt;Devices Using&lt;/h4&gt;
 &lt;ul&gt;&lt;li&gt;BATTERY&lt;/li&gt;&lt;/ul&gt;</description>
-<wire x1="-29.21" y1="-5.08" x2="-33.274" y2="-5.08" width="0.254" layer="41"/>
-<wire x1="-33.274" y1="-5.08" x2="-33.274" y2="5.08" width="0.254" layer="41"/>
-<wire x1="-33.274" y1="5.08" x2="-29.21" y2="5.08" width="0.254" layer="41"/>
-<wire x1="-29.21" y1="5.08" x2="-29.21" y2="-5.08" width="0.254" layer="41"/>
 <wire x1="-29.21" y1="-5.08" x2="-33.274" y2="-5.08" width="0.2032" layer="21"/>
 <wire x1="-33.274" y1="-5.08" x2="-33.274" y2="5.08" width="0.2032" layer="21"/>
 <wire x1="-33.274" y1="5.08" x2="-29.21" y2="5.08" width="0.2032" layer="21"/>
@@ -296,8 +292,6 @@
 <wire x1="-29.21" y1="16.2052" x2="29.21" y2="16.2052" width="0.127" layer="21"/>
 <wire x1="29.21" y1="16.2052" x2="29.2481" y2="16.2052" width="0.127" layer="21"/>
 <wire x1="-29.2481" y1="-16.2052" x2="-29.21" y2="-16.2052" width="0.127" layer="21"/>
-<pad name="P$1" x="0" y="8.5852" drill="2.9972" diameter="2.54"/>
-<pad name="P$2" x="0" y="-8.5852" drill="2.9972" diameter="2.54"/>
 <wire x1="-29.21" y1="-16.2052" x2="29.21" y2="-16.2052" width="0.127" layer="21"/>
 <wire x1="29.21" y1="-16.2052" x2="29.2481" y2="-16.2052" width="0.127" layer="21"/>
 <wire x1="-18.034" y1="-12.446" x2="20.828" y2="-12.446" width="0.4064" layer="21"/>
@@ -317,6 +311,8 @@
 <wire x1="29.21" y1="16.2052" x2="29.21" y2="-16.2052" width="0.127" layer="21"/>
 <text x="-31.75" y="6.35" size="1.27" layer="21" font="vector" rot="R90" align="center">+</text>
 <text x="-31.75" y="-6.35" size="1.27" layer="21" font="vector" rot="R90" align="center">-</text>
+<hole x="0" y="8.89" drill="3.048"/>
+<hole x="0" y="-8.89" drill="3.048"/>
 </package>
 <package name="ESP12E-SMD">
 <description>ESP8266 Module 12E</description>
@@ -859,6 +855,46 @@
 <pad name="4" x="3.2512" y="-2.2606" drill="1.016" diameter="1.8796"/>
 <text x="0" y="3.302" size="1.016" layer="25" font="vector" align="bottom-center">&gt;Name</text>
 </package>
+<package name="A4988">
+<pad name="1" x="-7.62" y="7.62" drill="0.8" shape="long"/>
+<pad name="2" x="-7.62" y="5.08" drill="0.8" shape="long"/>
+<pad name="3" x="-7.62" y="2.54" drill="0.8" shape="long"/>
+<pad name="4" x="-7.62" y="0" drill="0.8" shape="long"/>
+<pad name="5" x="-7.62" y="-2.54" drill="0.8" shape="long"/>
+<pad name="6" x="-7.62" y="-5.08" drill="0.8" shape="long"/>
+<pad name="7" x="-7.62" y="-7.62" drill="0.8" shape="long"/>
+<pad name="8" x="-7.62" y="-10.16" drill="0.8" shape="long"/>
+<pad name="9" x="5.08" y="-10.16" drill="0.8" shape="long"/>
+<pad name="10" x="5.08" y="-7.62" drill="0.8" shape="long"/>
+<pad name="11" x="5.08" y="-5.08" drill="0.8" shape="long"/>
+<pad name="12" x="5.08" y="-2.54" drill="0.8" shape="long"/>
+<pad name="13" x="5.08" y="0" drill="0.8" shape="long"/>
+<pad name="14" x="5.08" y="2.54" drill="0.8" shape="long"/>
+<pad name="15" x="5.08" y="5.08" drill="0.8" shape="long"/>
+<pad name="16" x="5.08" y="7.62" drill="0.8" shape="long"/>
+<text x="-8.89" y="9.398" size="1.27" layer="25" font="vector">&gt;NAME</text>
+<text x="-8.89" y="-13.208" size="1.27" layer="27" font="vector">&gt;VALUE</text>
+<wire x1="-9.525" y1="8.89" x2="6.985" y2="8.89" width="0.4064" layer="21"/>
+<wire x1="6.985" y1="8.89" x2="6.985" y2="-11.43" width="0.4064" layer="21"/>
+<wire x1="6.985" y1="-11.43" x2="-9.525" y2="-11.43" width="0.4064" layer="21"/>
+<wire x1="-9.525" y1="-11.43" x2="-9.525" y2="8.89" width="0.4064" layer="21"/>
+<text x="-5.715" y="5.08" size="1.016" layer="21" font="vector" align="center-left">MS1</text>
+<text x="-5.715" y="2.54" size="1.016" layer="21" font="vector" align="center-left">MS2</text>
+<text x="-5.715" y="0" size="1.016" layer="21" font="vector" align="center-left">MS3</text>
+<text x="-5.715" y="-2.54" size="1.016" layer="21" font="vector" align="center-left">!RESET</text>
+<text x="-5.715" y="-5.08" size="1.016" layer="21" font="vector" align="center-left">!SLEEP</text>
+<text x="-5.715" y="-7.62" size="1.016" layer="21" font="vector" align="center-left">STEP</text>
+<text x="-5.715" y="-10.16" size="1.016" layer="21" font="vector" align="center-left">DIR</text>
+<text x="-5.715" y="7.62" size="1.016" layer="21" font="vector" align="center-left">!ENA</text>
+<text x="3.175" y="7.62" size="1.016" layer="21" font="vector" align="center-right">VMOT</text>
+<text x="3.175" y="5.08" size="1.016" layer="21" font="vector" align="center-right">GND</text>
+<text x="3.175" y="-10.16" size="1.016" layer="21" font="vector" align="center-right">GND</text>
+<text x="3.175" y="-7.62" size="1.016" layer="21" font="vector" align="center-right">VDD</text>
+<text x="3.175" y="0" size="1.016" layer="21" font="vector" align="center-right">2A</text>
+<text x="3.175" y="-2.54" size="1.016" layer="21" font="vector" align="center-right">1A</text>
+<text x="3.175" y="-5.08" size="1.016" layer="21" font="vector" align="center-right">1B</text>
+<text x="3.175" y="2.54" size="1.016" layer="21" font="vector" align="center-right">2B</text>
+</package>
 </packages>
 <packages3d>
 <package3d name="TACTILE_SWITCH_SMD_6.0X3.5MM" urn="urn:adsk.eagle:package:40165/1" locally_modified="yes" type="box">
@@ -1274,6 +1310,30 @@ WS2812
 <text x="19.05" y="7.62" size="1.778" layer="94" font="vector" rot="R180" align="center-left">3V</text>
 <text x="19.05" y="2.54" size="1.778" layer="94" font="vector" rot="R180" align="center-left">VCC</text>
 </symbol>
+<symbol name="POLOLULUSTEP">
+<wire x1="-10.16" y1="15.24" x2="12.7" y2="15.24" width="0.4064" layer="94"/>
+<wire x1="12.7" y1="15.24" x2="12.7" y2="-15.24" width="0.4064" layer="94"/>
+<wire x1="12.7" y1="-15.24" x2="-10.16" y2="-15.24" width="0.4064" layer="94"/>
+<wire x1="-10.16" y1="-15.24" x2="-10.16" y2="15.24" width="0.4064" layer="94"/>
+<pin name="!ENABLE" x="-15.24" y="12.7" length="middle" direction="in"/>
+<pin name="MS1" x="-15.24" y="7.62" length="middle" direction="in"/>
+<pin name="MS2" x="-15.24" y="5.08" length="middle" direction="in"/>
+<pin name="MS3" x="-15.24" y="2.54" length="middle" direction="in"/>
+<pin name="!RESET" x="-15.24" y="-2.54" length="middle" direction="in"/>
+<pin name="!SLEEP" x="-15.24" y="-5.08" length="middle" direction="in"/>
+<pin name="STEP" x="-15.24" y="-10.16" length="middle" direction="in"/>
+<pin name="DIR" x="-15.24" y="-12.7" length="middle" direction="in"/>
+<pin name="VMOT" x="17.78" y="12.7" length="middle" direction="pwr" rot="R180"/>
+<pin name="GND@0" x="17.78" y="10.16" length="middle" direction="pwr" rot="R180"/>
+<pin name="2B" x="17.78" y="5.08" length="middle" direction="out" rot="R180"/>
+<pin name="2A" x="17.78" y="2.54" length="middle" direction="out" rot="R180"/>
+<pin name="1A" x="17.78" y="-2.54" length="middle" direction="out" rot="R180"/>
+<pin name="1B" x="17.78" y="-5.08" length="middle" direction="out" rot="R180"/>
+<pin name="VDD" x="17.78" y="-10.16" length="middle" direction="pwr" rot="R180"/>
+<pin name="GND@1" x="17.78" y="-12.7" length="middle" direction="pwr" rot="R180"/>
+<text x="-7.62" y="-17.78" size="1.778" layer="95">&gt;NAME</text>
+<text x="-7.62" y="17.78" size="1.778" layer="96">&gt;VALUE</text>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="AMS1117-3.3" prefix="U">
@@ -1687,6 +1747,36 @@ WS2812
 <connects>
 <connect gate="G$1" pin="+" pad="+"/>
 <connect gate="G$1" pin="-" pad="-"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="A4988_STEPPER_DRIVER" prefix="STEPDRV">
+<gates>
+<gate name="G$1" symbol="POLOLULUSTEP" x="-2.54" y="0" addlevel="always"/>
+</gates>
+<devices>
+<device name="" package="A4988">
+<connects>
+<connect gate="G$1" pin="!ENABLE" pad="1"/>
+<connect gate="G$1" pin="!RESET" pad="5"/>
+<connect gate="G$1" pin="!SLEEP" pad="6"/>
+<connect gate="G$1" pin="1A" pad="12"/>
+<connect gate="G$1" pin="1B" pad="11"/>
+<connect gate="G$1" pin="2A" pad="13"/>
+<connect gate="G$1" pin="2B" pad="14"/>
+<connect gate="G$1" pin="DIR" pad="8"/>
+<connect gate="G$1" pin="GND@0" pad="9"/>
+<connect gate="G$1" pin="GND@1" pad="15"/>
+<connect gate="G$1" pin="MS1" pad="2"/>
+<connect gate="G$1" pin="MS2" pad="3"/>
+<connect gate="G$1" pin="MS3" pad="4"/>
+<connect gate="G$1" pin="STEP" pad="7"/>
+<connect gate="G$1" pin="VDD" pad="10"/>
+<connect gate="G$1" pin="VMOT" pad="16"/>
 </connects>
 <technologies>
 <technology name=""/>

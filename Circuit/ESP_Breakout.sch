@@ -2007,6 +2007,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <wire x1="142.24" y1="121.92" x2="142.24" y2="175.26" width="0.1524" layer="94" style="shortdash"/>
 <wire x1="256.54" y1="96.52" x2="142.24" y2="96.52" width="0.1524" layer="94" style="shortdash"/>
 <text x="40.64" y="116.84" size="1.778" layer="94">ESP8266 MODULE + AUTORESET</text>
+<text x="177.8" y="78.74" size="1.778" layer="97">There should be a 470R in series between DI and GPIO15!</text>
 </plain>
 <instances>
 <instance part="C6" gate="G$1" x="33.02" y="137.16">
