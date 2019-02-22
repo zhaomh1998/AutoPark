@@ -57,6 +57,8 @@ void setup() {
     pinMode(MOTOR_A_CONTROL_2, OUTPUT);
     pinMode(MOTOR_B_CONTROL_1, OUTPUT);
     pinMode(MOTOR_B_CONTROL_2, OUTPUT);
+    pinMode(13, OUTPUT);
+    digitalWrite(13, HIGH);
   //  uint8_t bs[] = "Hello ESP!";
   //  sendEspNow(MASTER_MAC, bs);
 }

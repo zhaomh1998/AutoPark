@@ -10,7 +10,7 @@ logger::logger() {
     digitalWrite(DEFAULT_LED, HIGH);
 }
 
-logger::logger(size_t serialBaud) {
+logger::logger(size_t serialBaud, bool debug) : debugMode(debug) {
     pinMode(DEFAULT_LED, OUTPUT);
     digitalWrite(DEFAULT_LED, HIGH);
     Serial.begin(serialBaud);
@@ -20,22 +20,37 @@ logger::logger(size_t serialBaud) {
 
 void logger::error(String text) {
     digitalWrite(DEFAULT_LED, LOW);
-    serialLog(text);
+    serialLog("[ERROR]\t");
+    serialLogln(text);
 }
 
 void logger::warning(String info) {
     ledState = !ledState;
     digitalWrite(DEFAULT_LED, ledState ? LOW : HIGH);
-    serialLog(info);
+    serialLog("[WARNING]\t");
+    serialLogln(info);
 }
 
 void logger::info(String info) {
-    serialLog(info);
+    serialLog("[INFO]\t");
+    serialLogln(info);
 }
 
+void logger::debug(String info) {
+    if (debugMode) {
+        serialLog("*[DEBUG]\t");
+        serialLogln(info);
+    }
+}
+
+void logger::serialLogln(String text) {
+    if (logOption == 1) {
+        Serial.println(text);
+    }
+}
 
 void logger::serialLog(String text) {
     if (logOption == 1) {
-        Serial.println(text);
+        Serial.print(text);
     }
 }

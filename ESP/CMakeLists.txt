@@ -51,4 +51,4 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_executable(${PROJECT_NAME} ${SRC_LIST} src/main.cpp)
+add_executable(${PROJECT_NAME} ${SRC_LIST} src/main.cpp src/lib/Util/AutoParkConfig.h src/lib/Util/car.cpp src/lib/Util/car.h)

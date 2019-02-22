@@ -69,27 +69,37 @@ void loop() {
   static uint8_t l[] = {0x02};
   static uint8_t r[] = {0x03};
   static uint8_t s[] = {0x04};
-  if (digitalRead(FORWARD_KEY)) {
-    sendEspNow(MASTER_MAC, f);
-    lastOperationTime = millis();
-  }
-  else if (digitalRead(BACKWARD_KEY)) {
-    sendEspNow(MASTER_MAC, b);
-    lastOperationTime = millis();
-  }
-  else if (digitalRead(LEFT_KEY)) {
-    sendEspNow(MASTER_MAC, l);
-    lastOperationTime = millis();
-  }
-  else if (digitalRead(RIGHT_KEY)) {
-    sendEspNow(MASTER_MAC, r);
-    lastOperationTime = millis();
-  }
-  else if (millis() - lastOperationTime > 200) {
-    lastOperationTime = millis();
-    sendEspNow(MASTER_MAC, s);
-    }
-    
+  //  if (digitalRead(FORWARD_KEY)) {
+  //    sendEspNow(MASTER_MAC, f);
+  //    lastOperationTime = millis();
+  //  }
+  //  else if (digitalRead(BACKWARD_KEY)) {
+  //    sendEspNow(MASTER_MAC, b);
+  //    lastOperationTime = millis();
+  //  }
+  //  else if (digitalRead(LEFT_KEY)) {
+  //    sendEspNow(MASTER_MAC, l);
+  //    lastOperationTime = millis();
+  //  }
+  //  else if (digitalRead(RIGHT_KEY)) {
+  //    sendEspNow(MASTER_MAC, r);
+  //    lastOperationTime = millis();
+  //  }
+  //  else if (millis() - lastOperationTime > 200) {
+  //    lastOperationTime = millis();
+  //    sendEspNow(MASTER_MAC, s);
+  //    }
+
+  sendEspNow(MASTER_MAC, f);
+  delay(2000);
+  sendEspNow(MASTER_MAC, b);
+  delay(2000);
+  sendEspNow(MASTER_MAC, l);
+  delay(2000);
+  sendEspNow(MASTER_MAC, r);
+  delay(2000);
+  sendEspNow(MASTER_MAC, s);
+  delay(2000);
 }
 
 /**
@@ -167,5 +177,5 @@ void echo(uint8_t *msgSourceMac, uint8_t *msg, uint8_t msgLen) {
   Serial.print("Message->");
   Serial.write(msg, msgLen);
   Serial.println("<-");
-//  sendEspNow(msgSourceMac, msg); //Echo msg back
+  //  sendEspNow(msgSourceMac, msg); //Echo msg back
 }

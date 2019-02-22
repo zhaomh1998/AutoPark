@@ -23,26 +23,25 @@ extern "C" {
 
 #define WIFI_CHANNEL 4
 
-#include "logger.h"
+#include "lib/Util/logger.h"
 
 class ESPNow {
 public:
-    ESPNow(uint8_t *myMacAddr);
+    explicit ESPNow(uint8_t *myMacAddr, bool debug);
 
     static void messageHandler(uint8_t *mac, uint8_t *data, uint8_t len);
 
-    ~ESPNow();
-
-    void add_peer(uint8_t *mac, u8 channel = WIFI_CHANNEL) {
-        esp_now_add_peer(mac, ESP_NOW_ROLE_SLAVE, channel, NULL, 0);
+    virtual void add_peer(uint8_t *mac, u8 channel = WIFI_CHANNEL) {
+        esp_now_add_peer(mac, ESP_NOW_ROLE_SLAVE, channel, nullptr, 0);
     }
 
     void send(uint8_t *mac, uint8_t *msg, int len) {
         esp_now_send(mac, msg, len);
     }
 
-private:
-    logger *logHandle = new logger(115200);
+
+protected:
+    logger logHandle;
 };
 
 

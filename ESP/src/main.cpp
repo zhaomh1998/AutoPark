@@ -1,17 +1,16 @@
 #include <Arduino.h>
-#include "lib/ESPNow.h"
+#include "lib/Communication/master.h"
+#include "lib/Util/AutoParkConfig.h"
 
-
-uint8_t SELF_MAC[] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x33};
-uint8_t PEER_MAC[] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x34};
-
-ESPNow now(SELF_MAC);
+// Roles: MASTER, FLOOR1,2,3, CAR1,2,3
+const int MY_ROLE = MASTER;
+master now(macs[MY_ROLE]);
 
 void setup() {
-    now.add_peer(PEER_MAC);
+    now.addAll(macs, MY_ROLE);
 }
 
 void loop() {
-    now.send(PEER_MAC, SELF_MAC, 6);
+    now.send(macs[CAR1], macs[MY_ROLE], 6);
     delay(500);
 }

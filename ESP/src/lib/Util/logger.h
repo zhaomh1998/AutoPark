@@ -13,7 +13,7 @@ class logger {
 public:
     logger();
 
-    explicit logger(size_t serialBaud);
+    logger(size_t serialBaud, bool debug = false);
 
     void error(String text);
 
@@ -21,11 +21,16 @@ public:
 
     void info(String info);
 
+    void debug(String info);
+
+    void serialLogln(String text);
+
     void serialLog(String text);
 
 private:
     int logOption = 0; // 0 - built in led only, 1 - built in led + serial
     bool ledState = true; // true - on, false - off
+    bool debugMode = false;
 };
 
 
