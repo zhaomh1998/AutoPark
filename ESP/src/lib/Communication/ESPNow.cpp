@@ -16,7 +16,7 @@ ESPNow::ESPNow(uint8_t *myMacAddr, bool debug = false) {
     }
 
     esp_now_set_self_role(ESP_NOW_ROLE_COMBO);
-    esp_now_register_recv_cb(messageHandler);
+    setMsgCallback();
 }
 
 void ESPNow::messageHandler(uint8_t *mac, uint8_t *data, uint8_t len) {

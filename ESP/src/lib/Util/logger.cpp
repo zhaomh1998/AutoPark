@@ -3,7 +3,7 @@
 //
 
 #include "logger.h"
-
+#include "AutoParkConfig.h"
 
 logger::logger() {
     pinMode(DEFAULT_LED, OUTPUT);
@@ -43,6 +43,23 @@ void logger::debug(String info) {
     }
 }
 
+void logger::debugESPNowMsg(bool dataType, uint8_t *mac, uint8_t *data, uint8_t len) {
+    if (debugMode) {
+        serialLog("*[DEBUG]\t");
+        if (dataType)
+            serialLog("Sent to [");
+        else
+            serialLog("Recv from [");
+        serialLog(whoIsThis(mac));
+        serialLog("]\tData Length[");
+        serialLog(String(len));
+        serialLog("]\tData->");
+        for (int dataIndex = 0; dataIndex < len; dataIndex++)
+            serialLogByte(data[dataIndex]);
+        serialLogln("<-");
+    }
+}
+
 void logger::serialLogln(String text) {
     if (logOption == 1) {
         Serial.println(text);
@@ -52,5 +69,11 @@ void logger::serialLogln(String text) {
 void logger::serialLog(String text) {
     if (logOption == 1) {
         Serial.print(text);
+    }
+}
+
+void logger::serialLogByte(uint8_t singleByte) {
+    if (logOption == 1) {
+        Serial.printf("%x", singleByte);
     }
 }

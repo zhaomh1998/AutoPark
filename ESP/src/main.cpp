@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include "lib/Communication/master.h"
-#include "lib/Util/AutoParkConfig.h"
+
 
 // Roles: MASTER, FLOOR1,2,3, CAR1,2,3
 const int MY_ROLE = MASTER;

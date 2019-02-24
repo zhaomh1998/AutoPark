@@ -19,7 +19,7 @@ public:
 
     int searchMac(const uint8_t *inMac);
 
-    void add_peer(uint8_t *mac, u8 channel = WIFI_CHANNEL) override;
+    void addPeer(uint8_t *mac, u8 channel = WIFI_CHANNEL) override;
 
     void addAll(const std::vector<uint8_t *> macAddressList, uint8_t excludeIndex);
 

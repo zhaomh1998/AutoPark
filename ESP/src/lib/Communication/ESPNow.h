@@ -15,6 +15,7 @@
 #endif
 
 #include <ESP8266WiFi.h>
+#include "../Util/AutoParkConfig.h"
 
 extern "C" {
 #include <espnow.h>
@@ -27,12 +28,22 @@ extern "C" {
 
 class ESPNow {
 public:
-    explicit ESPNow(uint8_t *myMacAddr, bool debug);
+    ESPNow(uint8_t *myMacAddr, bool debug);
 
     static void messageHandler(uint8_t *mac, uint8_t *data, uint8_t len);
 
-    virtual void add_peer(uint8_t *mac, u8 channel = WIFI_CHANNEL) {
+    virtual void addPeer(uint8_t *mac, u8 channel = WIFI_CHANNEL) {
+        setPeerMac(mac, channel);
+    }
+
+    void setPeerMac(uint8_t *mac, u8 channel) {
         esp_now_add_peer(mac, ESP_NOW_ROLE_SLAVE, channel, nullptr, 0);
+        logHandle.debug("Added Peer " + whoIsThis(mac));
+    }
+
+    // Overload this to change the static messageHandler function
+    virtual void setMsgCallback() {
+        esp_now_register_recv_cb(messageHandler);
     }
 
     void send(uint8_t *mac, uint8_t *msg, int len) {
