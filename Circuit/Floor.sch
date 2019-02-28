@@ -7,7 +7,7 @@
 <setting keepoldvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -172,43 +172,6 @@
 &lt;p&gt;THIS SOFTWARE IS PROVIDED ''AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE INSTITUTE OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 &lt;/p&gt;</description>
 <packages>
-<package name="ESP-12E">
-<wire x1="-8" y1="14.27" x2="8" y2="14.27" width="0.127" layer="21"/>
-<wire x1="8" y1="14.27" x2="8" y2="-9.73" width="0.127" layer="21"/>
-<wire x1="8" y1="-9.73" x2="-8" y2="-9.73" width="0.127" layer="21"/>
-<wire x1="-8" y1="-9.73" x2="-8" y2="14.27" width="0.127" layer="21"/>
-<wire x1="-6" y1="6.47" x2="6" y2="6.47" width="0.127" layer="21"/>
-<wire x1="6" y1="6.47" x2="6" y2="-8.53" width="0.127" layer="21"/>
-<wire x1="6" y1="-8.53" x2="-6" y2="-8.53" width="0.127" layer="21"/>
-<wire x1="-6" y1="-8.53" x2="-6" y2="6.47" width="0.127" layer="21"/>
-<text x="-0.1" y="9.57" size="1.27" layer="21" font="vector" ratio="12" align="center">Antenna</text>
-<smd name="1" x="-7.5" y="5.77" dx="2" dy="1.2" layer="1"/>
-<smd name="2" x="-7.5" y="3.77" dx="2" dy="1.2" layer="1"/>
-<smd name="3" x="-7.5" y="1.77" dx="2" dy="1.2" layer="1"/>
-<smd name="4" x="-7.5" y="-0.23" dx="2" dy="1.2" layer="1"/>
-<smd name="5" x="-7.5" y="-2.23" dx="2" dy="1.2" layer="1"/>
-<smd name="6" x="-7.5" y="-4.23" dx="2" dy="1.2" layer="1"/>
-<smd name="7" x="-7.5" y="-6.23" dx="2" dy="1.2" layer="1"/>
-<smd name="8" x="-7.5" y="-8.23" dx="2" dy="1.2" layer="1"/>
-<smd name="9" x="7.5" y="-8.23" dx="2" dy="1.2" layer="1"/>
-<smd name="10" x="7.5" y="-6.23" dx="2" dy="1.2" layer="1"/>
-<smd name="11" x="7.5" y="-4.23" dx="2" dy="1.2" layer="1"/>
-<smd name="12" x="7.5" y="-2.23" dx="2" dy="1.2" layer="1"/>
-<smd name="13" x="7.5" y="-0.23" dx="2" dy="1.2" layer="1"/>
-<smd name="14" x="7.5" y="1.77" dx="2" dy="1.2" layer="1"/>
-<smd name="15" x="7.5" y="3.77" dx="2" dy="1.2" layer="1"/>
-<smd name="16" x="7.5" y="5.77" dx="2" dy="1.2" layer="1"/>
-<text x="-5" y="-11.23" size="1.4224" layer="25" font="vector" ratio="12" align="center">&gt;NAME</text>
-<text x="4.5" y="-11.23" size="1.4224" layer="27" font="vector" ratio="12" align="center">&gt;VALUE</text>
-<rectangle x1="-8" y1="7.27" x2="8" y2="14.27" layer="41"/>
-<rectangle x1="-8" y1="7.27" x2="8" y2="14.27" layer="42"/>
-<smd name="19" x="-1" y="-9" dx="2" dy="1.2" layer="1" rot="R90"/>
-<smd name="20" x="1" y="-9" dx="2" dy="1.2" layer="1" rot="R90"/>
-<smd name="21" x="3" y="-9" dx="2" dy="1.2" layer="1" rot="R90"/>
-<smd name="22" x="5" y="-9" dx="2" dy="1.2" layer="1" rot="R90"/>
-<smd name="18" x="-3" y="-9" dx="2" dy="1.2" layer="1" rot="R90"/>
-<smd name="17" x="-5" y="-9" dx="2" dy="1.2" layer="1" rot="R90"/>
-</package>
 </packages>
 <symbols>
 <symbol name="FRAME_A4">
@@ -299,48 +262,6 @@
 <text x="-1.524" y="1.016" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="3.3V" x="0" y="-2.54" visible="off" length="short" direction="sup" rot="R90"/>
 </symbol>
-<symbol name="ESP8266-12E">
-<wire x1="-12.7" y1="20.32" x2="12.7" y2="20.32" width="0.254" layer="94"/>
-<wire x1="12.7" y1="20.32" x2="12.7" y2="-17.78" width="0.254" layer="94"/>
-<wire x1="12.7" y1="-17.78" x2="-12.7" y2="-17.78" width="0.254" layer="94"/>
-<wire x1="-12.7" y1="-17.78" x2="-12.7" y2="20.32" width="0.254" layer="94"/>
-<wire x1="-7.62" y1="12.7" x2="-7.62" y2="17.78" width="0.254" layer="94"/>
-<wire x1="-7.62" y1="17.78" x2="-5.08" y2="17.78" width="0.254" layer="94"/>
-<wire x1="-5.08" y1="17.78" x2="-5.08" y2="15.24" width="0.254" layer="94"/>
-<wire x1="-5.08" y1="15.24" x2="-2.54" y2="15.24" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="15.24" x2="-2.54" y2="17.78" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="17.78" x2="0" y2="17.78" width="0.254" layer="94"/>
-<wire x1="0" y1="17.78" x2="0" y2="15.24" width="0.254" layer="94"/>
-<wire x1="0" y1="15.24" x2="2.54" y2="15.24" width="0.254" layer="94"/>
-<wire x1="2.54" y1="15.24" x2="2.54" y2="17.78" width="0.254" layer="94"/>
-<wire x1="2.54" y1="17.78" x2="5.08" y2="17.78" width="0.254" layer="94"/>
-<wire x1="5.08" y1="17.78" x2="5.08" y2="15.24" width="0.254" layer="94"/>
-<wire x1="5.08" y1="15.24" x2="7.62" y2="15.24" width="0.254" layer="94"/>
-<wire x1="7.62" y1="15.24" x2="7.62" y2="17.78" width="0.254" layer="94"/>
-<pin name="RESET" x="-17.78" y="10.16" length="middle" direction="in"/>
-<pin name="ADC" x="-17.78" y="7.62" length="middle" direction="pas"/>
-<pin name="CH_PD" x="-17.78" y="5.08" length="middle" direction="in"/>
-<pin name="GPIO16" x="-17.78" y="2.54" length="middle"/>
-<pin name="GPIO14" x="-17.78" y="0" length="middle"/>
-<pin name="GPIO12" x="-17.78" y="-2.54" length="middle"/>
-<pin name="GPIO13" x="-17.78" y="-5.08" length="middle"/>
-<pin name="VCC" x="-17.78" y="-7.62" length="middle" direction="pwr"/>
-<pin name="GND" x="17.78" y="-7.62" length="middle" direction="pwr" rot="R180"/>
-<pin name="GPIO15" x="17.78" y="-5.08" length="middle" rot="R180"/>
-<pin name="GPIO2" x="17.78" y="-2.54" length="middle" rot="R180"/>
-<pin name="GPIO0" x="17.78" y="0" length="middle" rot="R180"/>
-<pin name="GPIO4" x="17.78" y="2.54" length="middle" rot="R180"/>
-<pin name="GPIO5" x="17.78" y="5.08" length="middle" rot="R180"/>
-<pin name="RXD" x="17.78" y="7.62" length="middle" direction="in" rot="R180"/>
-<pin name="TXD" x="17.78" y="10.16" length="middle" direction="out" rot="R180"/>
-<text x="0" y="5.08" size="1.778" layer="94" font="vector" ratio="12" rot="R90" align="center">ESP12</text>
-<pin name="CS" x="-7.62" y="-22.86" length="middle" rot="R90"/>
-<pin name="GPIO10" x="-2.54" y="-22.86" length="middle" rot="R90"/>
-<pin name="CLK" x="2.54" y="-22.86" length="middle" rot="R90"/>
-<pin name="DI" x="5.08" y="-22.86" length="middle" rot="R90"/>
-<pin name="GPIO9" x="7.62" y="-22.86" length="middle" rot="R90"/>
-<pin name="DO" x="-5.08" y="-22.86" length="middle" rot="R90"/>
-</symbol>
 </symbols>
 <devicesets>
 <deviceset name="FRAME_A4" prefix="FRAME" uservalue="yes">
@@ -391,42 +312,6 @@ DIN A4, landscape with location and doc. field</description>
 </gates>
 <devices>
 <device name="">
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-<deviceset name="ESP-12E" prefix="X">
-<gates>
-<gate name="G$1" symbol="ESP8266-12E" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="ESP-12E">
-<connects>
-<connect gate="G$1" pin="ADC" pad="2"/>
-<connect gate="G$1" pin="CH_PD" pad="3"/>
-<connect gate="G$1" pin="CLK" pad="20"/>
-<connect gate="G$1" pin="CS" pad="17"/>
-<connect gate="G$1" pin="DI" pad="21"/>
-<connect gate="G$1" pin="DO" pad="18"/>
-<connect gate="G$1" pin="GND" pad="9"/>
-<connect gate="G$1" pin="GPIO0" pad="12"/>
-<connect gate="G$1" pin="GPIO10" pad="19"/>
-<connect gate="G$1" pin="GPIO12" pad="6"/>
-<connect gate="G$1" pin="GPIO13" pad="7"/>
-<connect gate="G$1" pin="GPIO14" pad="5"/>
-<connect gate="G$1" pin="GPIO15" pad="10"/>
-<connect gate="G$1" pin="GPIO16" pad="4"/>
-<connect gate="G$1" pin="GPIO2" pad="11"/>
-<connect gate="G$1" pin="GPIO4" pad="13"/>
-<connect gate="G$1" pin="GPIO5" pad="14"/>
-<connect gate="G$1" pin="GPIO9" pad="22"/>
-<connect gate="G$1" pin="RESET" pad="1"/>
-<connect gate="G$1" pin="RXD" pad="15"/>
-<connect gate="G$1" pin="TXD" pad="16"/>
-<connect gate="G$1" pin="VCC" pad="8"/>
-</connects>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -722,8 +607,8 @@ DIN A4, landscape with location and doc. field</description>
 <package name="XH2.54_2P">
 <description>https://detail.tmall.com/item.htm?id=562184527855&amp;spm=a1z09.2.0.0.320b2e8dmqGpdI&amp;_u=k1po4ce2f992</description>
 <smd name="NC@1" x="-5.12" y="1.966" dx="3.9" dy="1.8" layer="1" rot="R90"/>
-<smd name="2" x="-1.27" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
-<smd name="1" x="1.27" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
+<smd name="1" x="-1.27" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
+<smd name="2" x="1.27" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
 <smd name="NC@2" x="5.04" y="1.966" dx="3.9" dy="1.8" layer="1" rot="R90"/>
 <wire x1="-5.588" y1="0" x2="-5.588" y2="-1.016" width="0.127" layer="21"/>
 <wire x1="-5.588" y1="-1.016" x2="-4.064" y2="-1.016" width="0.127" layer="21"/>
@@ -739,10 +624,10 @@ DIN A4, landscape with location and doc. field</description>
 </package>
 <package name="XH2.54_3P">
 <description>https://detail.tmall.com/item.htm?id=562184527855&amp;spm=a1z09.2.0.0.320b2e8dmqGpdI&amp;_u=k1po4ce2f992</description>
-<smd name="3" x="-2.54" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
+<smd name="1" x="-2.54" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
 <smd name="NC@1" x="-6.39" y="1.966" dx="3.9" dy="1.8" layer="1" rot="R90"/>
 <smd name="2" x="0" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
-<smd name="1" x="2.54" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
+<smd name="3" x="2.54" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
 <smd name="NC@2" x="6.31" y="1.966" dx="3.9" dy="1.8" layer="1" rot="R90"/>
 <wire x1="-6.858" y1="0" x2="-6.858" y2="-1.016" width="0.127" layer="21"/>
 <wire x1="-6.858" y1="-1.016" x2="-5.334" y2="-1.016" width="0.127" layer="21"/>
@@ -759,11 +644,11 @@ DIN A4, landscape with location and doc. field</description>
 </package>
 <package name="XH2.54_4P">
 <description>https://detail.tmall.com/item.htm?id=562184527855&amp;spm=a1z09.2.0.0.320b2e8dmqGpdI&amp;_u=k1po4ce2f992</description>
-<smd name="4" x="-3.81" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
-<smd name="3" x="-1.27" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
+<smd name="1" x="-3.81" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
+<smd name="2" x="-1.27" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
 <smd name="NC@1" x="-7.66" y="1.966" dx="3.9" dy="1.8" layer="1" rot="R90"/>
-<smd name="2" x="1.27" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
-<smd name="1" x="3.81" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
+<smd name="3" x="1.27" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
+<smd name="4" x="3.81" y="-5.334" dx="5.5" dy="1.3" layer="1" rot="R90"/>
 <smd name="NC@2" x="7.58" y="1.966" dx="3.9" dy="1.8" layer="1" rot="R90"/>
 <wire x1="-8.128" y1="0" x2="-8.128" y2="-1.016" width="0.127" layer="21"/>
 <wire x1="-8.128" y1="-1.016" x2="-6.604" y2="-1.016" width="0.127" layer="21"/>
@@ -778,6 +663,42 @@ DIN A4, landscape with location and doc. field</description>
 <wire x1="8.128" y1="-1.016" x2="8.128" y2="0" width="0.127" layer="21"/>
 <wire x1="-6.604" y1="3.556" x2="6.604" y2="3.556" width="0.127" layer="21"/>
 <text x="0" y="-8.89" size="1.016" layer="25" font="vector" rot="R180" align="bottom-center">&gt;NAME</text>
+</package>
+<package name="MICROBUILDER_ESP-12E">
+<wire x1="-8" y1="14.27" x2="8" y2="14.27" width="0.127" layer="21"/>
+<wire x1="8" y1="14.27" x2="8" y2="-9.73" width="0.127" layer="21"/>
+<wire x1="8" y1="-9.73" x2="-8" y2="-9.73" width="0.127" layer="21"/>
+<wire x1="-8" y1="-9.73" x2="-8" y2="14.27" width="0.127" layer="21"/>
+<wire x1="-6" y1="6.47" x2="6" y2="6.47" width="0.127" layer="21"/>
+<wire x1="6" y1="6.47" x2="6" y2="-8.53" width="0.127" layer="21"/>
+<wire x1="6" y1="-8.53" x2="-6" y2="-8.53" width="0.127" layer="21"/>
+<wire x1="-6" y1="-8.53" x2="-6" y2="6.47" width="0.127" layer="21"/>
+<rectangle x1="-8" y1="7.27" x2="8" y2="14.27" layer="41"/>
+<rectangle x1="-8" y1="7.27" x2="8" y2="14.27" layer="42"/>
+<smd name="1" x="-7.5" y="5.77" dx="2" dy="1.2" layer="1"/>
+<smd name="2" x="-7.5" y="3.77" dx="2" dy="1.2" layer="1"/>
+<smd name="3" x="-7.5" y="1.77" dx="2" dy="1.2" layer="1"/>
+<smd name="4" x="-7.5" y="-0.23" dx="2" dy="1.2" layer="1"/>
+<smd name="5" x="-7.5" y="-2.23" dx="2" dy="1.2" layer="1"/>
+<smd name="6" x="-7.5" y="-4.23" dx="2" dy="1.2" layer="1"/>
+<smd name="7" x="-7.5" y="-6.23" dx="2" dy="1.2" layer="1"/>
+<smd name="8" x="-7.5" y="-8.23" dx="2" dy="1.2" layer="1"/>
+<smd name="9" x="7.5" y="-8.23" dx="2" dy="1.2" layer="1"/>
+<smd name="10" x="7.5" y="-6.23" dx="2" dy="1.2" layer="1"/>
+<smd name="11" x="7.5" y="-4.23" dx="2" dy="1.2" layer="1"/>
+<smd name="12" x="7.5" y="-2.23" dx="2" dy="1.2" layer="1"/>
+<smd name="13" x="7.5" y="-0.23" dx="2" dy="1.2" layer="1"/>
+<smd name="14" x="7.5" y="1.77" dx="2" dy="1.2" layer="1"/>
+<smd name="15" x="7.5" y="3.77" dx="2" dy="1.2" layer="1"/>
+<smd name="16" x="7.5" y="5.77" dx="2" dy="1.2" layer="1"/>
+<smd name="17" x="-5" y="-9" dx="2" dy="1.2" layer="1" rot="R90"/>
+<smd name="18" x="-3" y="-9" dx="2" dy="1.2" layer="1" rot="R90"/>
+<smd name="19" x="-1" y="-9" dx="2" dy="1.2" layer="1" rot="R90"/>
+<smd name="20" x="1" y="-9" dx="2" dy="1.2" layer="1" rot="R90"/>
+<smd name="21" x="3" y="-9" dx="2" dy="1.2" layer="1" rot="R90"/>
+<smd name="22" x="5" y="-9" dx="2" dy="1.2" layer="1" rot="R90"/>
+<text x="-0.1" y="9.57" size="1.27" layer="21" font="vector" ratio="12" align="center">Antenna</text>
+<text x="0.08" y="-11.23" size="1.4224" layer="25" font="vector" ratio="12" align="center">&gt;NAME</text>
 </package>
 </packages>
 <packages3d>
@@ -1080,6 +1001,48 @@ WS2812
 <wire x1="-3.556" y1="1.016" x2="-4.318" y2="1.016" width="0.254" layer="94"/>
 <wire x1="-4.318" y1="1.016" x2="-3.048" y2="-0.254" width="0.254" layer="94"/>
 </symbol>
+<symbol name="MICROBUILDER_ESP8266-12E">
+<wire x1="-12.7" y1="20.32" x2="12.7" y2="20.32" width="0.254" layer="94"/>
+<wire x1="12.7" y1="20.32" x2="12.7" y2="-17.78" width="0.254" layer="94"/>
+<wire x1="12.7" y1="-17.78" x2="-12.7" y2="-17.78" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="-17.78" x2="-12.7" y2="20.32" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="12.7" x2="-7.62" y2="17.78" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="17.78" x2="-5.08" y2="17.78" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="17.78" x2="-5.08" y2="15.24" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="15.24" x2="-2.54" y2="15.24" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="15.24" x2="-2.54" y2="17.78" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="17.78" x2="0" y2="17.78" width="0.254" layer="94"/>
+<wire x1="0" y1="17.78" x2="0" y2="15.24" width="0.254" layer="94"/>
+<wire x1="0" y1="15.24" x2="2.54" y2="15.24" width="0.254" layer="94"/>
+<wire x1="2.54" y1="15.24" x2="2.54" y2="17.78" width="0.254" layer="94"/>
+<wire x1="2.54" y1="17.78" x2="5.08" y2="17.78" width="0.254" layer="94"/>
+<wire x1="5.08" y1="17.78" x2="5.08" y2="15.24" width="0.254" layer="94"/>
+<wire x1="5.08" y1="15.24" x2="7.62" y2="15.24" width="0.254" layer="94"/>
+<wire x1="7.62" y1="15.24" x2="7.62" y2="17.78" width="0.254" layer="94"/>
+<pin name="ADC" x="-17.78" y="7.62" length="middle" direction="pas"/>
+<pin name="CH_PD" x="-17.78" y="5.08" length="middle" direction="in"/>
+<pin name="CLK" x="2.54" y="-22.86" length="middle" rot="R90"/>
+<pin name="CS" x="-7.62" y="-22.86" length="middle" rot="R90"/>
+<pin name="DI" x="5.08" y="-22.86" length="middle" rot="R90"/>
+<pin name="DO" x="-5.08" y="-22.86" length="middle" rot="R90"/>
+<pin name="GND" x="17.78" y="-7.62" length="middle" direction="pwr" rot="R180"/>
+<pin name="GPIO0" x="17.78" y="0" length="middle" rot="R180"/>
+<pin name="GPIO2" x="17.78" y="-2.54" length="middle" rot="R180"/>
+<pin name="GPIO4" x="17.78" y="2.54" length="middle" rot="R180"/>
+<pin name="GPIO5" x="17.78" y="5.08" length="middle" rot="R180"/>
+<pin name="GPIO9" x="7.62" y="-22.86" length="middle" rot="R90"/>
+<pin name="GPIO10" x="-2.54" y="-22.86" length="middle" rot="R90"/>
+<pin name="GPIO12" x="-17.78" y="-2.54" length="middle"/>
+<pin name="GPIO13" x="-17.78" y="-5.08" length="middle"/>
+<pin name="GPIO14" x="-17.78" y="0" length="middle"/>
+<pin name="GPIO15" x="17.78" y="-5.08" length="middle" rot="R180"/>
+<pin name="GPIO16" x="-17.78" y="2.54" length="middle"/>
+<pin name="RESET" x="-17.78" y="10.16" length="middle" direction="in"/>
+<pin name="RXD" x="17.78" y="7.62" length="middle" direction="in" rot="R180"/>
+<pin name="TXD" x="17.78" y="10.16" length="middle" direction="out" rot="R180"/>
+<pin name="VCC" x="-17.78" y="-7.62" length="middle" direction="pwr"/>
+<text x="0" y="5.08" size="1.778" layer="94" font="vector" ratio="12" rot="R90" align="center">ESP12</text>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="AMS1117-3.3" prefix="U">
@@ -1348,6 +1311,42 @@ WS2812
 <connect gate="G$1" pin="2" pad="2"/>
 <connect gate="G$1" pin="3" pad="3"/>
 <connect gate="G$1" pin="4" pad="4"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="MICROBUILDER_ESP-12E" prefix="X">
+<gates>
+<gate name="G$1" symbol="MICROBUILDER_ESP8266-12E" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="MICROBUILDER_ESP-12E">
+<connects>
+<connect gate="G$1" pin="ADC" pad="2"/>
+<connect gate="G$1" pin="CH_PD" pad="3"/>
+<connect gate="G$1" pin="CLK" pad="20"/>
+<connect gate="G$1" pin="CS" pad="17"/>
+<connect gate="G$1" pin="DI" pad="21"/>
+<connect gate="G$1" pin="DO" pad="18"/>
+<connect gate="G$1" pin="GND" pad="9"/>
+<connect gate="G$1" pin="GPIO0" pad="12"/>
+<connect gate="G$1" pin="GPIO10" pad="19"/>
+<connect gate="G$1" pin="GPIO12" pad="6"/>
+<connect gate="G$1" pin="GPIO13" pad="7"/>
+<connect gate="G$1" pin="GPIO14" pad="5"/>
+<connect gate="G$1" pin="GPIO15" pad="10"/>
+<connect gate="G$1" pin="GPIO16" pad="4"/>
+<connect gate="G$1" pin="GPIO2" pad="11"/>
+<connect gate="G$1" pin="GPIO4" pad="13"/>
+<connect gate="G$1" pin="GPIO5" pad="14"/>
+<connect gate="G$1" pin="GPIO9" pad="22"/>
+<connect gate="G$1" pin="RESET" pad="1"/>
+<connect gate="G$1" pin="RXD" pad="15"/>
+<connect gate="G$1" pin="TXD" pad="16"/>
+<connect gate="G$1" pin="VCC" pad="8"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -1863,7 +1862,7 @@ Warning: This is the KIT version of the AXIAL-0.3 package. This package has a sm
 <part name="C8" library="AutoPark" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0805" value="10µF"/>
 <part name="U$29" library="microbuilder" deviceset="GND" device=""/>
 <part name="U$30" library="microbuilder" deviceset="GND" device=""/>
-<part name="X2" library="microbuilder" deviceset="ESP-12E" device="" value="ESP-12"/>
+<part name="X2" library="AutoPark" deviceset="MICROBUILDER_ESP-12E" device="" value="ESP-12"/>
 <part name="U$2" library="microbuilder" deviceset="3.3V" device=""/>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
 <part name="U$4" library="microbuilder" deviceset="3.3V" device=""/>
