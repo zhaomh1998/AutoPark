@@ -8,13 +8,12 @@
 #define SEND true
 #define RECEIVE false
 
-#include <Arduino.h>
 #include "RGB.h"
 #include "AutoParkConfig.h"
 
 #define DEFAULT_LED 2
 
-class logger {
+class logger : public AutoParkConfig {
 public:
     logger();
 
@@ -48,9 +47,8 @@ public:
 
 private:
     int logOption = 0; // 0 - built in led only, 1 - built in led + serial
-    bool ledState = true; // true - on, false - off
-    bool debugMode = false;
-
+    bool ledState; // true - on, false - off
+    bool debugMode;
 };
 
 

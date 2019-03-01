@@ -5,17 +5,21 @@
 #include "logger.h"
 #include "AutoParkConfig.h"
 
-logger::logger() {
+logger::logger() : AutoParkConfig() {
     pinMode(DEFAULT_LED, OUTPUT);
     digitalWrite(DEFAULT_LED, HIGH);
+    logOption = 0;
+    ledState = true;
+    debugMode = true;
 }
 
-logger::logger(size_t serialBaud, bool debug) : debugMode(debug) {
+logger::logger(size_t serialBaud, bool debug) : debugMode(debug), AutoParkConfig() {
     pinMode(DEFAULT_LED, OUTPUT);
     digitalWrite(DEFAULT_LED, HIGH);
     Serial.begin(serialBaud);
     Serial.println();
     logOption = 1;
+    ledState = true;
 }
 
 void logger::error(String text) {
@@ -55,7 +59,9 @@ void logger::printESPNowMsg(bool dataType, uint8_t *mac, uint8_t *data, uint8_t 
         serialLogStatic("Sent to [");
     else
         serialLogStatic("Recv from [");
-    serialLogStatic(whoIsThis(mac));
+    // TODO: Is there a better way?
+    AutoParkConfig AP;
+    serialLogStatic(AP.whoIsThis(mac));
     serialLogStatic("]\tData Length[");
     serialLogStatic(String(len));
     serialLogStatic("]\tData->");

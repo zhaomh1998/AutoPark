@@ -14,14 +14,16 @@
 class master : public ESPNow {
 public:
 
-    master(uint8_t *myMacAddr, size_t maxClientAmount = DEFAULT_MAX_CLIENT_AMOUNT, bool debug = false) :
-            ESPNow(myMacAddr, debug), maxClientAmount(maxClientAmount) {}
+    master(uint8_t deviceName, bool debug = false) :
+            ESPNow(deviceName, debug), maxClientAmount(DEFAULT_MAX_CLIENT_AMOUNT) {
+        addAll(deviceName);
+    }
 
-    int searchMac(const uint8_t *inMac);
+    uint8_t searchMac(const uint8_t *inMac);
 
-    void addPeer(uint8_t *mac, u8 channel = WIFI_CHANNEL) override;
+    void addPeer(uint8_t deviceName) override;
 
-    void addAll(const std::vector<uint8_t *> macAddressList, uint8_t excludeIndex);
+    void addAll(uint8_t excludeIndex);
 
 private:
     std::vector<const uint8_t *> macList;

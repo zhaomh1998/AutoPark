@@ -4,17 +4,17 @@
 
 #include "master.h"
 
-void master::addPeer(uint8_t *mac, u8 channel) {
+void master::addPeer(uint8_t deviceName) {
     if (clientCount >= maxClientAmount) {
         logHandle.error("Attempted to add ESPNow client more than defined maximum!");
     } else {
         clientCount++;
-        ESPNow::setPeerMac(mac, channel);
-        macList.emplace_back(mac);
+        ESPNow::setPeerMac(macs[deviceName], WIFI_CHANNEL);
+        macList.emplace_back(macs[deviceName]);
     }
 }
 
-int master::searchMac(const uint8_t *inMac) {
+uint8_t master::searchMac(const uint8_t *inMac) {
     auto it = std::find(macList.begin(), macList.end(), inMac);
     if (it == macList.end()) {
         return -1;
@@ -24,11 +24,11 @@ int master::searchMac(const uint8_t *inMac) {
     }
 }
 
-void master::addAll(const std::vector<uint8_t *> macAddressList, uint8_t excludeIndex) {
-    uint8_t currentIndex = 0;
-    for (auto it = macAddressList.begin(); it != macAddressList.end(); it++, currentIndex++) {
+void master::addAll(uint8_t excludeIndex) {
+    size_t listLength = macs.size();
+    for (uint8_t currentIndex = 0; currentIndex < listLength; currentIndex++) {
         if (currentIndex == excludeIndex)
             continue;  // skip the exclude index
-        addPeer(*it);
+        addPeer(currentIndex);
     }
 }

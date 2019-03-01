@@ -16,7 +16,6 @@
 
 #include <ESP8266WiFi.h>
 #include "../Util/AutoParkConfig.h"
-
 extern "C" {
 #include <espnow.h>
 #include "user_interface.h"
@@ -26,14 +25,14 @@ extern "C" {
 
 #include "lib/Util/logger.h"
 
-class ESPNow {
+class ESPNow : public logger{
 public:
-    ESPNow(uint8_t *myMacAddr, bool debug);
+    ESPNow(uint8_t deviceName, bool debug);
 
     static void messageHandlerDebug(uint8_t *mac, uint8_t *data, uint8_t len);
 
-    virtual void addPeer(uint8_t *mac, u8 channel = WIFI_CHANNEL) {
-        setPeerMac(mac, channel);
+    virtual void addPeer(uint8_t deviceName) {
+        setPeerMac(macs[deviceName], WIFI_CHANNEL);
     }
 
     void setPeerMac(uint8_t *mac, u8 channel) {

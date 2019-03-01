@@ -5,4 +5,4 @@ include_directories(../lib)
 link_directories(../lib)
 link_libraries(arduino_core)
 
-add_executable(main.cpp)
+add_executable(mainESP.cpp)
