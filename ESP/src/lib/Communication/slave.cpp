@@ -5,10 +5,7 @@
 #include "slave.h"
 
 slave::slave(uint8_t *myMacAddr, uint8_t *masterMacAddr, bool debug) : ESPNow(myMacAddr, debug),
-                                                                       masterMacAddr(masterMacAddr) {
+                                                                       masterMacAddr(masterMacAddr),
+                                                                       isDebugMode(debug) {
     ESPNow::addPeer(masterMacAddr);
-}
-
-void slave::messageHandler(uint8_t *mac, uint8_t *data, uint8_t len) {
-    // TODO: command handler
 }

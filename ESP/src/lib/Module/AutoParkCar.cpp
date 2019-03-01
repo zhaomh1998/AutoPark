@@ -2,9 +2,11 @@
 // Created by Scott Zhao on 2019-02-22.
 //
 
-#include "car.h"
+#include "AutoParkCar.h"
 
-void car::forward() {
+AutoParkCar *carInstancePtr = nullptr;
+
+void AutoParkCar::forward() {
     if (allowMotorChange()) {
         Serial.println("Forward");
         digitalWrite(MOTOR_A_CONTROL_1, LOW);
@@ -14,7 +16,7 @@ void car::forward() {
     }
 }
 
-void car::backward() {
+void AutoParkCar::backward() {
     if (allowMotorChange()) {
         Serial.println("Backward");
         digitalWrite(MOTOR_A_CONTROL_1, HIGH);
@@ -24,7 +26,7 @@ void car::backward() {
     }
 }
 
-void car::left() {
+void AutoParkCar::left() {
     if (allowMotorChange()) {
         Serial.println("Left");
         digitalWrite(MOTOR_A_CONTROL_1, LOW);
@@ -34,7 +36,7 @@ void car::left() {
     }
 }
 
-void car::right() {
+void AutoParkCar::right() {
     if (allowMotorChange()) {
         Serial.println("Right");
         digitalWrite(MOTOR_A_CONTROL_1, HIGH);
@@ -44,7 +46,7 @@ void car::right() {
     }
 }
 
-void car::shortBreak() {
+void AutoParkCar::shortBreak() {
     if (allowMotorChange()) {
         Serial.println("Break");
         digitalWrite(MOTOR_A_CONTROL_1, HIGH);

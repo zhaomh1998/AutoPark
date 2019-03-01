@@ -12,18 +12,15 @@ class slave : public ESPNow {
 public:
     slave(uint8_t *myMacAddr, uint8_t *masterMacAddr, bool debug);
 
-    void send(uint8_t *msg, int len) {
+    void send(uint8_t *msg, uint8_t len) {
         ESPNow::send(masterMacAddr, msg, len);
-    }
-
-    static void messageHandler(uint8_t *mac, uint8_t *data, uint8_t len);
-
-    void setMsgCallback() override {
-        esp_now_register_recv_cb(messageHandler);
+        if (isDebugMode)
+            ESPNow::logHandle.printESPNowMsg(SEND, masterMacAddr, msg, len);
     }
 
 protected:
     uint8_t *masterMacAddr;
+    bool isDebugMode;
 };
 
 

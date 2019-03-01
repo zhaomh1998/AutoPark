@@ -45,19 +45,23 @@ void logger::debug(String info) {
 
 void logger::debugESPNowMsg(bool dataType, uint8_t *mac, uint8_t *data, uint8_t len) {
     if (debugMode) {
-        serialLog("*[DEBUG]\t");
-        if (dataType)
-            serialLog("Sent to [");
-        else
-            serialLog("Recv from [");
-        serialLog(whoIsThis(mac));
-        serialLog("]\tData Length[");
-        serialLog(String(len));
-        serialLog("]\tData->");
-        for (int dataIndex = 0; dataIndex < len; dataIndex++)
-            serialLogByte(data[dataIndex]);
-        serialLogln("<-");
+        printESPNowMsg(dataType, mac, data, len);
     }
+}
+
+void logger::printESPNowMsg(bool dataType, uint8_t *mac, uint8_t *data, uint8_t len) {
+    serialLogStatic("*[DEBUG]\t");
+    if (dataType)
+        serialLogStatic("Sent to [");
+    else
+        serialLogStatic("Recv from [");
+    serialLogStatic(whoIsThis(mac));
+    serialLogStatic("]\tData Length[");
+    serialLogStatic(String(len));
+    serialLogStatic("]\tData->");
+    for (int dataIndex = 0; dataIndex < len; dataIndex++)
+        serialLogByteStatic(data[dataIndex]);
+    serialLogStatic("<-\n");
 }
 
 void logger::serialLogln(String text) {
@@ -72,8 +76,28 @@ void logger::serialLog(String text) {
     }
 }
 
+void logger::serialLogStatic(String text) {
+    Serial.print(text);
+}
+
 void logger::serialLogByte(uint8_t singleByte) {
     if (logOption == 1) {
         Serial.printf("%x", singleByte);
+    }
+}
+
+void logger::serialLogByteStatic(uint8_t singleByte) {
+    Serial.printf("%x", singleByte);
+}
+
+void logger::assert(bool &result, String errorMsg) {
+    if (!result) {
+        error("[AssertionError] " + errorMsg);
+    }
+}
+
+void logger::printMac(uint8_t *macAddr) {
+    for (uint8_t macIndex = 0; macIndex < 6; macIndex++) {
+        Serial.printf("%x ", macAddr[macIndex]);
     }
 }
