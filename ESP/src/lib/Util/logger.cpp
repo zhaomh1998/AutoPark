@@ -36,13 +36,14 @@ void logger::warning(String info) {
 }
 
 void logger::info(String info) {
+    Serial.println("*enter");
     serialLog("[INFO]\t");
     serialLogln(info);
 }
 
 void logger::debug(String info) {
     if (debugMode) {
-        serialLog("*[DEBUG]\t");
+        serialLog("*[DEBUG] " + (String) millis() + "\t");
         serialLogln(info);
     }
 }

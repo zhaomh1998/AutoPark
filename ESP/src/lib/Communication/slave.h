@@ -19,7 +19,7 @@ public:
         ESPNow::send(masterMacAddr, msg, len);
         if (isDebugMode)
             printESPNowMsg(SEND, masterMacAddr, msg, len);
-    }public
+    }
 
 protected:
     uint8_t *masterMacAddr;

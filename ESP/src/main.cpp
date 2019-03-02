@@ -34,40 +34,40 @@
 //    }
 //}
 
-//#include "lib/Util/AutoParkConfig.h"
-//#include "lib/Module/AutoParkCar.h"
-//
-//AutoParkCar car1(CAR1,true);
-//
-//void setup() {
-//    Serial.println("master is");
-////    Serial.println(logger::whoIsThisStatic(macs[MASTER], macs, deviceNames));
-//}
-//
-//void loop() {
-//
-//}
-
-
-
-#include "lib/Communication/master.h"
 #include "lib/Util/AutoParkConfig.h"
+#include "lib/Module/AutoParkCar.h"
 
-master ms(0, true);
-uint8_t CAR_FWD[1] = {0x00};
-uint8_t CAR_BAK[1] = {0x01};
-
+AutoParkCar car1(CAR1,true);
 
 void setup() {
-    Serial.println("set up");
+//    Serial.println(logger::whoIsThisStatic(macs[MASTER], macs, deviceNames));
 }
 
 void loop() {
-    ms.send(ms.macs[CAR1], CAR_FWD, 1);
-    delay(500);
-    ms.send(ms.macs[CAR1], CAR_BAK, 1);
-    delay(500);
+//    car1.autoStop();
+    yield();
 }
+
+
+
+//#include "lib/Communication/master.h"
+//#include "lib/Util/AutoParkConfig.h"
+//
+//master ms(0, true);
+//uint8_t CAR_FWD[1] = {0x00};
+//uint8_t CAR_BAK[1] = {0x01};
+//
+//
+//void setup() {
+//    Serial.println("set up");
+//}
+//
+//void loop() {
+//    ms.send(ms.macs[CAR1], CAR_FWD, 1);
+//    delay(500);
+//    ms.send(ms.macs[CAR1], CAR_BAK, 1);
+//    delay(500);
+//}
 
 
 //#include "lib/Communication/slave.h"

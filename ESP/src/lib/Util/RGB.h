@@ -12,6 +12,7 @@ public:
     RGB(uint8_t ledPin) {
         led = Adafruit_NeoPixel(1, ledPin, NEO_GRB + NEO_KHZ800);
         led.begin();
+        processingToggle = true;
     }
 
     void ready() {
@@ -19,7 +20,11 @@ public:
     }
 
     void processing() {
-        setColor(25, 10, 0);
+        if (processingToggle)
+            setColor(25, 10, 0);
+        else
+            setColor(50, 20, 0);
+        processingToggle = !processingToggle;
     }
 
     void warning() {
@@ -37,6 +42,7 @@ public:
 
 private:
     Adafruit_NeoPixel led;
+    bool processingToggle;
 };
 
 
