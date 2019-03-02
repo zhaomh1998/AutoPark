@@ -50,10 +50,30 @@
 
 
 
-//#include "lib/Communication/master.h"
+#include "lib/Communication/master.h"
+#include "lib/Util/AutoParkConfig.h"
+
+master ms(0, true);
+uint8_t CAR_FWD[1] = {0x00};
+uint8_t CAR_BAK[1] = {0x01};
+
+
+void setup() {
+    Serial.println("set up");
+}
+
+void loop() {
+    ms.send(ms.macs[CAR1], CAR_FWD, 1);
+    delay(500);
+    ms.send(ms.macs[CAR1], CAR_BAK, 1);
+    delay(500);
+}
+
+
+//#include "lib/Communication/slave.h"
 //#include "lib/Util/AutoParkConfig.h"
 //
-//master ms(0, true);
+//slave ms(CAR1, MASTER, true);
 //uint8_t data[1] = {0x00};
 //
 //
@@ -62,23 +82,6 @@
 //}
 //
 //void loop() {
-//    ms.send(ms.macs[CAR1], data, 1);
+//    ms.send(data, 1);
 //    delay(200);
 //}
-
-
-#include "lib/Communication/slave.h"
-#include "lib/Util/AutoParkConfig.h"
-
-slave ms(CAR1, MASTER, true);
-uint8_t data[1] = {0x00};
-
-
-void setup() {
-    Serial.println("set up");
-}
-
-void loop() {
-    ms.send(data, 1);
-    delay(200);
-}

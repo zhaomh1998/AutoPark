@@ -38,6 +38,7 @@ public:
         }
     }
 
+
 private:
     std::vector<const uint8_t *> macList;
     size_t clientCount = {0};

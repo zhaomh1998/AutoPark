@@ -16,6 +16,7 @@
 
 #include <ESP8266WiFi.h>
 #include "../Util/AutoParkConfig.h"
+
 extern "C" {
 #include <espnow.h>
 #include "user_interface.h"
@@ -25,7 +26,7 @@ extern "C" {
 
 #include "lib/Util/logger.h"
 
-class ESPNow : public logger{
+class ESPNow : public logger {
 public:
     ESPNow(uint8_t deviceName, bool debug);
 
@@ -42,16 +43,19 @@ public:
 
     // Overload this to change the static messageHandler function
     virtual void setMsgCallback() {
-            esp_now_register_recv_cb(messageHandlerDebug);
+        esp_now_register_recv_cb(messageHandlerDebug);
     }
 
-    void send(uint8_t *mac, uint8_t *msg, int len) {
+    void send(uint8_t *mac, uint8_t *msg, uint8_t len) {
+        if(isDebugMode)
+            logHandle.printESPNowMsg(SEND, mac, msg, len);
         esp_now_send(mac, msg, len);
     }
 
 
 protected:
     logger logHandle;
+    bool isDebugMode;
 };
 
 

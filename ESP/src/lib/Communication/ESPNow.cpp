@@ -4,7 +4,7 @@
 
 #include "ESPNow.h"
 
-ESPNow::ESPNow(uint8_t deviceName, bool debug = false) : logger(115200, debug) {
+ESPNow::ESPNow(uint8_t deviceName, bool debug = false) : logger(115200, debug), isDebugMode(debug) {
     info("Setting up ESPNow. My MAC:");
     WiFi.mode(WIFI_AP);
     wifi_set_macaddr(SOFTAP_IF, macs[deviceName]);
