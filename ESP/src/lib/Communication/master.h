@@ -14,14 +14,29 @@
 class master : public ESPNow {
 public:
 
-    master(uint8_t deviceName, bool debug = false) :
-            ESPNow(deviceName, debug), maxClientAmount(DEFAULT_MAX_CLIENT_AMOUNT) {
-        addAll(deviceName);
+    master(uint8_t myMacIndex, bool debug = false) :
+            ESPNow(myMacIndex, debug), maxClientAmount(DEFAULT_MAX_CLIENT_AMOUNT) {
+        addAll(myMacIndex);
     }
 
-    void addPeer(uint8_t deviceName) override;
+    void addPeer(uint8_t deviceName) override {
+        if (clientCount >= maxClientAmount) {
+            logHandle.error("Attempted to add ESPNow client more than defined maximum!");
+        } else {
+            clientCount++;
+            ESPNow::setPeerMac(macs[deviceName], WIFI_CHANNEL);
+            macList.emplace_back(macs[deviceName]);
+        }
+    }
 
-    void addAll(uint8_t excludeIndex);
+    void addAll(uint8_t excludeIndex) {
+        size_t deviceListLength = macs.size();
+        for (uint8_t currentIndex = 0; currentIndex < deviceListLength; currentIndex++) {
+            if (currentIndex == excludeIndex)
+                continue;  // skip the exclude index
+            addPeer(currentIndex);
+        }
+    }
 
 private:
     std::vector<const uint8_t *> macList;
