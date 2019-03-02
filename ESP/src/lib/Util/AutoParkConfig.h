@@ -42,19 +42,19 @@ public:
 
 
     String whoIsThis(uint8_t *macAddr) {
-//        Serial.print("Whoisthis Lookup!");
-//        Serial.print("********");
-//        logger::printMac(macAddr);
-//        Serial.print("Size of macs:");
-//        Serial.print(macs.size());
-//        Serial.print(deviceNames.size());
-//    logger::printMac(macs[4]);
-        auto it = std::find(macs.begin(), macs.end(), macAddr);
+        auto it = std::find_if(macs.begin(), macs.end(),
+                               [&macAddr](const uint8_t *nthMac) { return *nthMac == *macAddr; });
         if (it == macs.end()) {
             return "UNKNOWN MAC";
         } else {
             auto index = std::distance(macs.begin(), it);
             return deviceNames[index];
+        }
+    }
+
+    void printMac(uint8 *macAddr) {
+        for (uint8_t macIndex = 0; macIndex < 6; macIndex++) {
+            Serial.printf("%x ", macAddr[macIndex]);
         }
     }
 };

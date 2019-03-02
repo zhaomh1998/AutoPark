@@ -14,16 +14,6 @@ void master::addPeer(uint8_t deviceName) {
     }
 }
 
-uint8_t master::searchMac(const uint8_t *inMac) {
-    auto it = std::find(macList.begin(), macList.end(), inMac);
-    if (it == macList.end()) {
-        return -1;
-    } else {
-        auto index = std::distance(macList.begin(), it);
-        return index;
-    }
-}
-
 void master::addAll(uint8_t excludeIndex) {
     size_t listLength = macs.size();
     for (uint8_t currentIndex = 0; currentIndex < listLength; currentIndex++) {

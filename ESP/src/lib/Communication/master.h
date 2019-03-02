@@ -19,8 +19,6 @@ public:
         addAll(deviceName);
     }
 
-    uint8_t searchMac(const uint8_t *inMac);
-
     void addPeer(uint8_t deviceName) override;
 
     void addAll(uint8_t excludeIndex);
