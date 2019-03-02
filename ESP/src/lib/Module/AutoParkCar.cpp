@@ -107,7 +107,7 @@ void AutoParkCar::commandDecoder(const uint8_t *data) {
                 shortBreak();
                 break;
             default:
-                logHandle.warning("Unresolved command received in car");
+                warning("Unresolved command received in car");
                 successFlag = false;
         }
         Serial.println("Case done");

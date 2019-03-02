@@ -38,7 +38,7 @@ public:
 
     void setPeerMac(uint8_t *mac, u8 channel) {
         esp_now_add_peer(mac, ESP_NOW_ROLE_SLAVE, channel, nullptr, 0);
-        logHandle.debug("Added Peer " + whoIsThis(mac));
+        debug("Added Peer " + whoIsThis(mac));
     }
 
     // Overload this to change the static messageHandler function
@@ -48,13 +48,12 @@ public:
 
     void send(uint8_t *mac, uint8_t *msg, uint8_t len) {
         if(isDebugMode)
-            logHandle.printESPNowMsg(SEND, mac, msg, len);
+            printESPNowMsg(SEND, mac, msg, len);
         esp_now_send(mac, msg, len);
     }
 
 
 protected:
-    logger logHandle;
     bool isDebugMode;
 };
 

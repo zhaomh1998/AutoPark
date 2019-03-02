@@ -1,25 +1,28 @@
-//
+//#include "logger.h"
+
+
+
+
+
+
+
+
 // Created by Scott Zhao on 2019-02-18.
 //
 
 #include "logger.h"
 #include "AutoParkConfig.h"
 
-logger::logger() : AutoParkConfig() {
+logger::logger() : AutoParkConfig(), logOption(0), ledState(true), debugMode(true) {
     pinMode(DEFAULT_LED, OUTPUT);
     digitalWrite(DEFAULT_LED, HIGH);
-    logOption = 0;
-    ledState = true;
-    debugMode = true;
 }
 
-logger::logger(size_t serialBaud, bool debug) : debugMode(debug), AutoParkConfig() {
+logger::logger(size_t serialBaud, bool debug) : AutoParkConfig(), logOption(1), ledState(true), debugMode(debug) {
     pinMode(DEFAULT_LED, OUTPUT);
     digitalWrite(DEFAULT_LED, HIGH);
     Serial.begin(serialBaud);
     Serial.println();
-    logOption = 1;
-    ledState = true;
 }
 
 void logger::error(String text) {
@@ -55,7 +58,7 @@ void logger::debugESPNowMsg(bool dataType, uint8_t *mac, uint8_t *data, uint8_t 
 }
 
 void logger::printESPNowMsg(bool dataType, uint8_t *mac, uint8_t *data, uint8_t len) {
-    serialLogStatic("*[DEBUG]\t");
+    serialLogStatic("*[DEBUG] " + (String) millis() + "\t");
     if (dataType)
         serialLogStatic("Sent to [");
     else

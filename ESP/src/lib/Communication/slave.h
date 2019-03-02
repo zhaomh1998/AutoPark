@@ -11,7 +11,8 @@
 class slave : public ESPNow {
 public:
     slave(uint8_t myMacIndex, uint8_t masterMacIndex, bool debug = false) : ESPNow(myMacIndex, debug),
-                                                                              masterMacAddr(macs[masterMacIndex]) {
+                                                                            masterMacAddr(macs[masterMacIndex]),
+                                                                            isDebugMode(debug) {
         ESPNow::addPeer(masterMacIndex);
     }
 
