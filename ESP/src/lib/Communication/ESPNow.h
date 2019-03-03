@@ -34,6 +34,7 @@ class ESPNow : public logger {
 public:
     ESPNow(uint8_t deviceName, bool debug);
 
+    // https://arduino-esp8266.readthedocs.io/en/latest/faq/a02-my-esp-crashes.html#other-causes-for-crashes
     // https://github.com/esp8266/Arduino/issues/4468
     // https://github.com/PaulStoffregen/Encoder/pull/15
     static void ICACHE_RAM_ATTR messageHandlerDebug(uint8_t *mac, uint8_t *data, uint8_t len);

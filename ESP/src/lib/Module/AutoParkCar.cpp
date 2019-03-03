@@ -17,13 +17,9 @@ void AutoParkCar::forward() {
 }
 
 void AutoParkCar::backward() {
-    Serial.println("enter");
     log(PROCESSED, "Backward\n");
-    Serial.println(1);
     motorRunning = true;
-    Serial.println(2);
     lastRunMotorTime = millis();
-    Serial.println(3);
     digitalWrite(MOTOR_A_CONTROL_1, HIGH);
     digitalWrite(MOTOR_A_CONTROL_2, LOW);
     digitalWrite(MOTOR_B_CONTROL_1, HIGH);
@@ -75,26 +71,21 @@ AutoParkCar::AutoParkCar(uint8_t myCarIndex, bool debugMode) : slave(myCarIndex,
     pinMode(MOTOR_PWN_PIN, OUTPUT);
     shortBreak();
     //    analogWrite(MOTOR_PWN_PIN, CAR_SPEED);
-    digitalWrite(MOTOR_PWN_PIN, HIGH);
+    digitalWrite(MOTOR_PWN_PIN, LOW);
     motorRunning = false;
     motorChangedTime = millis();
     lastRunMotorTime = millis();
 }
 
 void AutoParkCar::commandDecoder(const uint8_t *data) {
-    Serial.println("In Decoder");
     if (allowMotorChange()) {
-        Serial.println("Allow Motor Change");
         statusLED.processing();
         bool successFlag = true;
-        Serial.println("Flag Done");
         switch (data[0]) {  // DATA has length not 0?
             case 0x00:
-                Serial.println("FWD CASE");
                 forward();
                 break;
             case 0x01:
-                Serial.println("BWD CASE");
                 backward();
                 break;
             case 0x02:
@@ -110,7 +101,6 @@ void AutoParkCar::commandDecoder(const uint8_t *data) {
                 log(WARNING, "Unresolved command received in car");
                 successFlag = false;
         }
-        Serial.println("Case done");
         Ack(successFlag);
 
     } else

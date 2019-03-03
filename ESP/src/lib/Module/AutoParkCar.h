@@ -35,10 +35,8 @@ public:
     static void ICACHE_RAM_ATTR carMessageHandler(uint8_t *mac, uint8_t *data, uint8_t len) {
         auto carInstance = carInstancePtr;
         if (carInstance->isDebugMode)
-            logger::printESPNowMsg(RECEIVE, mac, data, len);
-        Serial.println("Decoder!");
+            printESPNowMsg(RECEIVE, mac, data, len);
         carInstance->commandDecoder(data);
-        Serial.println("Decoder done!");
     }
 
 
@@ -56,7 +54,7 @@ public:
         if(!motorRunning)
             return;
         if(millis() - lastRunMotorTime > MOTOR_AUTO_STOP_MS) {
-            log(WARNING, "AutoStop TRIGGERED!");
+            log(WARNING, "AutoStop TRIGGERED!\n");
             shortBreak();
         }
     }
@@ -64,7 +62,7 @@ public:
     uint8_t ACK_TRUE[1] = {0x01};
 
     void Ack(bool status) {
-        log(PROCESSED, "Motor Ack!");
+        log(PROCESSED, "Motor Ack!\n");
         if (status)
             send(ACK_TRUE, 1);
         else

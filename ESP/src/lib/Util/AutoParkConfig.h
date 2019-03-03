@@ -18,13 +18,6 @@
 
 class AutoParkConfig {
 public:
-//    uint8_t MAC_Master[6];
-//    uint8_t MAC_Level1[6];
-//    uint8_t MAC_Level2[6];
-//    uint8_t MAC_Level3[6];
-//    uint8_t MAC_Car1[6];
-//    uint8_t MAC_Car2[6];
-//    uint8_t MAC_Car3[6];
     uint8_t MAC_Master[6] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x33};
     uint8_t MAC_Level1[6] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x34};
     uint8_t MAC_Level2[6] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x35};

@@ -30,5 +30,5 @@ ESPNow::ESPNow(uint8_t deviceName, bool debug = false) : logger(debug), isDebugM
 //
 
 void ESPNow::messageHandlerDebug(uint8_t *mac, uint8_t *data, uint8_t len) {
-    logger::printESPNowMsg(RECEIVE, mac, data, len);
+    printESPNowMsg(RECEIVE, mac, data, len);
 }

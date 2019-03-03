@@ -17,8 +17,25 @@ void logger::log(const uint8_t &logType, const String &text) {
         default:
             statusLED.error();
     }
-    if (isDebugMode)
+    if (isDebugMode) {
+        switch (logType) {
+            case READY:
+                printStr("[READY]\t");
+                break;
+            case PROCESSED:
+                printStr("[INFO]\t");
+                break;
+            case WARNING:
+                printStr("[WARNING]\t");
+                break;
+            case ERROR:
+                printStr("[ERROR]\t");
+                break;
+            default:
+                printStr("[ERROR]\tUndefined log type!");
+        }
         printStr(text);
+    }
 }
 
 void logger::printStr(const String &aStr) {
