@@ -35,38 +35,44 @@
 //}
 
 // CAR ----------------------------------------------------------------------------
-#include "lib/Util/AutoParkConfig.h"
-#include "lib/Module/AutoParkCar.h"
-
-AutoParkCar *car1 = nullptr;
-
-void setup() {
-    delay(1000);
-    car1 = new AutoParkCar(CAR1, true);
-}
-
-void loop() {
-//    car1.autoStop();
-    yield();
-}
-
-// Master ----------------------------------------------------------------------------
-
-//#include "lib/Communication/master.h"
 //#include "lib/Util/AutoParkConfig.h"
+//#include "lib/Module/AutoParkCar.h"
 //
-//master ms(0, true);
-//uint8_t CAR_FWD[1] = {0x00};
-//uint8_t CAR_BAK[1] = {0x01};
-//
+//AutoParkCar *car1 = nullptr;
 //
 //void setup() {
-//    Serial.println("set up");
+//    delay(1000);
+//    car1 = new AutoParkCar(CAR1, true);
 //}
 //
 //void loop() {
-//    ms.send(ms.macs[CAR1], CAR_FWD, 1);
-//    delay(500);
-//    ms.send(ms.macs[CAR1], CAR_BAK, 1);
-//    delay(500);
+////    car1.autoStop();
+//    yield();
 //}
+
+// Master ----------------------------------------------------------------------------
+
+#include "lib/Communication/master.h"
+#include "lib/Util/AutoParkConfig.h"
+
+master *ms;
+
+void setup() {
+    ms = new master(MASTER, true);
+}
+
+uint8_t forward[1] = {0x00};
+uint8_t backward[1] = {0x01};
+uint8_t shortBreak[1] = {0x04};
+
+void loop() {
+    ms->send(ms->macs[CAR1], forward, 1);
+    delay(500);
+    ms->send(ms->macs[CAR1], backward, 1);
+    delay(500);
+    ms->send(ms->macs[CAR1], shortBreak, 1);
+    delay(500);
+    yield();
+    Serial.println(ESP.getFreeHeap());
+    Serial.println(ESP.getHeapFragmentation());
+}

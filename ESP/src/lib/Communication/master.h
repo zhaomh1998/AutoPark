@@ -21,7 +21,7 @@ public:
 
     void addPeer(uint8_t deviceName) override {
         if (clientCount >= maxClientAmount) {
-            error("Attempted to add ESPNow client more than defined maximum!");
+            log(ERROR, "Attempted to add ESPNow client more than defined maximum!");
         } else {
             clientCount++;
             ESPNow::setPeerMac(macs[deviceName], WIFI_CHANNEL);
