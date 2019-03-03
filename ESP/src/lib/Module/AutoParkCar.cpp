@@ -56,12 +56,11 @@ void AutoParkCar::shortBreak() {
     statusLED.ready();
 }
 
-AutoParkCar::AutoParkCar(uint8_t myCarIndex, bool debugMode) : slave(myCarIndex, MASTER, debugMode), statusLED(15) {
+AutoParkCar::AutoParkCar(uint8_t myCarIndex, bool debugMode) : slave(myCarIndex, MASTER, debugMode) {
     carName = whoIsThis(macs[myCarIndex]);
     log(PROCESSED, carName + " Initialized\n");
     statusLED.ready();
     carInstancePtr = this;
-    setMsgCallback();
 
     // Set motor PWM
     pinMode(MOTOR_A_CONTROL_1, OUTPUT);
@@ -70,8 +69,8 @@ AutoParkCar::AutoParkCar(uint8_t myCarIndex, bool debugMode) : slave(myCarIndex,
     pinMode(MOTOR_B_CONTROL_2, OUTPUT);
     pinMode(MOTOR_PWN_PIN, OUTPUT);
     shortBreak();
-    //    analogWrite(MOTOR_PWN_PIN, CAR_SPEED);
-    digitalWrite(MOTOR_PWN_PIN, LOW);
+//    analogWrite(MOTOR_PWN_PIN, CAR_SPEED);
+    digitalWrite(MOTOR_PWN_PIN, HIGH);
     motorRunning = false;
     motorChangedTime = millis();
     lastRunMotorTime = millis();

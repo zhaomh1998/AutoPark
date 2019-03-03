@@ -20,9 +20,6 @@ public:
     }
 
     void processing() {
-        Serial.println();
-        Serial.print("processingToggle=");
-        Serial.println(processingToggle);
         if (processingToggle)
             setColor(25, 10, 0);
         else

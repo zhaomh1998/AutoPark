@@ -14,7 +14,7 @@
 
 class logger : public AutoParkConfig {
 public:
-    explicit logger(bool isDebugMsgPrinted) : AutoParkConfig(), isDebugMode(isDebugMsgPrinted), statusLED(STATUS_LED_PIN) {
+    explicit logger(bool isDebugMsgPrinted) : AutoParkConfig(), statusLED(STATUS_LED_PIN), isDebugMode(isDebugMsgPrinted)  {
         if (!Serial)
             Serial.begin(SERIAL_BAUD_RATE);
     }
@@ -26,9 +26,10 @@ public:
     static void printESPNowMsg(bool dataType, uint8_t *mac, uint8_t *data, uint8_t &len);
     static void assert(bool &result, String &errorMsg);
 
+    RGB statusLED;
+
 private:
     bool isDebugMode;
-    RGB statusLED;
 };
 
 #endif //ESP_LOG_H

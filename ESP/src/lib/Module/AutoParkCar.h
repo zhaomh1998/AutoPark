@@ -14,7 +14,7 @@
 #define MOTOR_B_CONTROL_1 14
 #define MOTOR_B_CONTROL_2 12
 #define MOTOR_PWN_PIN 13
-#define CAR_SPEED 50
+//#define CAR_SPEED 200
 #define MAX_MOTOR_REFRESH_MS 200
 #define MOTOR_AUTO_STOP_MS 1000
 
@@ -26,19 +26,24 @@ class AutoParkCar : public slave {
 public:
     AutoParkCar(uint8_t myCarIndex, bool debugMode);
 
-    void setMsgCallback() override {
-        esp_now_register_recv_cb(carMessageHandler);
+    bool messageHandler() override {  // overwrite this method in subclasses
+        if(!messagePending)
+            return false;
+        else {
+            printESPNowMsg(RECEIVE, messageOrigin, messageData, messageLen);
+            if(messageLen == 1) {
+                commandDecoder(messageData);
+            }
+            else{
+                log(WARNING, "^^^^^Unexpected ESPNow Message!\n");
+            }
+            messagePending = false;
+            return true;
+        }
+
     }
 
     void commandDecoder(const uint8_t *data);
-
-    static void ICACHE_RAM_ATTR carMessageHandler(uint8_t *mac, uint8_t *data, uint8_t len) {
-        auto carInstance = carInstancePtr;
-        if (carInstance->isDebugMode)
-            printESPNowMsg(RECEIVE, mac, data, len);
-        carInstance->commandDecoder(data);
-    }
-
 
     bool allowMotorChange() {
         unsigned long timeNow = millis();
@@ -85,7 +90,6 @@ protected:
     unsigned long motorChangedTime;
     unsigned long lastRunMotorTime;
     String carName;
-    RGB statusLED;
 };
 
 

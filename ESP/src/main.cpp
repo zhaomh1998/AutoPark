@@ -46,6 +46,7 @@ void setup() {
 }
 
 void loop() {
+    car1->messageHandler();
     car1->autoStop();
     yield();
 }
