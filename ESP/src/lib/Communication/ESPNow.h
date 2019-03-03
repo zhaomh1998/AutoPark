@@ -22,6 +22,10 @@ extern "C" {
 #include "user_interface.h"
 }
 
+#ifndef ICACHE_FLASH
+#define ICACHE_RAM_ATTR
+#endif
+
 #define WIFI_CHANNEL 4
 
 #include "lib/Util/logger.h"
@@ -30,7 +34,9 @@ class ESPNow : public logger {
 public:
     ESPNow(uint8_t deviceName, bool debug);
 
-    static void messageHandlerDebug(uint8_t *mac, uint8_t *data, uint8_t len);
+    // https://github.com/esp8266/Arduino/issues/4468
+    // https://github.com/PaulStoffregen/Encoder/pull/15
+    static void ICACHE_RAM_ATTR messageHandlerDebug(uint8_t *mac, uint8_t *data, uint8_t len);
 
     virtual void addPeer(uint8_t deviceName) {
         setPeerMac(macs[deviceName], WIFI_CHANNEL);
@@ -38,7 +44,7 @@ public:
 
     void setPeerMac(uint8_t *mac, u8 channel) {
         esp_now_add_peer(mac, ESP_NOW_ROLE_SLAVE, channel, nullptr, 0);
-        debug("Added Peer " + whoIsThis(mac));
+        log(PROCESSED, "Added Peer " + whoIsThis(mac));
     }
 
     // Overload this to change the static messageHandler function

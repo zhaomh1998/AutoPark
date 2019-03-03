@@ -38,10 +38,11 @@
 #include "lib/Util/AutoParkConfig.h"
 #include "lib/Module/AutoParkCar.h"
 
-AutoParkCar car1(CAR1,true);
+AutoParkCar *car1 = nullptr;
 
 void setup() {
-//    Serial.println(logger::whoIsThisStatic(macs[MASTER], macs, deviceNames));
+    delay(1000);
+    car1 = new AutoParkCar(CAR1, true);
 }
 
 void loop() {

@@ -32,7 +32,7 @@ public:
 
     void commandDecoder(const uint8_t *data);
 
-    static void carMessageHandler(uint8_t *mac, uint8_t *data, uint8_t len) {
+    static void ICACHE_RAM_ATTR carMessageHandler(uint8_t *mac, uint8_t *data, uint8_t len) {
         auto carInstance = carInstancePtr;
         if (carInstance->isDebugMode)
             logger::printESPNowMsg(RECEIVE, mac, data, len);
@@ -56,7 +56,7 @@ public:
         if(!motorRunning)
             return;
         if(millis() - lastRunMotorTime > MOTOR_AUTO_STOP_MS) {
-            warning("AutoStop TRIGGERED!");
+            log(WARNING, "AutoStop TRIGGERED!");
             shortBreak();
         }
     }
@@ -64,11 +64,11 @@ public:
     uint8_t ACK_TRUE[1] = {0x01};
 
     void Ack(bool status) {
-        debug("Motor Ack!");
-//        if (status)
-//            send(ACK_TRUE, 1);
-//        else
-//            send(ACK_FALSE, 1);
+        log(PROCESSED, "Motor Ack!");
+        if (status)
+            send(ACK_TRUE, 1);
+        else
+            send(ACK_FALSE, 1);
     }
 
 

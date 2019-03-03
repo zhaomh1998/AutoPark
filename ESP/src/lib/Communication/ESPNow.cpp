@@ -4,13 +4,13 @@
 
 #include "ESPNow.h"
 
-ESPNow::ESPNow(uint8_t deviceName, bool debug = false) : logger(115200, debug), isDebugMode(debug) {
-    info("Setting up ESPNow. My MAC:");
+ESPNow::ESPNow(uint8_t deviceName, bool debug = false) : logger(debug), isDebugMode(debug) {
+    log(PROCESSED, "Setting up ESPNow. My MAC:");
     WiFi.mode(WIFI_AP);
     wifi_set_macaddr(SOFTAP_IF, macs[deviceName]);
-    info(WiFi.softAPmacAddress());
+    log(PROCESSED, WiFi.softAPmacAddress());
     if (esp_now_init() != 0) {
-        error("*** ESP_Now init failed");
+        log(ERROR, "*** ESP_Now init failed");
         ESP.restart();
     }
 

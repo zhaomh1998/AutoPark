@@ -7,7 +7,7 @@
 AutoParkCar *carInstancePtr = nullptr;
 
 void AutoParkCar::forward() {
-    info("Forward");
+    log(PROCESSED, "Forward");
     motorRunning = true;
     lastRunMotorTime = millis();
     digitalWrite(MOTOR_A_CONTROL_1, LOW);
@@ -18,7 +18,7 @@ void AutoParkCar::forward() {
 
 void AutoParkCar::backward() {
     Serial.println("enter");
-    info("Backward");
+    log(PROCESSED, "Backward\n");
     Serial.println(1);
     motorRunning = true;
     Serial.println(2);
@@ -31,7 +31,7 @@ void AutoParkCar::backward() {
 }
 
 void AutoParkCar::left() {
-    info("Left");
+    log(PROCESSED, "Left\n");
     motorRunning = true;
     lastRunMotorTime = millis();
     digitalWrite(MOTOR_A_CONTROL_1, LOW);
@@ -41,7 +41,7 @@ void AutoParkCar::left() {
 }
 
 void AutoParkCar::right() {
-    info("Right");
+    log(PROCESSED, "Right\n");
     motorRunning = true;
     lastRunMotorTime = millis();
     digitalWrite(MOTOR_A_CONTROL_1, HIGH);
@@ -51,7 +51,7 @@ void AutoParkCar::right() {
 }
 
 void AutoParkCar::shortBreak() {
-    info("Break");
+    log(PROCESSED, "Break\n");
     motorRunning = false;
     digitalWrite(MOTOR_A_CONTROL_1, HIGH);
     digitalWrite(MOTOR_A_CONTROL_2, HIGH);
@@ -62,7 +62,7 @@ void AutoParkCar::shortBreak() {
 
 AutoParkCar::AutoParkCar(uint8_t myCarIndex, bool debugMode) : slave(myCarIndex, MASTER, debugMode), statusLED(15) {
     carName = whoIsThis(macs[myCarIndex]);
-    debug(carName + " Initialized");
+    log(PROCESSED, carName + " Initialized\n");
     statusLED.ready();
     carInstancePtr = this;
     setMsgCallback();
@@ -75,7 +75,7 @@ AutoParkCar::AutoParkCar(uint8_t myCarIndex, bool debugMode) : slave(myCarIndex,
     pinMode(MOTOR_PWN_PIN, OUTPUT);
     shortBreak();
     //    analogWrite(MOTOR_PWN_PIN, CAR_SPEED);
-    digitalWrite(MOTOR_PWN_PIN, LOW);
+    digitalWrite(MOTOR_PWN_PIN, HIGH);
     motorRunning = false;
     motorChangedTime = millis();
     lastRunMotorTime = millis();
@@ -107,11 +107,12 @@ void AutoParkCar::commandDecoder(const uint8_t *data) {
                 shortBreak();
                 break;
             default:
-                warning("Unresolved command received in car");
+                log(WARNING, "Unresolved command received in car");
                 successFlag = false;
         }
         Serial.println("Case done");
         Ack(successFlag);
+
     } else
         Ack(false);
 }

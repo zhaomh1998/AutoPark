@@ -51,4 +51,4 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_executable(${PROJECT_NAME} ${SRC_LIST} src/mainESP.cpp src/lib/Util/AutoParkConfig.h src/lib/Module/AutoParkCar.cpp src/lib/Module/AutoParkCar.h src/lib/Util/RGB.h src/main.cpp remote.cpp src/car.cpp src/Tests/ESPNowSlaveEcho.cpp)
+add_executable(${PROJECT_NAME} ${SRC_LIST})
