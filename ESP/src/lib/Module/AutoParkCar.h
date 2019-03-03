@@ -20,69 +20,26 @@
 
 class AutoParkCar;
 
-extern AutoParkCar *carInstancePtr;  // Stores this*. For static method to access. Initialized in ctor.
-
 class AutoParkCar : public slave {
 public:
-    AutoParkCar(uint8_t myCarIndex, bool debugMode);
+    AutoParkCar(uint8_t carIndex, bool debugMode);
 
-    bool messageHandler() override {  // overwrite this method in subclasses
-        if(!messagePending)
-            return false;
-        else {
-            printESPNowMsg(RECEIVE, messageOrigin, messageData, messageLen);
-            if(messageLen == 1) {
-                commandDecoder(messageData);
-            }
-            else{
-                log(WARNING, "^^^^^Unexpected ESPNow Message!\n");
-            }
-            messagePending = false;
-            return true;
-        }
-
-    }
-
+    // Communication
+    bool messageHandler() override;
     void commandDecoder(const uint8_t *data);
-
-    bool allowMotorChange() {
-        unsigned long timeNow = millis();
-        if (timeNow - motorChangedTime > MAX_MOTOR_REFRESH_MS) {
-            motorChangedTime = timeNow;
-            return true;
-        }
-        return false;
-    }
-
-    // If stop command get lost, trigger stop
-    void autoStop() {
-        if(!motorRunning)
-            return;
-        if(millis() - lastRunMotorTime > MOTOR_AUTO_STOP_MS) {
-            log(WARNING, "AutoStop TRIGGERED!\n");
-            shortBreak();
-        }
-    }
     uint8_t ACK_FALSE[1] = {0x00};
     uint8_t ACK_TRUE[1] = {0x01};
+    void Ack(bool status);
 
-    void Ack(bool status) {
-        log(PROCESSED, "Motor Ack!\n");
-        if (status)
-            send(ACK_TRUE, 1);
-        else
-            send(ACK_FALSE, 1);
-    }
+    // Controllers
+    bool allowMotorChange();
+    void autoStop(); // If stop command get lost, trigger stop after a timeout
 
-
+    // Motor Driver Util
     void forward();
-
     void backward();
-
     void left();
-
     void right();
-
     void shortBreak();
 
 protected:
