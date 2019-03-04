@@ -51,7 +51,7 @@ void logger::printMac(const uint8_t *macAddr) {
 }
 
 void logger::printESPNowMsg(bool dataType, uint8_t *mac, uint8_t *data, uint8_t &len) {
-    printStr((dataType?"[<<TX]":" [>>RX]") + (String)millis()); printByte(mac[5]); printStr("\t" + (String)len + "Bytes:");
+    printStr((dataType?"\t\t[<<TX]@":"\t\t [>>RX]@") + (String)millis()); printStr("\tPeer["); printByte(mac[5]); printStr("]\t" + (String)len + "Byte:");
     for(uint8_t nthByte = 0; nthByte < len; nthByte++) {
         printStr("["); printByte(data[nthByte]); printStr("]");
     }

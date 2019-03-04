@@ -15,6 +15,7 @@
 #define CAR1 4
 #define CAR2 5
 #define CAR3 6
+#define DEBUGGER 7
 
 class AutoParkConfig {
 public:
@@ -23,14 +24,15 @@ public:
     uint8_t MAC_Level2[6] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x35};
     uint8_t MAC_Level3[6] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x36};
     uint8_t MAC_Car1[6] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x37};
-    uint8_t MAC_Car2[6] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x36};
+    uint8_t MAC_Car2[6] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x38};
     uint8_t MAC_Car3[6] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x39};
+    uint8_t MAC_Debugger[6] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x40};
     std::vector<uint8_t *> macs;
     std::vector<String> deviceNames;
 
     AutoParkConfig() {
-        macs = std::vector<uint8_t *>({MAC_Master, MAC_Level1, MAC_Level2, MAC_Level3, MAC_Car1, MAC_Car2, MAC_Car3});
-        deviceNames = std::vector<String>({"Master", "Level1", "Level2", "Level3", "Car1", "Car2", "Car3"});
+        macs = std::vector<uint8_t *>({MAC_Master, MAC_Level1, MAC_Level2, MAC_Level3, MAC_Car1, MAC_Car2, MAC_Car3, MAC_Debugger});
+        deviceNames = std::vector<String>({"Master", "Level1", "Level2", "Level3", "Car1", "Car2", "Car3", "Debugger"});
     }
 
 

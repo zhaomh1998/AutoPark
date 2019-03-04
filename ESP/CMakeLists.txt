@@ -51,4 +51,4 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_executable(${PROJECT_NAME} ${SRC_LIST} src/lib/Module/AutoParkFloor.cpp src/lib/Module/AutoParkFloor.h)
+add_executable(${PROJECT_NAME} ${SRC_LIST} src/lib/Module/AutoParkFloor.cpp src/lib/Module/AutoParkFloor.h src/lib/Module/AutoParkDebugger.h src/lib/Module/AutoParkDebugger.cpp src/Debugger.cpp src/Tests/MasterCarTester.cpp)

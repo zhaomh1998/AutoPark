@@ -51,7 +51,7 @@ public:
 
     void setPeerMac(uint8_t *mac, u8 channel) {
         esp_now_add_peer(mac, ESP_NOW_ROLE_SLAVE, channel, nullptr, 0);
-        log(PROCESSED, "Added Peer " + whoIsThis(mac));
+        log(PROCESSED, "Added Peer " + whoIsThis(mac) + "\n");
     }
 
     void send(uint8_t *mac, uint8_t *msg, uint8_t len) {
@@ -68,12 +68,18 @@ public:
             messagePending = false;
             return true;
         }
+    }
 
+    void debugSend(const String &debugMsg) {
+        uint8 buf[debugMsg.length() + 1];
+        debugMsg.getBytes(buf, debugMsg.length());
+        send(macs[DEBUGGER], buf, debugMsg.length());
     }
 
 
 protected:
     bool isDebugMode;
+    String myName;
 };
 
 

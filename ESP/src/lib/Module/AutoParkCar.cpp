@@ -61,7 +61,7 @@ void AutoParkCar::commandDecoder(const uint8_t *data) {
                 shortBreak();
                 break;
             default:
-                log(WARNING, "Unresolved command received in car");
+                log(WARNING, "Unresolved command received in car\n");
                 successFlag = false;
         }
         Ack(successFlag);
@@ -99,7 +99,7 @@ void AutoParkCar::autoStop() {
 
 
 void AutoParkCar::forward() {
-    log(PROCESSED, "Forward");
+    log(PROCESSED, "Forward\n");
     motorRunning = true;
     lastRunMotorTime = millis();
     digitalWrite(MOTOR_A_CONTROL_1, LOW);
