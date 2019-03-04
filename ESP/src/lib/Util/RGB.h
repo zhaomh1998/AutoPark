@@ -16,7 +16,9 @@ public:
     }
 
     void ready() {
+        Serial.println(1);
         setColor(0, 35, 0);
+        Serial.println(2);
     }
 
     void processing() {
@@ -35,9 +37,10 @@ public:
         setColor(35, 0, 0);
     }
 
-    void setColor(uint16_t r, uint16_t g, uint16_t b) {
+    void setColor(uint8_t r, uint8_t g, uint8_t b) {
         led.setPixelColor(0, r, g, b);
         led.show();
+
     }
 
 private:

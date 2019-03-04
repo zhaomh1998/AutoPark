@@ -65,6 +65,26 @@ public:
         return deviceNames[nthIndex];
     }
 
+    int whoIsThisIndex(uint8_t *macAddr) {
+        uint8_t nthIndex = 0;
+        for (nthIndex = 0; nthIndex < macs.size(); nthIndex++) {
+            uint8_t nthByte;
+            for (nthByte = 6; nthByte != UINT8_MAX; nthByte--) {
+                // For each byte
+                if (macs[nthIndex][nthByte] == macAddr[nthByte]) {
+                    continue;
+                } else
+                    break;
+            }
+            if (nthByte == UINT8_MAX) { // Found
+                break;
+            }
+        }
+        if (nthIndex == macs.size())
+            return -1;
+        return nthIndex;
+    }
+
     void printMac(uint8 *macAddr) {
         for (uint8_t macIndex = 0; macIndex < 6; macIndex++) {
             Serial.printf("%x ", macAddr[macIndex]);

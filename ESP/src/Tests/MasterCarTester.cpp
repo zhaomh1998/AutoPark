@@ -1,8 +1,3 @@
-//
-// Created by Scott Zhao on 2019-03-03.
-//
-
-
 //#include "lib/Communication/master.h"
 //#include "lib/Util/AutoParkConfig.h"
 //

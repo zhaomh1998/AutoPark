@@ -60,7 +60,7 @@ public:
         esp_now_send(mac, msg, len);
     }
 
-    virtual bool messageHandler() {  // overwrite this method in subclasses
+    virtual bool messageHandler() {  // override this method in subclasses
         if(!messagePending)
             return false;
         else {

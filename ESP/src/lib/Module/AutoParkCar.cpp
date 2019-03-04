@@ -30,6 +30,7 @@ bool AutoParkCar::messageHandler() {  // override this method in subclasses
         printESPNowMsg(RECEIVE, messageOrigin, messageData, messageLen);
         if(messageLen == 1) {
             commandDecoder(messageData);
+            masterMacAddr = messageOrigin;  // Switch master in case a new master appears
         }
         else{
             log(WARNING, "^^^^^Unexpected ESPNow Message!\n");
@@ -41,7 +42,11 @@ bool AutoParkCar::messageHandler() {  // override this method in subclasses
 }
 
 void AutoParkCar::commandDecoder(const uint8_t *data) {
-    if (allowMotorChange()) {
+    if(data[0] == 0x04) { // Stop
+        shortBreak();
+        Ack(true);
+    }
+    else if (allowMotorChange()) {
         statusLED.processing();
         bool successFlag = true;
         switch (data[0]) {  // DATA has length not 0?
@@ -56,9 +61,6 @@ void AutoParkCar::commandDecoder(const uint8_t *data) {
                 break;
             case 0x03:
                 right();
-                break;
-            case 0x04:
-                shortBreak();
                 break;
             default:
                 log(WARNING, "Unresolved command received in car\n");
