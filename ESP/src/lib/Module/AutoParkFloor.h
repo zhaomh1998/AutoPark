@@ -16,34 +16,35 @@
 
 #include "lib/Communication/slave.h"
 
-struct CarCommand {
-    CarCommand(uint8_t aCarIndex, uint8_t lotIndex, bool inOrOut): carIndex(aCarIndex) {
-        uint16_t targetLotPosition = ELEVATOR_POS;
-        switch(lotIndex){
-            case 0: targetLotPosition = LOT0_POS; break;
-            case 1: targetLotPosition = LOT1_POS; break;
-            case 2: targetLotPosition = LOT2_POS; break;
-        }
-        if(inOrOut) {
-            startingPos = ELEVATOR_POS;
-            endingPos = targetLotPosition;
-        }
-        else {
-            startingPos = targetLotPosition;
-            endingPos = ELEVATOR_POS;
-        }
-    }
-
-    uint8_t carIndex;
-    uint16_t startingPos;
-    uint16_t endingPos;
-};
+//struct CarCommand {
+//    CarCommand(uint8_t aCarIndex, uint8_t lotIndex, bool inOrOut): carIndex(aCarIndex) {
+//        uint16_t targetLotPosition = ELEVATOR_POS;
+//        switch(lotIndex){
+//            case 0: targetLotPosition = LOT0_POS; break;
+//            case 1: targetLotPosition = LOT1_POS; break;
+//            case 2: targetLotPosition = LOT2_POS; break;
+//        }
+//        if(inOrOut) {
+//            startingPos = ELEVATOR_POS;
+//            endingPos = targetLotPosition;
+//        }
+//        else {
+//            startingPos = targetLotPosition;
+//            endingPos = ELEVATOR_POS;
+//        }
+//    }
+//
+//    uint8_t carIndex;
+//    uint16_t startingPos;
+//    uint16_t endingPos;
+//};
+enum class FloorStatus {notCalibrated, ready, working, error};
 
 class AutoParkFloor : public slave{
 public:
     AutoParkFloor(uint8_t floorIndex, uint8_t masterIndex, bool debugMode);
 
-//    bool messageHandler() override;  // override default ESPNow message handler
+    bool messageHandler() override;  // override default ESPNow message handler
 
 //    // Calibration
 //    bool calibrateCart();
@@ -60,9 +61,11 @@ public:
 //    bool getLotLaser();         // Return if the lot laser is blocked
 //    bool getElevatorLaser();    // Communicate with 1st floor to get elevator laser (warning: network delay will happen)
 //
-//    // Stepper
-//    void step(bool direction);
-//    bool beSafe();  // Catch any unexpected switch trigger
+    // Stepper
+    void step(bool direction);
+    bool beSafe();  // Catch any unexpected switch trigger
+    bool moveCartTo(int Pos);
+    bool calibrateCart();
 
     // Automatic
     void carBackUp(uint8_t carIndex){
@@ -81,8 +84,8 @@ public:
         }
         ESPNow::send(macs[CAR1], shortBreak, 1);
     }
-//    void carEnterElevator(uint8_t carIndex);
-//    void carEnterLot(uint8_t carIndex);
+    void carEnterElevator(uint8_t carIndex);
+    void carEnterLot(uint8_t carIndex);
 //
 //    // Communication
     bool sendCarCommand(uint8_t carIndex, uint8_t *commandToSend, uint16_t noResponseTimeout = 500) {  // Send the command to a car, and wait for an ack to make sure the command went through
@@ -91,11 +94,25 @@ public:
         // TODO
         return true;
     }
+    bool masterMessageHandler();
+    bool carMessageHandler(int carIndex);
+
+    void reportStatus() {  // Response for status update request
+        switch(myStatus) {
+            case FloorStatus::ready: send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::ready), 3); break;
+            case FloorStatus::working: send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::working), 3); break;
+            case FloorStatus::error: send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::error), 3); break;
+            case FloorStatus::notCalibrated: send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::error), 3); break;
+        }
+    }
 //    void carForward(uint8_t carIndex);
 //    void carBackward(uint8_t carIndex);
 
-//private:
-//    uint16_t stepperPosition;
+private:
+    int16_t stepperPosition;
+    bool carMessage;
+    bool carAck;
+    FloorStatus myStatus;
 };
 
 

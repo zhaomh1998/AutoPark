@@ -59,6 +59,7 @@ void logger::printESPNowMsg(bool dataType, uint8_t *mac, uint8_t *data, uint8_t 
 }
 
 void logger::assert(bool &result, String &errorMsg) {
-    if(!result)
+    if(!result) {
         printStr("[AssertionERROR]\t" + errorMsg);
+    }
 }

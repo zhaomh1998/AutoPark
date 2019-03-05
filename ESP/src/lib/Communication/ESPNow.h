@@ -83,6 +83,17 @@ public:
         send(macs[DEBUGGER], buf, debugMsg.length() + 1);
     }
 
+    bool debugAssert(bool result, String errorMsg) {
+        if(!result) {
+            String message = "[AssertionERROR]\t" + errorMsg;
+            printStr(message);
+            debugSend(message);
+            return false;
+        }
+        return true;
+    }
+
+
 
 protected:
     bool isDebugMode;

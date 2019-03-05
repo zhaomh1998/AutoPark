@@ -45,8 +45,8 @@ public:
                         elevator, lot1, lot2, lot3, // MoveCart Param
                         car1, car2, car3}; // MoveCar Param
     enum class FloorCarDestination{NoArg, inLot, inElev, toCart};
-    uint8_t *FloorCmd(FloorOperation anOp, FloorArg2 anArg2 = FloorArg2::NoArg,
-            FloorCarDestination aDestination = FloorCarDestination::NoArg) {
+    uint8_t *FloorCommand(FloorOperation anOp, FloorArg2 anArg2 = FloorArg2::NoArg,
+                          FloorCarDestination aDestination = FloorCarDestination::NoArg) {
         theCmd[0] = 0x01;
         switch(anOp) {
             case FloorOperation::statusUpdate:  theCmd[1] = 0x00; break;
@@ -57,19 +57,19 @@ public:
         switch(anArg2) {
             // For Status Update
             case FloorArg2::NoArg:    theCmd[2] = 0x00; break;
-            case FloorArg2::request:  theCmd[2] = 0x01; break;
-            case FloorArg2::ready:    theCmd[2] = 0x02; break;
-            case FloorArg2::working:  theCmd[2] = 0x03; break;
-            case FloorArg2::error:    theCmd[2] = 0x04; break;
+            case FloorArg2::request:  theCmd[2] = 0x00; break;
+            case FloorArg2::ready:    theCmd[2] = 0x01; break;
+            case FloorArg2::working:  theCmd[2] = 0x02; break;
+            case FloorArg2::error:    theCmd[2] = 0x03; break;
             // For MoveCart
-            case FloorArg2::elevator: theCmd[2] = 0x01; break;
-            case FloorArg2::lot1:     theCmd[2] = 0x02; break;
-            case FloorArg2::lot2:     theCmd[2] = 0x03; break;
-            case FloorArg2::lot3:     theCmd[2] = 0x04; break;
+            case FloorArg2::elevator: theCmd[2] = 0x00; break;
+            case FloorArg2::lot1:     theCmd[2] = 0x01; break;
+            case FloorArg2::lot2:     theCmd[2] = 0x02; break;
+            case FloorArg2::lot3:     theCmd[2] = 0x03; break;
             // For MoveCar
-            case FloorArg2::car1:     theCmd[2] = 0x01; break;
-            case FloorArg2::car2:     theCmd[2] = 0x02; break;
-            case FloorArg2::car3:     theCmd[2] = 0x03; break;
+            case FloorArg2::car1:     theCmd[2] = 0x00; break;
+            case FloorArg2::car2:     theCmd[2] = 0x01; break;
+            case FloorArg2::car3:     theCmd[2] = 0x02; break;
         }
         switch(aDestination) {
             case FloorCarDestination::NoArg:  theCmd[3] = 0x00; break;
@@ -79,6 +79,7 @@ public:
         }
         return theCmd;
     }
+
 
     // Car command set
     enum class CarCommand{forward, backward, stop};
