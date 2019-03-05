@@ -26,6 +26,8 @@ AutoParkMaster::AutoParkMaster(uint8_t myMacIndex, bool debug) : master(myMacInd
     masterInstancePtr = this;
 }
 
+
+// UART Command Handler
 void AutoParkMaster::carCommandHandler() {
     if(RIOCommandPending) {  // There is an unhandled command
         String errorMsg = "ERROR 10 There is another command pending handling in mainESP. The new command is discarded.";
@@ -120,3 +122,4 @@ void AutoParkMaster::handleRIOCommand() {
         RIOCommandPending = false;
     }
 }
+

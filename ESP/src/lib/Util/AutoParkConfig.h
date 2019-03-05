@@ -31,11 +31,67 @@ public:
     // Common Command Sets
     // Target : Op : Param1(optional) : Param 2(optional)
     static uint8_t theCmd[4];
-    uint8_t *Ack(bool trueOrFalse, uint8_t targetArray) {
+
+    // Ack command set
+    uint8_t *Ack(bool trueOrFalse) {
         theCmd[0] = 0x00;
         theCmd[1] = trueOrFalse ? 0x01 : 0x00;
         return theCmd;
     }
+
+    // Floor command set
+    enum class FloorOperation{statusUpdate, calibration, moveCart, moveCar};
+    enum class FloorArg2{NoArg, request, ready, working, error, // Status Update Param
+                        elevator, lot1, lot2, lot3, // MoveCart Param
+                        car1, car2, car3}; // MoveCar Param
+    enum class FloorCarDestination{NoArg, inLot, inElev, toCart};
+    uint8_t *FloorCmd(FloorOperation anOp, FloorArg2 anArg2 = FloorArg2::NoArg,
+            FloorCarDestination aDestination = FloorCarDestination::NoArg) {
+        theCmd[0] = 0x01;
+        switch(anOp) {
+            case FloorOperation::statusUpdate:  theCmd[1] = 0x00; break;
+            case FloorOperation::calibration:   theCmd[1] = 0x01; break;
+            case FloorOperation::moveCart:      theCmd[1] = 0x02; break;
+            case FloorOperation::moveCar:       theCmd[1] = 0x03; break;
+        }
+        switch(anArg2) {
+            // For Status Update
+            case FloorArg2::NoArg:    theCmd[2] = 0x00; break;
+            case FloorArg2::request:  theCmd[2] = 0x01; break;
+            case FloorArg2::ready:    theCmd[2] = 0x02; break;
+            case FloorArg2::working:  theCmd[2] = 0x03; break;
+            case FloorArg2::error:    theCmd[2] = 0x04; break;
+            // For MoveCart
+            case FloorArg2::elevator: theCmd[2] = 0x01; break;
+            case FloorArg2::lot1:     theCmd[2] = 0x02; break;
+            case FloorArg2::lot2:     theCmd[2] = 0x03; break;
+            case FloorArg2::lot3:     theCmd[2] = 0x04; break;
+            // For MoveCar
+            case FloorArg2::car1:     theCmd[2] = 0x01; break;
+            case FloorArg2::car2:     theCmd[2] = 0x02; break;
+            case FloorArg2::car3:     theCmd[2] = 0x03; break;
+        }
+        switch(aDestination) {
+            case FloorCarDestination::NoArg:  theCmd[3] = 0x00; break;
+            case FloorCarDestination::inLot:  theCmd[3] = 0x00; break;
+            case FloorCarDestination::inElev: theCmd[3] = 0x01; break;
+            case FloorCarDestination::toCart: theCmd[3] = 0x02; break;
+        }
+        return theCmd;
+    }
+
+    // Car command set
+    enum class CarCommand{forward, backward, stop};
+    uint8_t *CarCmd(CarCommand aCommand) {
+        switch (aCommand) {
+            case CarCommand::forward:   theCmd[0] = 0x00; break;
+            case CarCommand::backward:  theCmd[0] = 0x01; break;
+            case CarCommand::stop:      theCmd[0] = 0x02; break;
+        }
+        return theCmd;
+    }
+
+
     std::vector<uint8_t *> macs;
     std::vector<String> deviceNames;
 
