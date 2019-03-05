@@ -2,7 +2,7 @@
 // Created by Scott Zhao on 2019-03-03.
 //
 
-#include "AutoParkFloor.h"∂
+#include "AutoParkFloor.h"
 
 AutoParkFloor::AutoParkFloor(uint8_t floorIndex, uint8_t masterIndex, bool debugMode) : slave(floorIndex, masterIndex, debugMode){
     addPeer(CAR1);
@@ -14,6 +14,6 @@ AutoParkFloor::AutoParkFloor(uint8_t floorIndex, uint8_t masterIndex, bool debug
     pinMode(CART_LS_L, INPUT);
 //    if(!calibrateSensor()) {
 //        statusLED.error();
+//        debugSendLn("Error");
 //    }
-    debugSend("Hello");
 }

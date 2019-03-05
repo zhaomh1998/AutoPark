@@ -70,10 +70,17 @@ public:
         }
     }
 
+    void debugSendLn(const String &debugMsg) {
+        String msg = "[" + myName + "]\t" + debugMsg + "\n";
+        uint8 buf[msg.length() + 1];
+        msg.getBytes(buf, msg.length() + 1);
+        send(macs[DEBUGGER], buf, msg.length() + 1);
+    }
+
     void debugSend(const String &debugMsg) {
         uint8 buf[debugMsg.length() + 1];
-        debugMsg.getBytes(buf, debugMsg.length());
-        send(macs[DEBUGGER], buf, debugMsg.length());
+        debugMsg.getBytes(buf, debugMsg.length() + 1);
+        send(macs[DEBUGGER], buf, debugMsg.length() + 1);
     }
 
 

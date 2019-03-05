@@ -10,7 +10,7 @@ uint8_t *ESPNow::messageData;
 uint8_t ESPNow::messageLen;
 
 ESPNow::ESPNow(uint8_t deviceName, bool debug = false) : logger(debug), isDebugMode(debug) {
-    myName = "[" + whoIsThis(macs[deviceName]) + "]\t";
+    myName = whoIsThis(macs[deviceName]);
     log(PROCESSED, "\nSetting up ESPNow. My MAC: ");
     WiFi.mode(WIFI_AP);
     wifi_set_macaddr(SOFTAP_IF, macs[deviceName]);
@@ -24,7 +24,7 @@ ESPNow::ESPNow(uint8_t deviceName, bool debug = false) : logger(debug), isDebugM
     messagePending = false;
     esp_now_register_recv_cb(msgCallback);
     if(debug) addPeer(DEBUGGER);
-    debugSend(myName + "Initialized\n");
+    debugSendLn("Initialized");
 
 }
 

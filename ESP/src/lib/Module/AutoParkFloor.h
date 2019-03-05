@@ -51,9 +51,11 @@ public:
 
     // Sensor
     bool getCartLeftLS() {       // Return if the cart left limit switch is pressed
-        return digitalRead(CART_LS_L);
+        return (bool)digitalRead(CART_LS_L);
     }
-//    bool getCartRightLS();      // Return if the cart right limit switch is pressed
+    bool getCartRightLS() {      // Return if the cart right limit switch is pressed
+        return (bool) digitalRead(CART_LS_R);
+    }
 //    bool getCartLaser();        // Return if the cart laser is blocked
 //    bool getLotLaser();         // Return if the lot laser is blocked
 //    bool getElevatorLaser();    // Communicate with 1st floor to get elevator laser (warning: network delay will happen)

@@ -27,6 +27,15 @@ public:
     uint8_t MAC_Car2[6] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x38};
     uint8_t MAC_Car3[6] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x39};
     uint8_t MAC_Debugger[6] = {0x36, 0x00, 0x00, 0x00, 0x66, 0x40};
+
+    // Common Command Sets
+    // Target : Op : Param1(optional) : Param 2(optional)
+    static uint8_t theCmd[4];
+    uint8_t *Ack(bool trueOrFalse, uint8_t targetArray) {
+        theCmd[0] = 0x00;
+        theCmd[1] = trueOrFalse ? 0x01 : 0x00;
+        return theCmd;
+    }
     std::vector<uint8_t *> macs;
     std::vector<String> deviceNames;
 

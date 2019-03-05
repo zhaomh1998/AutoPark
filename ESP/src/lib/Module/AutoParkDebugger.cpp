@@ -36,7 +36,6 @@ AutoParkDebugger::AutoParkDebugger(uint8_t debuggerIndex) : AutoParkConfig() {
 
 void ICACHE_RAM_ATTR AutoParkDebugger::msgCallback(uint8_t *mac, uint8_t *data, uint8_t len) {
     messagePending = true;
-    Serial.println(messagePending);
     // TODO: did I copy the content?
     messageOrigin = mac;
     messageData = data;
