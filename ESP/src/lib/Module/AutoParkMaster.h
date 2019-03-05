@@ -4,6 +4,9 @@
 
 #ifndef ESP_AUTOPARKMASTER_H
 #define ESP_AUTOPARKMASTER_H
+#ifndef ICACHE_FLASH
+#define ICACHE_RAM_ATTR
+#endif
 
 #include "../lib/SerialCommand/SerialCommand.h"
 #include "lib/Communication/master.h"
@@ -41,9 +44,9 @@ public:
     static char* RIOArg3;
 
     // UART Command handlers
-    static void carCommandHandler();
-    static void cartCommandHandler();
-    static void unknownCommandHandler(const char *theCmd);
+    static void ICACHE_RAM_ATTR carCommandHandler();
+    static void ICACHE_RAM_ATTR cartCommandHandler();
+    static void ICACHE_RAM_ATTR unknownCommandHandler(const char *theCmd);
     void handleRIOCommand();
 
     // ESPNow Command handler

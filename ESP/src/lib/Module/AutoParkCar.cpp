@@ -44,7 +44,7 @@ bool AutoParkCar::messageHandler() {  // override this method in subclasses
 void AutoParkCar::commandDecoder(const uint8_t *data) {
     if(data[0] == 0x04) { // Stop
         shortBreak();
-        Ack(true);
+        sendAck(true);
     }
     else if (allowMotorChange()) {
         statusLED.processing();
@@ -66,18 +66,15 @@ void AutoParkCar::commandDecoder(const uint8_t *data) {
                 log(WARNING, "Unresolved command received in car\n");
                 successFlag = false;
         }
-        Ack(successFlag);
+        sendAck(successFlag);
 
     } else
-        Ack(false);
+        sendAck(false);
 }
 
-void AutoParkCar::Ack(bool status) {
+void AutoParkCar::sendAck(bool status) {
     log(PROCESSED, "Motor Ack!\n");
-    if (status)
-        send(ACK_TRUE, 1);
-    else
-        send(ACK_FALSE, 1);
+    send(Ack(status), 1);
 }
 
 

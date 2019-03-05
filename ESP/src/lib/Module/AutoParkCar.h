@@ -27,9 +27,9 @@ public:
     // Communication
     bool messageHandler() override;
     void commandDecoder(const uint8_t *data);
-    uint8_t ACK_FALSE[1] = {0x00};
-    uint8_t ACK_TRUE[1] = {0x01};
-    void Ack(bool status);
+//    uint8_t ACK_FALSE[1] = {0x00};
+//    uint8_t ACK_TRUE[1] = {0x01};
+    void sendAck(bool status);
 
     // Controllers
     bool allowMotorChange();

@@ -20,7 +20,7 @@
 //    stepper &begin();
 //
 //    bool calibrate(); // Go one step and return if reaches the end
-//    stepper &step(const int dir);
+//    stepper &step(const int dir)
 //
 //    stepper &setPos(const int aPos); // override current position with given value
 //
