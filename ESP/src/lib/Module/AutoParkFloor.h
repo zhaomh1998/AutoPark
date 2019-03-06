@@ -72,7 +72,6 @@ public:
         if(currentStepCount >= targetStepCount)
             stepperCallbacker.detach();
     }
-
     static void ICACHE_RAM_ATTR calibrateCartCallback() {
         digitalWrite(STEPPER_STEP_PIN, HIGH);
         delayMicroseconds(500);
@@ -104,7 +103,6 @@ public:
         }
         return true;
     }
-
     bool calibrateCart() {
         digitalWrite(STEPPER_DIR_PIN, STEPPER_LEFT);
         myStatus = FloorStatus::notCalibrated;
@@ -120,52 +118,59 @@ public:
     // Automatic
     void carBackUp(uint8_t carIndex){
         unsigned long timeStart = millis();
-        ESPNow::send(macs[carIndex], CarCmd(CarCommand::backward), 4);
-        while(getCartLaser()) {
+        ESPNow::send(macs[carIndex], CarCmd(CarCommand::backward), MSG_LEN);
+        while(!getCartLaser()) {
             yield();
             if(millis() - timeStart > 500) {
+                debugSensorSend();
                 timeStart = millis();
-                ESPNow::send(macs[carIndex], CarCmd(CarCommand::backward), 4);
+                ESPNow::send(macs[carIndex], CarCmd(CarCommand::backward), MSG_LEN);
             }
         }
-        ESPNow::send(macs[carIndex], CarCmd(CarCommand::stop), 4);
+        ESPNow::send(macs[carIndex], CarCmd(CarCommand::stop), MSG_LEN);
     }
+
     void carEnterElevator(uint8_t carIndex) {
         unsigned long timeStart = millis();
-        ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), 4);
-        while(getLotLaser()) {
+        ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), MSG_LEN);
+        while(!getLotLaser()) {
             yield();
             if(millis() - timeStart > 500) {
                 timeStart = millis();
-                ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), 4);
+                ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), MSG_LEN);
             }
         }
-        ESPNow::send(macs[carIndex], CarCmd(CarCommand::stop), 4);
+        ESPNow::send(macs[carIndex], CarCmd(CarCommand::stop), MSG_LEN);
     }
     void carEnterLot(uint8_t carIndex) {
         unsigned long timeStart = millis();
         debugSendLn("Car back up");
-        ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), 4);
-        while(getElevatorLaser()) {
+        ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), MSG_LEN);
+        while(!getElevatorLaser()) {
             yield();
             if(millis() - timeStart > 500) {
                 timeStart = millis();
-                ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), 4);
+                ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), MSG_LEN);
             }
         }
-        ESPNow::send(macs[carIndex], CarCmd(CarCommand::stop), 4);
+        ESPNow::send(macs[carIndex], CarCmd(CarCommand::stop), MSG_LEN);
     }
-//
+
+
     bool masterMessageHandler();
     bool carMessageHandler(int carIndex);
 
     void reportStatus() {  // Response for status update request
         switch(myStatus) {
-            case FloorStatus::ready: send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::ready), 3); break;
-            case FloorStatus::working: send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::working), 3); break;
-            case FloorStatus::error: send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::error), 3); break;
-            case FloorStatus::notCalibrated: send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::error), 3); break;
+            case FloorStatus::ready: send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::ready), MSG_LEN); break;
+            case FloorStatus::working: send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::working), MSG_LEN); break;
+            case FloorStatus::error: send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::error), MSG_LEN); break;
+            case FloorStatus::notCalibrated: send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::error), MSG_LEN); break;
         }
+    }
+    void debugSensorSend() {
+        debugSendLn("LS_R:" + (String)getCartRightLS() + "LS_L:" + (String)getCartLeftLS()
+        + "PR1_Cart:" + (String)getCartLaser() + "PR2_Lot:" + (String)getLotLaser());
     }
 //    void carForward(uint8_t carIndex);
 //    void carBackward(uint8_t carIndex);
@@ -174,6 +179,8 @@ private:
     uint8_t thisFloor;
     int16_t stepperPosition;
     FloorStatus myStatus;
+    bool carMessage;
+    bool carAck;
 };
 
 

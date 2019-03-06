@@ -15,8 +15,10 @@
 class logger : public AutoParkConfig {
 public:
     explicit logger(bool isDebugMsgPrinted) : AutoParkConfig(), statusLED(STATUS_LED_PIN), isDebugMode(isDebugMsgPrinted)  {
-        if (!Serial)
+        if (!Serial) {
             Serial.begin(SERIAL_BAUD_RATE);
+            Serial.println("\nSerial Begin.");
+        }
     }
 
     void log(const uint8_t &logType, const String &text);

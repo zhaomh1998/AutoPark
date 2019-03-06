@@ -18,6 +18,7 @@
 #define DEBUGGER 7
 
 // Command set targets
+#define MSG_LEN 4
 #define TARGET_ACK 0x00
 #define TARGET_FLOOR 0x01
 #define TARGET_CAR 0x02
@@ -139,6 +140,7 @@ public:
             uint8_t nthByte;
             for (nthByte = 5; nthByte != UINT8_MAX; nthByte--) {
                 // For each byte
+                Serial.printf("%x - %x\n", macs[nthIndex][nthByte], macAddr[nthByte]);
                 if (macs[nthIndex][nthByte] == macAddr[nthByte]) {
                     continue;
                 } else

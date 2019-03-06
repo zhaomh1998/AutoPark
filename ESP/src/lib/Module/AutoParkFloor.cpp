@@ -51,8 +51,8 @@ bool AutoParkFloor::messageHandler() {
             case CAR2: carMessageHandler(CAR2); break;
             case CAR3: carMessageHandler(CAR3); break;
             case FLOOR1: // TODO
-            case FLOOR2: ESPNow::send(macs[FLOOR2], Ack(getElevatorLaser()), 4); break;
-            case FLOOR3: ESPNow::send(macs[FLOOR3], Ack(getElevatorLaser()), 4); break;
+            case FLOOR2: ESPNow::send(macs[FLOOR2], Ack(getElevatorLaser()), MSG_LEN); break;
+            case FLOOR3: ESPNow::send(macs[FLOOR3], Ack(getElevatorLaser()), MSG_LEN); break;
             default: debugSendLn("Error 200 Unexpected Sender: " + (String) messageSender);
         }
         messagePending = false;
@@ -62,7 +62,7 @@ bool AutoParkFloor::messageHandler() {
 
 bool AutoParkFloor::masterMessageHandler() {
     Serial.println("master message handler");
-    if(!debugAssert(messageLen == 4,
+    if(!debugAssert(messageLen == MSG_LEN,
             ((String)"Received command from master with invalid length, expected 4, received" + (String)messageLen))) return false;
     if(!debugAssert(messageData[0] == TARGET_FLOOR, "Error 206 Unexpected Message Target")) return false;  // Target not floor
     switch(messageData[1]) { // Message target
@@ -74,10 +74,10 @@ bool AutoParkFloor::masterMessageHandler() {
             send(Ack(calibrateCart()), 2); break;
         case FLOOR_MOVE_CART_CMD:  // Move cart
             switch(messageData[2]) {
-                case FLOOR_ELEVATOR: send(Ack(moveCartTo(ELEVATOR_POS)), 4); break;
-                case FLOOR_LOT1: send(Ack(moveCartTo(LOT1_POS)), 4); break;
-                case FLOOR_LOT2: send(Ack(moveCartTo(LOT2_POS)), 4); break;
-                case FLOOR_LOT3: send(Ack(moveCartTo(LOT3_POS)), 4); break;
+                case FLOOR_ELEVATOR: send(Ack(moveCartTo(ELEVATOR_POS)), MSG_LEN); break;
+                case FLOOR_LOT1: send(Ack(moveCartTo(LOT1_POS)), MSG_LEN); break;
+                case FLOOR_LOT2: send(Ack(moveCartTo(LOT2_POS)), MSG_LEN); break;
+                case FLOOR_LOT3: send(Ack(moveCartTo(LOT3_POS)), MSG_LEN); break;
                 default: debugSendLn("Error 202 Unexpected Data[2]"); return false;
             }
             break;
@@ -102,7 +102,7 @@ bool AutoParkFloor::masterMessageHandler() {
 }
 
 bool AutoParkFloor::carMessageHandler(int carIndex) {
-    debugAssert(messageLen == 2, ((String)"Received command from car with invalid length, expected 2, received" + (String)messageLen));
+    debugAssert(messageLen == MSG_LEN, ((String)"Received command from car with invalid length, expected 4, received" + (String)messageLen));
     switch(messageData[0]) { // Message target
         case TARGET_ACK:
             carMessage = true;
