@@ -18,7 +18,6 @@
 #define MAX_MOTOR_REFRESH_MS 200
 #define MOTOR_AUTO_STOP_MS 1000
 
-class AutoParkCar;
 
 class AutoParkCar : public slave {
 public:
@@ -38,8 +37,8 @@ public:
     // Motor Driver Util
     void forward();
     void backward();
-    void left();
-    void right();
+//    void left();
+//    void right();
     void shortBreak();
 
 protected:

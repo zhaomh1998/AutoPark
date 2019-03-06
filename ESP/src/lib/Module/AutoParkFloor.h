@@ -13,6 +13,7 @@
 #define LOT_PHOTORESISTOR_2 13
 #define CART_LS_R 14
 #define CART_LS_L 16
+#define ELEVATOR_PHOTORESISTOR_3 3 // For Floor 1 only
 
 // Stepper
 #define STEPPER_DIR_PIN 5
@@ -33,40 +34,59 @@ class AutoParkFloor : public slave{
 public:
     AutoParkFloor(uint8_t floorIndex, uint8_t masterIndex, bool debugMode);
 
-    bool messageHandler() override;  // override default ESPNow message handler
-
-//    // Calibration
-//    bool calibrateCart();
-//    bool calibrateSensor();
+    bool messageHandler() override;  // override default ESPNow message handler4
+    // Calibration
+    bool calibrateSensor();
 
     // Sensor
-    bool getCartLeftLS() {       // Return if the cart left limit switch is pressed
-        return (bool) digitalRead(CART_LS_L);
+    bool getCartLeftLS() {return (bool) digitalRead(CART_LS_L);}  // Return if the cart left limit switch is pressed
+    bool getCartRightLS() {return (bool) digitalRead(CART_LS_R);} // Return if the cart right limit switch is pressed - used to emergency stop stepper
+    bool getCartLaser() {return (bool) digitalRead(CART_PHOTORESISTOR_1);}  // Return if the cart laser is blocked
+    bool getLotLaser() {return (bool) digitalRead(LOT_PHOTORESISTOR_2);}    // Return if the lot laser is blocked
+    bool getElevatorLaser() {    // Communicate with 1st floor to get elevator laser (warning: network delay will happen)
+        if(thisFloor != FLOOR1) {
+            ESPNow::send(macs[FLOOR1], FloorCommand(FloorOperation::statusUpdate, FloorArg2::getElevatorLaser), 3);
+            while(!messagePending) {yield();}
+            if(!debugAssert(whoIsThisIndex(messageOrigin) == FLOOR1, "Error 210 Wrong message origin")) return false;
+            if(!debugAssert(messageData[0] == TARGET_ACK, "Error 211 Wrong message target")) return false;
+            return messageData[1] == ACK_TRUE;
+        }
+        else{
+            return (bool) digitalRead(ELEVATOR_PHOTORESISTOR_3);
+        }
     }
-    bool getCartRightLS() {      // Return if the cart right limit switch is pressed - used to emergency stop stepper
-        return (bool) digitalRead(CART_LS_R);
-    }
-//    bool getCartLaser();        // Return if the cart laser is blocked
-//    bool getLotLaser();         // Return if the lot laser is blocked
-//    bool getElevatorLaser();    // Communicate with 1st floor to get elevator laser (warning: network delay will happen)
-//
+
     // Stepper
     static int16_t targetStepCount;
     static int16_t currentStepCount;
     static Ticker stepperCallbacker;
 
-    static void ICACHE_RAM_ATTR step() {
+    static void ICACHE_RAM_ATTR singleStep() {
         digitalWrite(STEPPER_STEP_PIN, HIGH);
         delayMicroseconds(500);
         digitalWrite(STEPPER_STEP_PIN, LOW);
+        currentStepCount++;
+        if(currentStepCount % 500 == 0) {
+            yield();
+        }
+        if(currentStepCount >= targetStepCount)
+            stepperCallbacker.detach();
+    }
+
+    static void ICACHE_RAM_ATTR calibrateCartCallback() {
+        digitalWrite(STEPPER_STEP_PIN, HIGH);
         delayMicroseconds(500);
-        targetStepCount++;
-        if(targetStepCount >= currentStepCount)
+        digitalWrite(STEPPER_STEP_PIN, LOW);
+        currentStepCount++;
+//        if(currentStepCount % 500 == 0) {
+//            yield();
+//        }
+        if(digitalRead(CART_LS_L))
             stepperCallbacker.detach();
     }
 
     bool moveCartTo(int16_t aPos) {
-        if(!debugAssert(myStatus  != FloorStatus::notCalibrated,
+        if(!debugAssert(myStatus  == FloorStatus::notCalibrated,
                 "Error 209 Attempting to move cart before calibration!")) return false;
         if(aPos > stepperPosition)
             digitalWrite(STEPPER_DIR_PIN, STEPPER_LEFT);
@@ -77,43 +97,65 @@ public:
 
         targetStepCount = abs(aPos - stepperPosition);
         currentStepCount = 0;
-        stepperCallbacker.attach(0.01, step);
+        stepperCallbacker.attach_ms(1, singleStep);
         while(currentStepCount != targetStepCount) {
             yield();
-            // TODO: Impelment sub-procedure that allows a bigger delay? Implement timeout?
+            // TODO: Implement sub-procedure that allows a bigger delay? Implement timeout?
         }
         return true;
     }
 
-    bool calibrateCart();
+    bool calibrateCart() {
+        digitalWrite(STEPPER_DIR_PIN, STEPPER_LEFT);
+        myStatus = FloorStatus::notCalibrated;
+        currentStepCount = 0;
+        stepperCallbacker.attach_ms(1, calibrateCartCallback);
+        while(myStatus != FloorStatus::ready) {
+            yield();
+            // TODO: Implement sub-procedure that allows a bigger delay? Implement timeout?
+        }
+        return true;
+    }
 
     // Automatic
     void carBackUp(uint8_t carIndex){
         unsigned long timeStart = millis();
-        uint8_t backward[1] = {0x01};
-        uint8_t shortBreak[1] = {0x04};
-        Serial.println("LS is");
-        Serial.println(getCartLeftLS());
-        ESPNow::send(macs[CAR1], backward, 1);
-        while(getCartLeftLS()) {
+        ESPNow::send(macs[carIndex], CarCmd(CarCommand::backward), 4);
+        while(getCartLaser()) {
             yield();
             if(millis() - timeStart > 500) {
                 timeStart = millis();
-                ESPNow::send(macs[CAR1], backward, 1);
+                ESPNow::send(macs[carIndex], CarCmd(CarCommand::backward), 4);
             }
         }
-        ESPNow::send(macs[CAR1], shortBreak, 1);
+        ESPNow::send(macs[carIndex], CarCmd(CarCommand::stop), 4);
     }
-    void carEnterElevator(uint8_t carIndex);
-    void carEnterLot(uint8_t carIndex);
+    void carEnterElevator(uint8_t carIndex) {
+        unsigned long timeStart = millis();
+        ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), 4);
+        while(getLotLaser()) {
+            yield();
+            if(millis() - timeStart > 500) {
+                timeStart = millis();
+                ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), 4);
+            }
+        }
+        ESPNow::send(macs[carIndex], CarCmd(CarCommand::stop), 4);
+    }
+    void carEnterLot(uint8_t carIndex) {
+        unsigned long timeStart = millis();
+        debugSendLn("Car back up");
+        ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), 4);
+        while(getElevatorLaser()) {
+            yield();
+            if(millis() - timeStart > 500) {
+                timeStart = millis();
+                ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), 4);
+            }
+        }
+        ESPNow::send(macs[carIndex], CarCmd(CarCommand::stop), 4);
+    }
 //
-//    // Communication
-    bool sendCarCommand(uint8_t carIndex, uint8_t *commandToSend, uint16_t noResponseTimeout = 500) {  // Send the command to a car, and wait for an ack to make sure the command went through
-        ESPNow::send(macs[carIndex], commandToSend, 1);
-
-        // TODO
-        return true;
-    }
     bool masterMessageHandler();
     bool carMessageHandler(int carIndex);
 
@@ -129,9 +171,8 @@ public:
 //    void carBackward(uint8_t carIndex);
 
 private:
+    uint8_t thisFloor;
     int16_t stepperPosition;
-    bool carMessage;
-    bool carAck;
     FloorStatus myStatus;
 };
 

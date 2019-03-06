@@ -58,6 +58,18 @@ void logger::printESPNowMsg(bool dataType, uint8_t *mac, uint8_t *data, uint8_t 
     printStr("\n");
 }
 
+String logger::getByte(const uint8_t &aByte) {
+    switch(aByte) {
+        case 0x00: return "<00>";
+        case 0x01: return "<01>";
+        case 0x02: return "<02>";
+        case 0x03: return "<03>";
+        case 0x04: return "<04>";
+        case 0x05: return "<05>";
+        case 0x06: return "<06>";
+        default: return "<OutOfRange>";
+    }
+}
 void logger::assert(bool &result, String &errorMsg) {
     if(!result) {
         printStr("[AssertionERROR]\t" + errorMsg);

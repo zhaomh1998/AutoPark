@@ -25,6 +25,7 @@ public:
     static void printMac(const uint8_t *macAddr);
     static void printESPNowMsg(bool dataType, uint8_t *mac, uint8_t *data, uint8_t &len);
     static void assert(bool &result, String &errorMsg);
+    static String getByte(const uint8_t &aByte);
 
     RGB statusLED;
 

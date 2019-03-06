@@ -28,13 +28,8 @@ bool AutoParkCar::messageHandler() {  // override this method in subclasses
         return false;
     else {
         printESPNowMsg(RECEIVE, messageOrigin, messageData, messageLen);
-        if(messageLen == 1) {
-            commandDecoder(messageData);
-            masterMacAddr = messageOrigin;  // Switch master in case a new master appears
-        }
-        else{
-            log(WARNING, "^^^^^Unexpected ESPNow Message!\n");
-        }
+        masterMacAddr = messageOrigin;  // Switch master in case a new master appears
+        commandDecoder(messageData);
         messagePending = false;
         return true;
     }
@@ -42,28 +37,23 @@ bool AutoParkCar::messageHandler() {  // override this method in subclasses
 }
 
 void AutoParkCar::commandDecoder(const uint8_t *data) {
-    if(data[0] == 0x04) { // Stop
+    if(!debugAssert(data[0] == TARGET_CAR, "Error 301 Unexpected data[0]: " + getByte(data[0]))) return;
+    if(data[1] == CAR_STOP) { // Stop
         shortBreak();
         sendAck(true);
     }
     else if (allowMotorChange()) {
         statusLED.processing();
         bool successFlag = true;
-        switch (data[0]) {  // DATA has length not 0?
-            case 0x00:
+        switch (data[1]) {  // DATA has length not 0?
+            case CAR_FORWARD:
                 forward();
                 break;
-            case 0x01:
+            case CAR_BACKWARD:
                 backward();
                 break;
-            case 0x02:
-                left();
-                break;
-            case 0x03:
-                right();
-                break;
             default:
-                log(WARNING, "Unresolved command received in car\n");
+                debugSendLn("Error 302 Unresolved command data[1] received in car" + getByte(data[1]));
                 successFlag = false;
         }
         sendAck(successFlag);
@@ -74,7 +64,7 @@ void AutoParkCar::commandDecoder(const uint8_t *data) {
 
 void AutoParkCar::sendAck(bool status) {
     log(PROCESSED, "Motor Ack!\n");
-    send(Ack(status), 1);
+    send(Ack(status), 2);
 }
 
 
@@ -99,6 +89,7 @@ void AutoParkCar::autoStop() {
 
 void AutoParkCar::forward() {
     log(PROCESSED, "Forward\n");
+    debugSendLn("Forward");
     motorRunning = true;
     lastRunMotorTime = millis();
     digitalWrite(MOTOR_A_CONTROL_1, LOW);
@@ -109,6 +100,7 @@ void AutoParkCar::forward() {
 
 void AutoParkCar::backward() {
     log(PROCESSED, "Backward\n");
+    debugSendLn("Backward");
     motorRunning = true;
     lastRunMotorTime = millis();
     digitalWrite(MOTOR_A_CONTROL_1, HIGH);
@@ -117,28 +109,29 @@ void AutoParkCar::backward() {
     digitalWrite(MOTOR_B_CONTROL_2, LOW);
 }
 
-void AutoParkCar::left() {
-    log(PROCESSED, "Left\n");
-    motorRunning = true;
-    lastRunMotorTime = millis();
-    digitalWrite(MOTOR_A_CONTROL_1, LOW);
-    digitalWrite(MOTOR_A_CONTROL_2, HIGH);
-    digitalWrite(MOTOR_B_CONTROL_1, HIGH);
-    digitalWrite(MOTOR_B_CONTROL_2, LOW);
-}
-
-void AutoParkCar::right() {
-    log(PROCESSED, "Right\n");
-    motorRunning = true;
-    lastRunMotorTime = millis();
-    digitalWrite(MOTOR_A_CONTROL_1, HIGH);
-    digitalWrite(MOTOR_A_CONTROL_2, LOW);
-    digitalWrite(MOTOR_B_CONTROL_1, LOW);
-    digitalWrite(MOTOR_B_CONTROL_2, HIGH);
-}
+//void AutoParkCar::left() {
+//    log(PROCESSED, "Left\n");
+//    motorRunning = true;
+//    lastRunMotorTime = millis();
+//    digitalWrite(MOTOR_A_CONTROL_1, LOW);
+//    digitalWrite(MOTOR_A_CONTROL_2, HIGH);
+//    digitalWrite(MOTOR_B_CONTROL_1, HIGH);
+//    digitalWrite(MOTOR_B_CONTROL_2, LOW);
+//}
+//
+//void AutoParkCar::right() {
+//    log(PROCESSED, "Right\n");
+//    motorRunning = true;
+//    lastRunMotorTime = millis();
+//    digitalWrite(MOTOR_A_CONTROL_1, HIGH);
+//    digitalWrite(MOTOR_A_CONTROL_2, LOW);
+//    digitalWrite(MOTOR_B_CONTROL_1, LOW);
+//    digitalWrite(MOTOR_B_CONTROL_2, HIGH);
+//}
 
 void AutoParkCar::shortBreak() {
     log(PROCESSED, "Break\n");
+    debugSendLn("Break");
     motorRunning = false;
     digitalWrite(MOTOR_A_CONTROL_1, HIGH);
     digitalWrite(MOTOR_A_CONTROL_2, HIGH);

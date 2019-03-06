@@ -87,7 +87,7 @@ public:
         if(!result) {
             String message = "[AssertionERROR]\t" + errorMsg;
             printStr(message);
-            debugSend(message);
+            debugSendLn(message);
             return false;
         }
         return true;

@@ -3,6 +3,9 @@
 //
 
 #include "AutoParkFloor.h"
+int16_t AutoParkFloor::targetStepCount;
+int16_t AutoParkFloor::currentStepCount;
+Ticker AutoParkFloor::stepperCallbacker;
 
 AutoParkFloor::AutoParkFloor(uint8_t floorIndex, uint8_t masterIndex, bool debugMode) : slave(floorIndex, masterIndex, debugMode){
     carMessage = false;
@@ -10,14 +13,29 @@ AutoParkFloor::AutoParkFloor(uint8_t floorIndex, uint8_t masterIndex, bool debug
     addPeer(CAR1);
     addPeer(CAR2);
     addPeer(CAR3);
+    thisFloor = floorIndex;
+    // Communication between floor 1 and others for the elevator laser
+    if(thisFloor == FLOOR1) {
+        pinMode(ELEVATOR_PHOTORESISTOR_3, INPUT);
+        addPeer(FLOOR2);
+        addPeer(FLOOR3);
+    }
+    else
+        addPeer(FLOOR1);
+
     pinMode(CART_PHOTORESISTOR_1, INPUT);
     pinMode(LOT_PHOTORESISTOR_2, INPUT);
     pinMode(CART_LS_R, INPUT);
     pinMode(CART_LS_L, INPUT);
-//    if(!calibrateSensor()) {
-//        statusLED.error();
-//        debugSendLn("Error");
-//    }
+    pinMode(STEPPER_DIR_PIN, OUTPUT);
+    pinMode(STEPPER_STEP_PIN, OUTPUT);
+    // Calibrate sensor
+    if(!calibrateSensor()) {
+        statusLED.error();
+        debugSendLn("Error");
+    }
+
+//    calibrateCart();
 }
 
 bool AutoParkFloor::messageHandler() {
@@ -25,12 +43,17 @@ bool AutoParkFloor::messageHandler() {
         return false;
     else {
         int messageSender = whoIsThisIndex(messageOrigin);
+        Serial.println("Sender" + (String) messageSender + "isMaster?" + (String) (messageSender == MASTER));
+        printESPNowMsg(RECEIVE, messageOrigin, messageData, messageLen);
         switch(messageSender) {
             case MASTER: masterMessageHandler(); break;
             case CAR1: carMessageHandler(CAR1); break;
             case CAR2: carMessageHandler(CAR2); break;
             case CAR3: carMessageHandler(CAR3); break;
-            default: debugSend("Error 200 Unexpected Sender: " + (String) messageSender);
+            case FLOOR1: // TODO
+            case FLOOR2: ESPNow::send(macs[FLOOR2], Ack(getElevatorLaser()), 4); break;
+            case FLOOR3: ESPNow::send(macs[FLOOR3], Ack(getElevatorLaser()), 4); break;
+            default: debugSendLn("Error 200 Unexpected Sender: " + (String) messageSender);
         }
         messagePending = false;
         return true;
@@ -38,23 +61,24 @@ bool AutoParkFloor::messageHandler() {
 }
 
 bool AutoParkFloor::masterMessageHandler() {
+    Serial.println("master message handler");
     if(!debugAssert(messageLen == 4,
             ((String)"Received command from master with invalid length, expected 4, received" + (String)messageLen))) return false;
     if(!debugAssert(messageData[0] == TARGET_FLOOR, "Error 206 Unexpected Message Target")) return false;  // Target not floor
     switch(messageData[1]) { // Message target
         case FLOOR_STATUS_UPDATE_CMD:  // Status Update
             if(messageData[2] == FLOOR_STATUS_REQUEST) reportStatus();
-            else {debugSend("Error 201 Unexpected Data[2]"); return false;}
+            else {debugSendLn("Error 201 Unexpected Data[2]"); return false;}
             break;
         case FLOOR_CALIBRATE_CMD:  // Calibration
             send(Ack(calibrateCart()), 2); break;
         case FLOOR_MOVE_CART_CMD:  // Move cart
             switch(messageData[2]) {
-                case FLOOR_ELEVATOR: send(Ack(moveCartTo(ELEVATOR_POS)), 2); break;
-                case FLOOR_LOT1: send(Ack(moveCartTo(LOT1_POS)), 2); break;
-                case FLOOR_LOT2: send(Ack(moveCartTo(LOT2_POS)), 2); break;
-                case FLOOR_LOT3: send(Ack(moveCartTo(LOT3_POS)), 2); break;
-                default: debugSend("Error 202 Unexpected Data[2]"); return false;
+                case FLOOR_ELEVATOR: send(Ack(moveCartTo(ELEVATOR_POS)), 4); break;
+                case FLOOR_LOT1: send(Ack(moveCartTo(LOT1_POS)), 4); break;
+                case FLOOR_LOT2: send(Ack(moveCartTo(LOT2_POS)), 4); break;
+                case FLOOR_LOT3: send(Ack(moveCartTo(LOT3_POS)), 4); break;
+                default: debugSendLn("Error 202 Unexpected Data[2]"); return false;
             }
             break;
         case FLOOR_MOVE_CAR_CMD:  // Move Car
@@ -63,22 +87,22 @@ bool AutoParkFloor::masterMessageHandler() {
                 case FLOOR_CAR1: carIndex = CAR1; break;
                 case FLOOR_CAR2: carIndex = CAR2; break;
                 case FLOOR_CAR3: carIndex = CAR3; break;
-                default: debugSend("Error 203 Unexpected Data[2]"); return false;
+                default: debugSendLn("Error 203 Unexpected Data[2]"); return false;
             }
             switch(messageData[3]) {
                 case FLOOR_CAR_IN_LOT: carEnterLot(carIndex); break;
                 case FLOOR_CAR_IN_ELEV: carEnterElevator(carIndex); break;
                 case FLOOR_CAR_TO_CART: carBackUp(carIndex); break;
-                default: debugSend("Error 204 Unexpected Data[3]"); return false;
+                default: debugSendLn("Error 204 Unexpected Data[3]"); return false;
             }
             break;
-        default: debugSend("Error 205 Unexpected Data[1]"); return false;
+        default: debugSendLn("Error 205 Unexpected Data[1]"); return false;
     }
     return true;
 }
 
 bool AutoParkFloor::carMessageHandler(int carIndex) {
-    debugAssert(messageLen == 4, ((String)"Received command from master with invalid length, expected 4, received" + (String)messageLen));
+    debugAssert(messageLen == 2, ((String)"Received command from car with invalid length, expected 2, received" + (String)messageLen));
     switch(messageData[0]) { // Message target
         case TARGET_ACK:
             carMessage = true;
@@ -88,10 +112,41 @@ bool AutoParkFloor::carMessageHandler(int carIndex) {
                 case ACK_FALSE:
                     carAck = false; break;
                 default:
-                    debugSend("Error 207 Unexpected Ack Data[1]"); return false;
+                    debugSendLn("Error 207 Unexpected Ack Data[1]"); return false;
             }
             break;
-        default: debugSend("Error 208 Unexpected Data[0] from car"); return false;
+        default: debugSendLn("Error 208 Unexpected Data[0] from car"); return false;
     }
+    return true;
+}
+
+bool AutoParkFloor::calibrateSensor() {
+//    std::vector <bool> calibrated = {false, false, false, false};
+//    while(!std::all_of(calibrated.begin(), calibrated.end(), [](bool v) { return v; })) {  // while not all calibrated
+//        yield();
+//        if(getCartLeftLS() && !calibrated[0]) {
+//            statusLED.processing();
+//            calibrated[0] = true;
+//            debugSendLn("CartLeftLS Calibrated");
+//        }
+//        if(getCartRightLS() && !calibrated[1]) {
+//            statusLED.processing();
+//            calibrated[1] = true;
+//            debugSendLn("CartRightLS Calibrated");
+//
+//        }
+//        if(getCartLaser() && !calibrated[2]) {
+//            statusLED.processing();
+//            calibrated[2] = true;
+//            debugSendLn("CartLaser Calibrated");
+//
+//        }
+//        if(getLotLaser() && !calibrated[3]) {
+//            statusLED.processing();
+//            calibrated[3] = true;
+//            debugSendLn("LotLaser Calibrated");
+//        }
+//    }
+    debugSendLn("Sensors All calibrated");
     return true;
 }
