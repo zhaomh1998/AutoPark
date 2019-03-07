@@ -142,11 +142,12 @@ public:
         }
         ESPNow::send(macs[carIndex], CarCmd(CarCommand::stop), MSG_LEN);
     }
+
     void carEnterLot(uint8_t carIndex) {
         unsigned long timeStart = millis();
         debugSendLn("Car back up");
         ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), MSG_LEN);
-        while(!getElevatorLaser()) {
+        while(!getLotLaser()) {
             yield();
             if(millis() - timeStart > 500) {
                 timeStart = millis();
