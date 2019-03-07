@@ -13,6 +13,14 @@
 #define CAR_COMMAND 0
 #define CART_COMMAND 1
 
+#define FLOOR1_STEPPER_EN 12
+#define FLOOR2_STEPPER_EN 13
+#define FLOOR3_STEPPER_EN 14
+#define STEPPER_ON 0
+#define STEPPER_OFF 1
+
+#define ELEVATOR_PHOTORESISTOR 16
+
 enum class CommandStatus {
     APDisconnected,
     APCalibrating,
@@ -54,8 +62,37 @@ public:
         if(!messagePending)
             return false;
         else {
-//            printESPNowMsg(RECEIVE, messageOrigin, messageData, messageLen);
-//            int sender = whoIsThisIndex(messageOrigin);
+            printESPNowMsg(RECEIVE, messageOrigin, messageData, messageLen);
+            int sender = whoIsThisIndex(messageOrigin);
+            switch(messageData[0]) {
+                case TARGET_ACK:
+                    if(sender == cmdTarget) {cmdACK = true; cmdACKResult = (messageData[1] == ACK_TRUE); }
+                    else debugSendLn("ERROR 209 Unexpected ack sender:" + (String) sender);
+                    break;
+
+                case TARGET_FLOOR:
+                    switch(messageData[1]) {
+                        case FLOOR_STATUS_GET_ELEV_LASER: send(macs[sender], Ack((bool) digitalRead(ELEVATOR_PHOTORESISTOR)), MSG_LEN); break;
+                        case FLOOR_STATUS_TURN_ON_STEPPER:
+                            switch(sender) {
+                                case FLOOR1: digitalWrite(FLOOR1_STEPPER_EN, STEPPER_ON); break;
+                                case FLOOR2: digitalWrite(FLOOR2_STEPPER_EN, STEPPER_ON); break;
+                                case FLOOR3: digitalWrite(FLOOR3_STEPPER_EN, STEPPER_ON); break;
+                                default: debugSendLn("ERROR 211 Unexpected sender:" + (String) sender);
+                            }
+                            break;
+                        case FLOOR_STATUS_TURN_OFF_STEPPER:
+                            switch(sender) {
+                                case FLOOR1: digitalWrite(FLOOR1_STEPPER_EN, STEPPER_OFF); break;
+                                case FLOOR2: digitalWrite(FLOOR2_STEPPER_EN, STEPPER_OFF); break;
+                                case FLOOR3: digitalWrite(FLOOR3_STEPPER_EN, STEPPER_OFF); break;
+                                default: debugSendLn("ERROR 212 Unexpected sender:" + (String) sender);
+                            }
+                            break;
+                    }
+                default:
+                    debugSendLn("ERROR 210 Unexpected MSG Target" + getByte(messageData[0]));
+            }
 //            for(Floor nthFloor : floorList) {
 //                if(nthFloor.index == sender) {
 //                    floorMessageHandler(nthFloor, messageData, messageLen);
@@ -84,6 +121,9 @@ public:
 protected:
     std::vector <Floor> floorList;
     SerialCommand myRIO;
+    int cmdTarget;
+    bool cmdACK;
+    bool cmdACKResult;
 };
 
 

@@ -14,7 +14,7 @@ char *AutoParkMaster::RIOArg3;
 
 
 
-AutoParkMaster::AutoParkMaster(uint8_t myMacIndex, bool debug) : master(myMacIndex, debug), myRIO() {
+AutoParkMaster::AutoParkMaster(uint8_t myMacIndex, bool debug) : master(myMacIndex, debug), myRIO(), cmdTarget(0), cmdACK(false) {
     statusLED.processing();
     // Add floors
     addFloor(FLOOR1);
@@ -59,7 +59,6 @@ void AutoParkMaster::cartCommandHandler() {
         RIOArg3 = masterInstancePtr->myRIO.next();
     }
 }
-
 void AutoParkMaster::unknownCommandHandler(const char *theCmd){
     String errorMsg = "ERROR 12 Unknown command: " + (String)theCmd;
     Serial.println(errorMsg);
@@ -82,7 +81,6 @@ void AutoParkMaster::handleRIOCommand() {
                 floorNum = atoi(floorArg);
                 carIndex = atoi(carArg);
                 inOrOut = atoi(inOutArg);
-                // TODO: Send this to floor
                 debugSendLn("Sending car cmd: Floor" + String(floorNum) + " Car:" + String(carIndex) + " InorOut" +
                             String(inOrOut));
 
@@ -111,6 +109,15 @@ void AutoParkMaster::handleRIOCommand() {
                 }
 
                 send(macs[floorIndex], FloorCommand(FloorOperation::moveCar, operatingCar, carTarget), MSG_LEN);
+                // Wait for floor ACK
+                cmdTarget = floorIndex;
+                cmdACK = false;
+                while(!cmdACK) {
+                    messageHandler();
+                    yield();
+                    // TODO: If Error happens: look at cmdACKResult
+                }
+                Serial.println("DONE");
             }
             else {  // Some arguments missing
                 int emptyCommandCount = 0;
@@ -154,6 +161,15 @@ void AutoParkMaster::handleRIOCommand() {
                 }
 
                 send(macs[floorIndex], FloorCommand(FloorOperation::moveCart, operatingCar), MSG_LEN);
+                // Wait for floor ACK
+                cmdTarget = floorIndex;
+                cmdACK = false;
+                while(!cmdACK) {
+                    messageHandler();
+                    yield();
+                    // TODO: If Error happens: look at cmdACKResult
+                }
+                Serial.println("DONE");
             }
             else {  // Some arguments missing
                 int emptyCommandCount = 0;

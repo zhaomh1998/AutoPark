@@ -43,6 +43,8 @@
 #define FLOOR_STATUS_BUSY 0x02
 #define FLOOR_STATUS_ERROR 0x03
 #define FLOOR_STATUS_GET_ELEV_LASER 0x03
+#define FLOOR_STATUS_TURN_ON_STEPPER 0x04
+#define FLOOR_STATUS_TURN_OFF_STEPPER 0x05
 // For MoveCart
 #define FLOOR_ELEVATOR 0x00
 #define FLOOR_LOT1 0x01
@@ -83,7 +85,7 @@ public:
 
     // Floor command set
     enum class FloorOperation{statusUpdate, calibration, moveCart, moveCar};
-    enum class FloorArg2{NoArg, request, ready, working, error, getElevatorLaser, // Status Update Param
+    enum class FloorArg2{NoArg, request, ready, working, error, getElevatorLaser, turnOnStepper, turnOffStepper, // Status Update Param
                         elevator, lot1, lot2, lot3, // MoveCart Param
                         car1, car2, car3}; // MoveCar Param
     enum class FloorCarDestination{NoArg, inLot, inElev, toCart};
@@ -155,11 +157,11 @@ public:
         return nthIndex;
     }
 
-    void printMac(uint8 *macAddr) {
-        for (uint8_t macIndex = 0; macIndex < 6; macIndex++) {
-            Serial.printf("%x ", macAddr[macIndex]);
-        }
-    }
+//    void printMac(uint8 *macAddr) {
+//        for (uint8_t macIndex = 0; macIndex < 6; macIndex++) {
+//            Serial.printf("%x ", macAddr[macIndex]);
+//        }
+//    }
 };
 
 

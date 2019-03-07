@@ -16,9 +16,7 @@ public:
     }
 
     void ready() {
-        Serial.println("RGBReady-1");
         setColor(0, 35, 0);
-        Serial.println("RGBReady-2");
     }
 
     void processing() {

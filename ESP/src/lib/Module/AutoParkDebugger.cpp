@@ -22,7 +22,7 @@ AutoParkDebugger::AutoParkDebugger(uint8_t debuggerIndex) : AutoParkConfig() {
         if (currentIndex == debuggerIndex)
             continue;  // skip the exclude index
         esp_now_add_peer(macs[currentIndex], ESP_NOW_ROLE_SLAVE, WIFI_CHANNEL, nullptr, 0);
-        Serial.println("[INFO]" + whoIsThis(macs[currentIndex]) + " Peer Added!");
+//        Serial.println("[INFO]" + whoIsThis(macs[currentIndex]) + " Peer Added!");
     }
 
     // Set msg callback

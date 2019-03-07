@@ -30,8 +30,6 @@ ESPNow::ESPNow(uint8_t deviceName, bool debug = false) : logger(debug), isDebugM
 
 void ESPNow::msgCallback(uint8_t *mac, uint8_t *data, uint8_t len) {
     messagePending = true;
-    Serial.println(messagePending);
-    // TODO: did I copy the content?
 //    Serial.printf("\nReceived from %x:%x:%x:%x:%x:%x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
     for(int nthByte = 0; nthByte < 6; nthByte++) {
         messageOrigin[nthByte] = mac[nthByte];

@@ -25,12 +25,14 @@ uint8_t *AutoParkConfig::FloorCommand(AutoParkConfig::FloorOperation anOp, AutoP
         case FloorArg2::working:  theCmd[2] = FLOOR_STATUS_BUSY; break;
         case FloorArg2::error:    theCmd[2] = FLOOR_STATUS_ERROR; break;
         case FloorArg2::getElevatorLaser: theCmd[2] = FLOOR_STATUS_GET_ELEV_LASER; break;
-            // For MoveCart
+        case FloorArg2::turnOnStepper:    theCmd[2] = FLOOR_STATUS_TURN_ON_STEPPER; break;
+        case FloorArg2::turnOffStepper:   theCmd[2] = FLOOR_STATUS_TURN_OFF_STEPPER; break;
+        // For MoveCart
         case FloorArg2::elevator: theCmd[2] = FLOOR_ELEVATOR; break;
         case FloorArg2::lot1:     theCmd[2] = FLOOR_LOT1; break;
         case FloorArg2::lot2:     theCmd[2] = FLOOR_LOT2; break;
         case FloorArg2::lot3:     theCmd[2] = FLOOR_LOT3; break;
-            // For MoveCar
+        // For MoveCar
         case FloorArg2::car1:     theCmd[2] = FLOOR_CAR1; break;
         case FloorArg2::car2:     theCmd[2] = FLOOR_CAR2; break;
         case FloorArg2::car3:     theCmd[2] = FLOOR_CAR3; break;
