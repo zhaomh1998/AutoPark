@@ -19,10 +19,11 @@
 #define STEPPER_STEP_PIN 4
 #define STEPPER_LEFT 0
 #define STEPPER_RIGHT 1
+#define CALIB_BACKUP_DISTANCE 100
 #define ELEVATOR_POS 0
-#define LOT1_POS 1
-#define LOT2_POS 2
-#define LOT3_POS 3
+#define LOT1_POS 615
+#define LOT2_POS 1135
+#define LOT3_POS 1665
 
 #include "lib/Communication/slave.h"
 #include <Ticker.h>  // Timer library for driving stepper
@@ -52,19 +53,21 @@ public:
     }
 
     // Stepper
+    static int16_t stepperPosition;
     static int16_t targetStepCount;
     static int16_t currentStepCount;
+    static int stepperDirection;
     static Ticker stepperCallbacker;
 
     static void ICACHE_RAM_ATTR singleStep() {
         digitalWrite(STEPPER_STEP_PIN, HIGH);
-        delayMicroseconds(500);
+        delayMicroseconds(1000);
         digitalWrite(STEPPER_STEP_PIN, LOW);
-        currentStepCount++;
-        if(currentStepCount % 500 == 0) {
-            yield();
-        }
-        if(currentStepCount >= targetStepCount)
+        stepperPosition += stepperDirection;
+//        if(currentStepCount % 500 == 0) {
+//            yield();
+//        }
+        if(stepperPosition == targetStepCount)
             stepperCallbacker.detach();
     }
 
@@ -73,58 +76,90 @@ public:
         digitalWrite(STEPPER_STEP_PIN, HIGH);
         delayMicroseconds(1000);
         digitalWrite(STEPPER_STEP_PIN, LOW);
-        currentStepCount++;
+        currentStepCount ++;
 //        if(currentStepCount % 500 == 0) {
 //            yield();
 //        }
         if(digitalRead(CART_LS_L) || currentStepCount >= targetStepCount) {
             stepperCallbacker.detach();
-            calibFinished = true;
         }
     }
 
     bool moveCartTo(int16_t aPos) {
-        if(!debugAssert(myStatus  == FloorStatus::notCalibrated,
+        if(!debugAssert(myStatus != FloorStatus::notCalibrated,
                 "Error 209 Attempting to move cart before calibration!")) return false;
-        if(aPos > stepperPosition)
-            digitalWrite(STEPPER_DIR_PIN, STEPPER_LEFT);
-        else if(aPos < stepperPosition)
+        uint8_t responsiveLS;
+        if(aPos > stepperPosition) {
             digitalWrite(STEPPER_DIR_PIN, STEPPER_RIGHT);
+            responsiveLS = CART_LS_R;
+            stepperDirection = 1;
+        }
+        else if(aPos < stepperPosition) {
+            digitalWrite(STEPPER_DIR_PIN, STEPPER_LEFT);
+            Serial.println("Going left");
+            responsiveLS = CART_LS_L;
+            stepperDirection = -1;
+        }
         else
             return true;
 
-        targetStepCount = abs(aPos - stepperPosition);
-        currentStepCount = 0;
-        stepperCallbacker.attach_ms(1, singleStep);
-        while(currentStepCount != targetStepCount) {
+        myStatus = FloorStatus::working;
+        targetStepCount = aPos;
+        debugSendLn("Stepper calibration started");
+        turnOnStepper();
+        stepperCallbacker.attach_ms(2, singleStep);
+        while(stepperPosition != targetStepCount) {
+            if(digitalRead(responsiveLS)) {
+                stepperCallbacker.detach();
+                debugSendLn("Error 214 Warning! A LS is triggered!");
+                break;
+            }
             yield();
-            // TODO: Implement sub-procedure that allows a bigger delay? Implement timeout?
         }
+        debugSendLn("Stepper finished");
+        turnOffStepper();
+        myStatus = FloorStatus::ready;
         return true;
     }
+
     bool calibrateCart() {
-//        Serial.println("Stepper calibrating");
         digitalWrite(STEPPER_DIR_PIN, STEPPER_LEFT);
         myStatus = FloorStatus::notCalibrated;
-        calibFinished = false;
         currentStepCount = 0;
         targetStepCount = 200;
         debugSendLn("Stepper calibration started");
-//        stepperCallbacker.attach_ms(2, calibrateCartCallback);
-//        while(!calibFinished) {
-//            if(currentStepCount >= targetStepCount && !getCartLeftLS()) {
-//                debugSendLn("Stepper calib reset");
-//                yield();
-//                currentStepCount = 0;
-//                stepperCallbacker.attach_ms(2, calibrateCartCallback);
-//            }
-//            // TODO: Implement sub-procedure that allows a bigger delay? Implement timeout?
-//        }
+        turnOnStepper();
+        stepperCallbacker.attach_ms(2, calibrateCartCallback);
+        while(!getCartLeftLS()) {
+            if(currentStepCount >= targetStepCount && !getCartLeftLS()) {
+                Serial.println("Not finished");
+                currentStepCount = 0;
+                stepperCallbacker.attach_ms(2, calibrateCartCallback);
+            }
+            yield();
+        }
+        turnOffStepper();
+        // Step 2: back up
+        delay(200);
+        stepperPosition = 0;
+        stepperDirection = 1;
+        digitalWrite(STEPPER_DIR_PIN, STEPPER_RIGHT);
+        turnOnStepper();
+        targetStepCount = CALIB_BACKUP_DISTANCE;
+
+        stepperCallbacker.attach_ms(2, singleStep);
+        while(stepperPosition < targetStepCount) {
+            yield();
+        }
+
         debugSendLn("Stepper calibrated");
-//        digitalWrite(STEPPER_ENABLE, STEPPER_OFF);
-//        myStatus = FloorStatus::ready;
+        stepperPosition = 0;
+        myStatus = FloorStatus::ready;
         return true;
     }
+
+    void turnOnStepper() {send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::turnOnStepper), MSG_LEN);}
+    void turnOffStepper() {send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::turnOffStepper), MSG_LEN);}
 
     // Automatic
     bool carBackUp(uint8_t carIndex){
@@ -158,9 +193,18 @@ public:
 
     bool carEnterLot(uint8_t carIndex) {
         unsigned long timeStart = millis();
-        debugSendLn("Car back up");
+        debugSendLn("Car Into Lot");
         ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), MSG_LEN);
         while(!getLotLaser()) {
+            yield();
+            if(millis() - timeStart > 500) {
+                timeStart = millis();
+                ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), MSG_LEN);
+            }
+        }
+        ESPNow::send(macs[carIndex], CarCmd(CarCommand::stop), MSG_LEN);
+        delay(500);
+        while(getLotLaser()) {
             yield();
             if(millis() - timeStart > 500) {
                 timeStart = millis();
@@ -192,7 +236,6 @@ public:
 
 private:
     uint8_t thisFloor;
-    int16_t stepperPosition;
     FloorStatus myStatus;
     bool carMessage;
     bool carAck;

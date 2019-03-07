@@ -3,8 +3,10 @@
 //
 
 #include "AutoParkFloor.h"
+int16_t AutoParkFloor::stepperPosition;
 int16_t AutoParkFloor::targetStepCount;
 int16_t AutoParkFloor::currentStepCount;
+int AutoParkFloor::stepperDirection;
 Ticker AutoParkFloor::stepperCallbacker;
 bool AutoParkFloor::calibFinished;
 
@@ -27,7 +29,17 @@ AutoParkFloor::AutoParkFloor(uint8_t floorIndex, uint8_t masterIndex, bool debug
         statusLED.error();
         debugSendLn("Error");
     }
+    delay(500);
     calibrateCart();
+    delay(1000);
+    moveCartTo(LOT1_POS);
+    delay(1000);
+    carEnterLot(CAR1);
+    moveCartTo(LOT2_POS);
+    delay(1000);
+    moveCartTo(LOT1_POS);
+    delay(1000);
+    carBackUp(CAR1);
 }
 
 bool AutoParkFloor::messageHandler() {
