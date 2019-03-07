@@ -16,9 +16,12 @@ char *AutoParkMaster::RIOArg3;
 
 AutoParkMaster::AutoParkMaster(uint8_t myMacIndex, bool debug) : master(myMacIndex, debug), myRIO(), cmdTarget(0), cmdACK(false) {
     statusLED.processing();
+    pinMode(FLOOR1_STEPPER_EN, OUTPUT);
+    pinMode(FLOOR2_STEPPER_EN, OUTPUT);
+    pinMode(FLOOR3_STEPPER_EN, OUTPUT);
+    pinMode(ELEVATOR_PHOTORESISTOR, INPUT);
     // Add floors
-    addFloor(FLOOR1);
-
+//    addFloor(FLOOR1);
     // Initialize myRIO
     myRIO.addCommand("CAR", carCommandHandler);
     myRIO.addCommand("CART", cartCommandHandler);

@@ -64,14 +64,14 @@ public:
         else {
             printESPNowMsg(RECEIVE, messageOrigin, messageData, messageLen);
             int sender = whoIsThisIndex(messageOrigin);
-            switch(messageData[0]) {
+            switch(messageData[0]) {  // Target
                 case TARGET_ACK:
                     if(sender == cmdTarget) {cmdACK = true; cmdACKResult = (messageData[1] == ACK_TRUE); }
                     else debugSendLn("ERROR 209 Unexpected ack sender:" + (String) sender);
                     break;
-
                 case TARGET_FLOOR:
-                    switch(messageData[1]) {
+                    debugAssert(messageData[1] == FLOOR_STATUS_UPDATE_CMD, "Unexpected Floor Operation" + getByte(messageData[0]));  // Op
+                    switch(messageData[2]) {  // Arg2
                         case FLOOR_STATUS_GET_ELEV_LASER: send(macs[sender], Ack((bool) digitalRead(ELEVATOR_PHOTORESISTOR)), MSG_LEN); break;
                         case FLOOR_STATUS_TURN_ON_STEPPER:
                             switch(sender) {
@@ -89,7 +89,9 @@ public:
                                 default: debugSendLn("ERROR 212 Unexpected sender:" + (String) sender);
                             }
                             break;
+                        default: debugSendLn("ERROR 213 Unexpected floor parameter:" + getByte(messageData[1]));
                     }
+                    break;
                 default:
                     debugSendLn("ERROR 210 Unexpected MSG Target" + getByte(messageData[0]));
             }
