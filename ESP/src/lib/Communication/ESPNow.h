@@ -30,13 +30,14 @@ extern "C" {
 
 #include "lib/Util/logger.h"
 
+#define ESPNOW_MSG_BUF_SIZE 512
+extern bool messagePending;
+extern uint8_t messageOrigin[6];
+extern uint8_t messageData[ESPNOW_MSG_BUF_SIZE];
+extern uint8_t messageLen;
+
 class ESPNow : public logger {
 public:
-    // For message callback
-    static bool messagePending;
-    static uint8_t *messageOrigin;
-    static uint8_t *messageData;
-    static uint8_t messageLen;
 
     ESPNow(uint8_t deviceName, bool debug);
     // Added ICACHE_RAM_ATTR, see the following

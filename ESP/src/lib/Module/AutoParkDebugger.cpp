@@ -4,11 +4,6 @@
 
 #include "AutoParkDebugger.h"
 
-bool AutoParkDebugger::messagePending;
-uint8_t *AutoParkDebugger::messageOrigin;
-uint8_t *AutoParkDebugger::messageData;
-uint8_t AutoParkDebugger::messageLen;
-
 AutoParkDebugger::AutoParkDebugger(uint8_t debuggerIndex) : AutoParkConfig() {
     Serial.begin(115200);
     Serial.println();
@@ -37,7 +32,14 @@ AutoParkDebugger::AutoParkDebugger(uint8_t debuggerIndex) : AutoParkConfig() {
 void ICACHE_RAM_ATTR AutoParkDebugger::msgCallback(uint8_t *mac, uint8_t *data, uint8_t len) {
     messagePending = true;
     // TODO: did I copy the content?
-    messageOrigin = mac;
-    messageData = data;
+    for(int nthByte = 0; nthByte < 6; nthByte++) {
+        messageOrigin[nthByte] = mac[nthByte];
+    }
+
+    for(int nthByte = 0; nthByte < len; nthByte++) {
+        messageData[nthByte] = data[nthByte];
+    }
+    //    messageOrigin = mac;
+//    messageData = data;
     messageLen = len;
 }

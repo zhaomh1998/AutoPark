@@ -13,14 +13,16 @@
 #include <lib/Util/AutoParkConfig.h>
 #include <ESP8266WiFi.h>
 #include <espnow.h>
+#define ESPNOW_MSG_BUF_SIZE 512
 
+extern bool messagePending;
+extern uint8_t messageOrigin[6];
+extern uint8_t messageData[ESPNOW_MSG_BUF_SIZE];
+extern uint8_t messageLen;
 
 class AutoParkDebugger : public AutoParkConfig{
 public:
-    static bool messagePending;
-    static uint8_t *messageOrigin;
-    static uint8_t *messageData;
-    static uint8_t messageLen;
+
 
     explicit AutoParkDebugger(uint8_t debuggerIndex);
 

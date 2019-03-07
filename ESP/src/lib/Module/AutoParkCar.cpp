@@ -64,7 +64,7 @@ void AutoParkCar::commandDecoder(const uint8_t *data) {
 
 void AutoParkCar::sendAck(bool status) {
     log(PROCESSED, "Motor Ack!\n");
-    send(Ack(status), 2);
+    send(Ack(status), MSG_LEN);
 }
 
 
@@ -87,9 +87,9 @@ void AutoParkCar::autoStop() {
 }
 
 
-void AutoParkCar::forward() {
-    log(PROCESSED, "Forward\n");
-    debugSendLn("Forward");
+void AutoParkCar::backward() {
+    log(PROCESSED, "Backward\n");
+    debugSendLn("Backward");
     motorRunning = true;
     lastRunMotorTime = millis();
     digitalWrite(MOTOR_A_CONTROL_1, LOW);
@@ -98,9 +98,9 @@ void AutoParkCar::forward() {
     digitalWrite(MOTOR_B_CONTROL_2, HIGH);
 }
 
-void AutoParkCar::backward() {
-    log(PROCESSED, "Backward\n");
-    debugSendLn("Backward");
+void AutoParkCar::forward() {
+    log(PROCESSED, "Forward\n");
+    debugSendLn("Forward");
     motorRunning = true;
     lastRunMotorTime = millis();
     digitalWrite(MOTOR_A_CONTROL_1, HIGH);

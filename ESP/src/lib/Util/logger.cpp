@@ -34,7 +34,6 @@ void logger::log(const uint8_t &logType, const String &text) {
             default:
                 printStr("[ERROR]\tUndefined log type!");
         }
-        Serial.println(3);
         printStr(text);
     }
 }

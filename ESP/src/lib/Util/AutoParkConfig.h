@@ -140,7 +140,7 @@ public:
             uint8_t nthByte;
             for (nthByte = 5; nthByte != UINT8_MAX; nthByte--) {
                 // For each byte
-                Serial.printf("%x - %x\n", macs[nthIndex][nthByte], macAddr[nthByte]);
+//                Serial.printf("%x - %x\n", macs[nthIndex][nthByte], macAddr[nthByte]);
                 if (macs[nthIndex][nthByte] == macAddr[nthByte]) {
                     continue;
                 } else

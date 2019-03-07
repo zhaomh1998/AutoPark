@@ -43,7 +43,7 @@ bool AutoParkFloor::messageHandler() {
         return false;
     else {
         int messageSender = whoIsThisIndex(messageOrigin);
-        Serial.println("Sender" + (String) messageSender + "isMaster?" + (String) (messageSender == MASTER));
+//        Serial.println("Sender" + (String) messageSender + "isMaster?" + (String) (messageSender == MASTER));
         printESPNowMsg(RECEIVE, messageOrigin, messageData, messageLen);
         switch(messageSender) {
             case MASTER: masterMessageHandler(); break;
