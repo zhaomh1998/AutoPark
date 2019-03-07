@@ -69,7 +69,7 @@ void AutoParkMaster::unknownCommandHandler(const char *theCmd){
 void AutoParkMaster::handleRIOCommand() {
     myRIO.readSerial(); // Read serial commands
     if(RIOCommandPending) {
-        if(RIOCommand == CART_COMMAND) {
+        if(RIOCommand == CAR_COMMAND) {
             int floorNum;
             int carIndex;
             int inOrOut;
@@ -85,6 +85,32 @@ void AutoParkMaster::handleRIOCommand() {
                 // TODO: Send this to floor
                 debugSendLn("Sending car cmd: Floor" + String(floorNum) + " Car:" + String(carIndex) + " InorOut" +
                             String(inOrOut));
+
+                int floorIndex;
+                switch(floorNum) {
+                    case 0: floorIndex = FLOOR1; break;
+                    case 1: floorIndex = FLOOR2; break;
+                    case 2: floorIndex = FLOOR3; break;
+                    default: Serial.println("ERROR 12 Unexpected Floor Index:" + (String)floorNum); return;
+                }
+
+                FloorArg2 operatingCar;
+                switch(carIndex) {
+                    case 0: operatingCar = FloorArg2::car1; break;
+                    case 1: operatingCar = FloorArg2::car2; break;
+                    case 2: operatingCar = FloorArg2::car3; break;
+                    default: Serial.println("ERROR 13 Unexpected Car Index:" + (String) carIndex); return;
+                }
+
+                FloorCarDestination carTarget;
+                switch(inOrOut){
+                    case 0: carTarget = FloorCarDestination::toCart; break;
+                    case 1: carTarget = FloorCarDestination::inElev; break;
+                    case 2: carTarget = FloorCarDestination::inLot; break;
+                    default: Serial.println("ERROR 14 Unexpected Car Target:" + (String) inOrOut); return;
+                }
+
+                send(macs[floorIndex], FloorCommand(FloorOperation::moveCar, operatingCar, carTarget), MSG_LEN);
             }
             else {  // Some arguments missing
                 int emptyCommandCount = 0;
@@ -109,6 +135,25 @@ void AutoParkMaster::handleRIOCommand() {
                 targetPosition = atoi(posArg);
                 // TODO: Send this to floor
                 debugSendLn("Sending cart cmd: Floor" + String(floorNum) + " Moveto:" + String(3-targetPosition));
+
+                int floorIndex;
+                switch(floorNum) {
+                    case 0: floorIndex = FLOOR1; break;
+                    case 1: floorIndex = FLOOR2; break;
+                    case 2: floorIndex = FLOOR3; break;
+                    default: Serial.println("ERROR 12 Unexpected Floor Index:" + (String)floorNum); return;
+                }
+
+                FloorArg2 operatingCar;
+                switch(targetPosition) {
+                    case 0: operatingCar = FloorArg2::elevator; break;
+                    case 1: operatingCar = FloorArg2::lot1; break;
+                    case 2: operatingCar = FloorArg2::lot2; break;
+                    case 3: operatingCar = FloorArg2::lot3; break;
+                    default: Serial.println("ERROR 13 Unexpected Cart Destination:" + (String) targetPosition); return;
+                }
+
+                send(macs[floorIndex], FloorCommand(FloorOperation::moveCart, operatingCar), MSG_LEN);
             }
             else {  // Some arguments missing
                 int emptyCommandCount = 0;
