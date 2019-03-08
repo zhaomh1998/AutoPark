@@ -1,6 +1,5 @@
 #ifndef ESP_LOG_H
 #define ESP_LOG_H
-#define SERIAL_BAUD_RATE 115200
 #define STATUS_LED_PIN 15
 #define SEND true
 #define RECEIVE false
@@ -11,6 +10,8 @@
 
 #include "AutoParkConfig.h"
 #include "RGB.h"
+
+extern int SERIAL_BAUD_RATE;
 
 class logger : public AutoParkConfig {
 public:

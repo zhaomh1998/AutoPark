@@ -65,7 +65,8 @@ public:
         if(!messagePending)
             return false;
         else {
-            printESPNowMsg(RECEIVE, messageOrigin, messageData, messageLen);
+            if(isDebugMode)
+                printESPNowMsg(RECEIVE, messageOrigin, messageData, messageLen);
             messagePending = false;
             return true;
         }
