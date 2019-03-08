@@ -2,6 +2,8 @@
 //#include "lib/Module/AutoParkCar.h"
 //
 //AutoParkCar *APCar = nullptr;
+//int SERIAL_BAUD_RATE = 115200;
+//
 //
 //void setup() {
 //    delay(200);

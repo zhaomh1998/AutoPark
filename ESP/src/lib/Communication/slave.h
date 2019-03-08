@@ -18,8 +18,6 @@ public:
 
     void send(uint8_t *msg, uint8_t len) {
         ESPNow::send(masterMacAddr, msg, len);
-        if (isDebugMode)
-            printESPNowMsg(SEND, masterMacAddr, msg, len);
     }
 
 protected:

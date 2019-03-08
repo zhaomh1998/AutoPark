@@ -6,11 +6,10 @@
 
 AutoParkFloor *APFloor = nullptr;
 
+int SERIAL_BAUD_RATE = 115200;
+
 void setup() {
     APFloor = new AutoParkFloor(FLOOR3, MASTER, true);
-//    APFloor->carBackUp(CAR1);
-//    delay(500);
-//    APFloor->carEnterLot(CAR1);
 }
 
 void loop() {

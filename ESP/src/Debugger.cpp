@@ -5,6 +5,8 @@
 //#include "lib/Module/AutoParkDebugger.h"
 //
 //AutoParkDebugger *dbg = nullptr;
+//int SERIAL_BAUD_RATE = 115200;
+//
 //void setup() {
 //    dbg = new AutoParkDebugger(DEBUGGER);
 //}

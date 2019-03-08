@@ -19,7 +19,7 @@
 #define STEPPER_STEP_PIN 4
 #define STEPPER_LEFT 0
 #define STEPPER_RIGHT 1
-#define CALIB_BACKUP_DISTANCE 100
+#define CALIB_BACKUP_DISTANCE 25
 #define ELEVATOR_POS 0
 #define LOT1_POS 615
 #define LOT2_POS 1135
@@ -47,8 +47,9 @@ public:
         send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::getElevatorLaser), MSG_LEN);
             // Waiting for response
         while (!messagePending) { yield(); }
-        if (whoIsThisIndex(messageOrigin) != FLOOR1) {debugSendLn("Error 210 Wrong message origin"); return false;}
+        if (whoIsThisIndex(messageOrigin) != MASTER) {debugSendLn("Error 210 Wrong message origin"); return false;}
         if (messageData[0] != TARGET_ACK) {debugSendLn("Error 211 Wrong message target"); return false;}
+        messagePending = false;
         return messageData[1] == ACK_TRUE;
     }
 
@@ -132,7 +133,7 @@ public:
         stepperCallbacker.attach_ms(2, calibrateCartCallback);
         while(!getCartLeftLS()) {
             if(currentStepCount >= targetStepCount && !getCartLeftLS()) {
-                Serial.println("Not finished");
+                Serial.println(">");
                 currentStepCount = 0;
                 stepperCallbacker.attach_ms(2, calibrateCartCallback);
             }
@@ -151,7 +152,7 @@ public:
         while(stepperPosition < targetStepCount) {
             yield();
         }
-
+        turnOffStepper();
         debugSendLn("Stepper calibrated");
         stepperPosition = 0;
         myStatus = FloorStatus::ready;
@@ -159,7 +160,10 @@ public:
     }
 
     void turnOnStepper() {send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::turnOnStepper), MSG_LEN);}
-    void turnOffStepper() {send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::turnOffStepper), MSG_LEN);}
+    void turnOffStepper() {
+        Serial.println("sending..."); send(FloorCommand(FloorOperation::statusUpdate, FloorArg2::turnOffStepper), MSG_LEN);
+        ESPNow::send(macs[DEBUGGER],FloorCommand(FloorOperation::statusUpdate, FloorArg2::turnOffStepper), MSG_LEN);
+        Serial.println("Turn OFF SENT");}
 
     // Automatic
     bool carBackUp(uint8_t carIndex){
@@ -178,16 +182,18 @@ public:
     }
 
     bool carEnterElevator(uint8_t carIndex) {
+        Serial.println("Start entering elevator");
         unsigned long timeStart = millis();
         ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), MSG_LEN);
-        while(!getLotLaser()) {
-            yield();
+        while(!getElevatorLaser()) {
+            delay(100);
             if(millis() - timeStart > 500) {
                 timeStart = millis();
                 ESPNow::send(macs[carIndex], CarCmd(CarCommand::forward), MSG_LEN);
             }
         }
         ESPNow::send(macs[carIndex], CarCmd(CarCommand::stop), MSG_LEN);
+        Serial.println("Enter ele done");
         return true;
     }
 

@@ -61,6 +61,10 @@ public:
         esp_now_send(mac, msg, len);
     }
 
+    void sendNoDebug(uint8_t *mac, uint8_t *msg, uint8_t len) {
+        esp_now_send(mac, msg, len);
+    }
+
     virtual bool messageHandler() {  // override this method in subclasses
         if(!messagePending)
             return false;
@@ -76,13 +80,13 @@ public:
         String msg = "[" + myName + "]\t" + debugMsg + "\n";
         uint8 buf[msg.length() + 1];
         msg.getBytes(buf, msg.length() + 1);
-        send(macs[DEBUGGER], buf, msg.length() + 1);
+        sendNoDebug(macs[DEBUGGER], buf, msg.length() + 1);
     }
 
     void debugSend(const String &debugMsg) {
         uint8 buf[debugMsg.length() + 1];
         debugMsg.getBytes(buf, debugMsg.length() + 1);
-        send(macs[DEBUGGER], buf, debugMsg.length() + 1);
+        sendNoDebug(macs[DEBUGGER], buf, debugMsg.length() + 1);
     }
 
     bool debugAssert(bool result, String errorMsg) {
