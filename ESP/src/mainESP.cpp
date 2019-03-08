@@ -9,7 +9,6 @@
 //
 //void loop() {
 //    yield();
+//    mainESP->messageHandler();
 //    mainESP->handleRIOCommand();
-////    now.send(macs[CAR1], macs[MY_ROLE], 6);
-////    delay(500);
 //}

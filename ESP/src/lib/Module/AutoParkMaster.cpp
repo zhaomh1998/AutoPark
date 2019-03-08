@@ -20,6 +20,9 @@ AutoParkMaster::AutoParkMaster(uint8_t myMacIndex, bool debug) : master(myMacInd
     pinMode(FLOOR2_STEPPER_EN, OUTPUT);
     pinMode(FLOOR3_STEPPER_EN, OUTPUT);
     pinMode(ELEVATOR_PHOTORESISTOR, INPUT);
+    digitalWrite(FLOOR1_STEPPER_EN, STEPPER_OFF);
+    digitalWrite(FLOOR2_STEPPER_EN, STEPPER_OFF);
+    digitalWrite(FLOOR3_STEPPER_EN, STEPPER_OFF);
     // Add floors
 //    addFloor(FLOOR1);
     // Initialize myRIO
