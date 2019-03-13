@@ -29,23 +29,9 @@ AutoParkFloor::AutoParkFloor(uint8_t floorIndex, uint8_t masterIndex, bool debug
         statusLED.error();
         debugSendLn("Error");
     }
-    delay(500);
+    delay(200);
+    delay(micros() % 10 * 100);
     calibrateCart();
-//    delay(500);
-//    delay(1000);
-//    moveCartTo(LOT1_POS);
-//    delay(1000);
-////    carEnterLot(CAR1);
-//    moveCartTo(LOT2_POS);
-//    carEnterLot(CAR1);
-////    delay(1000);
-//    delay(1000);
-//    moveCartTo(LOT3_POS);
-//    delay(1000);
-//    moveCartTo(LOT2_POS);
-//    carBackUp(CAR1);
-//    delay(1000);
-//    carBackUp(CAR1);
 }
 
 bool AutoParkFloor::messageHandler() {

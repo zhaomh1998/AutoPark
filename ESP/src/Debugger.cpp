@@ -9,6 +9,7 @@
 //
 //void setup() {
 //    dbg = new AutoParkDebugger(DEBUGGER);
+//    Serial.println("Dbg");
 //}
 //void loop() {
 //    dbg->handle();

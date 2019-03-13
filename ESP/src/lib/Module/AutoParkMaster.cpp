@@ -74,6 +74,7 @@ void AutoParkMaster::unknownCommandHandler(const char *theCmd){
 void AutoParkMaster::handleRIOCommand() {
     myRIO.readSerial(); // Read serial commands
     if(RIOCommandPending) {
+        debugSendLn("Start handling commands");
         if(RIOCommand == CAR_COMMAND) {
             int floorNum;
             int carIndex;

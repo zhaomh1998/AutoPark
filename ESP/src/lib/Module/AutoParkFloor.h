@@ -21,9 +21,9 @@
 #define STEPPER_RIGHT 1
 #define CALIB_BACKUP_DISTANCE 25
 #define ELEVATOR_POS 0
-#define LOT1_POS 615
-#define LOT2_POS 1135
-#define LOT3_POS 1665
+#define LOT1_POS 690  // 615
+#define LOT2_POS 1210
+#define LOT3_POS 1740
 
 #include "lib/Communication/slave.h"
 #include <Ticker.h>  // Timer library for driving stepper
